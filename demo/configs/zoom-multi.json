@@ -1,0 +1,35 @@
+{
+  "version": "1.0",
+  "ciToken": "scaleflex",
+  "title": "Zoom — Multiple Regions",
+  "settings": {
+    "transition": "fade",
+    "maskStyle": "color",
+    "maskOpacity": 0.65
+  },
+  "scenes": [
+    {
+      "id": "key-details",
+      "image": "v7/plugins/cloudimage/spotlight/api-key-generated-modal.png",
+      "title": "Warning & Copy",
+      "description": "With zoom and multiple regions, the CDN crops to the bounding box that contains all regions. Both highlighted areas remain visible in the zoomed view.",
+      "regions": [
+        { "tl_x": 0.28, "tl_y": 0.36, "br_x": 0.72, "br_y": 0.44, "label": "Warning" },
+        { "tl_x": 0.28, "tl_y": 0.47, "br_x": 0.72, "br_y": 0.56, "label": "Copy key" }
+      ],
+      "zoom": true
+    },
+    {
+      "id": "key-row-details",
+      "image": "v7/plugins/cloudimage/spotlight/settings-api-keys-with-new-created-key.png",
+      "title": "Key Row Breakdown",
+      "description": "Three regions on the key row — zoom crops to the bounding box of all three, showing the full row in detail.",
+      "regions": [
+        { "tl_x": 0.085, "tl_y": 0.07, "br_x": 0.40, "br_y": 0.16, "label": "Name & prefix" },
+        { "tl_x": 0.40, "tl_y": 0.07, "br_x": 0.80, "br_y": 0.16, "label": "Metadata" },
+        { "tl_x": 0.88, "tl_y": 0.10, "br_x": 0.975, "br_y": 0.15, "label": "Delete" }
+      ],
+      "zoom": true
+    }
+  ]
+}

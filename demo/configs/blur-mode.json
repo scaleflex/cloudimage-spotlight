@@ -1,0 +1,30 @@
+{
+  "version": "1.0",
+  "ciToken": "scaleflex",
+  "title": "Blur Mask Demo",
+  "settings": {
+    "maskStyle": "blur",
+    "maskBlurRadius": 10
+  },
+  "scenes": [
+    {
+      "id": "blur-create-key",
+      "image": "v7/plugins/cloudimage/spotlight/create-api-key-modal.png",
+      "title": "Focus on the Modal",
+      "description": "Blur mode keeps the background visible but blurred, drawing attention to the modal dialog.",
+      "regions": [
+        { "tl_x": 0.27, "tl_y": 0.27, "br_x": 0.73, "br_y": 0.65 }
+      ]
+    },
+    {
+      "id": "blur-copy-key",
+      "image": "v7/plugins/cloudimage/spotlight/api-key-generated-modal.png",
+      "title": "Highlight Multiple Areas",
+      "description": "Multiple sharp regions cut through the blurred background, guiding the user's eye to what matters.",
+      "regions": [
+        { "tl_x": 0.28, "tl_y": 0.36, "br_x": 0.72, "br_y": 0.44 },
+        { "tl_x": 0.28, "tl_y": 0.47, "br_x": 0.72, "br_y": 0.56 }
+      ]
+    }
+  ]
+}

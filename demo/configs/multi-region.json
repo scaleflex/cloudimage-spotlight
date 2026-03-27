@@ -1,0 +1,29 @@
+{
+  "version": "1.0",
+  "ciToken": "scaleflex",
+  "title": "Multi-Region Demo",
+  "scenes": [
+    {
+      "id": "dashboard-layout",
+      "image": "v7/plugins/cloudimage/spotlight/home.png",
+      "title": "Dashboard Layout",
+      "description": "The dashboard has three key areas: the navigation sidebar, the filter toolbar, and the experiences grid.",
+      "regions": [
+        { "tl_x": 0.003, "tl_y": 0.03, "br_x": 0.08, "br_y": 0.60, "label": "Sidebar" },
+        { "tl_x": 0.085, "tl_y": 0.06, "br_x": 0.99, "br_y": 0.13, "label": "Filters" },
+        { "tl_x": 0.085, "tl_y": 0.14, "br_x": 0.99, "br_y": 0.72, "label": "Experiences" }
+      ]
+    },
+    {
+      "id": "api-key-details",
+      "image": "v7/plugins/cloudimage/spotlight/settings-api-keys-with-new-created-key.png",
+      "title": "API Key Details",
+      "description": "Each key shows the name, prefix, creator, creation date, and expiration. You can delete keys you no longer need.",
+      "regions": [
+        { "tl_x": 0.085, "tl_y": 0.07, "br_x": 0.40, "br_y": 0.16, "label": "Name & prefix" },
+        { "tl_x": 0.40, "tl_y": 0.07, "br_x": 0.80, "br_y": 0.16, "label": "Metadata" },
+        { "tl_x": 0.88, "tl_y": 0.10, "br_x": 0.975, "br_y": 0.15, "label": "Delete", "shape": "ellipse" }
+      ]
+    }
+  ]
+}

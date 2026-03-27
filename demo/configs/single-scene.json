@@ -1,0 +1,17 @@
+{
+  "version": "1.0",
+  "ciToken": "scaleflex",
+  "title": "Single Scene",
+  "scenes": [
+    {
+      "id": "home",
+      "image": "v7/plugins/cloudimage/spotlight/home.png",
+      "title": "Create Your First Experience",
+      "description": "Click the \"Create experience\" button to build an interactive product tour, walkthrough, or demo.",
+      "regions": [
+        { "tl_x": 0.88, "tl_y": 0.06, "br_x": 0.99, "br_y": 0.11, "label": "Create experience" }
+      ],
+      "cta": { "label": "Get Started" }
+    }
+  ]
+}

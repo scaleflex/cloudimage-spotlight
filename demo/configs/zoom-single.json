@@ -1,0 +1,32 @@
+{
+  "version": "1.0",
+  "ciToken": "scaleflex",
+  "title": "Zoom — Single Region",
+  "settings": {
+    "transition": "fade",
+    "maskStyle": "color",
+    "maskOpacity": 0.65
+  },
+  "scenes": [
+    {
+      "id": "copy-key",
+      "image": "v7/plugins/cloudimage/spotlight/api-key-generated-modal.png",
+      "title": "Copy Your API Key",
+      "description": "With zoom enabled and a single region, the image crops directly to the highlighted area via the Cloudimage CDN.",
+      "regions": [
+        { "tl_x": 0.28, "tl_y": 0.47, "br_x": 0.72, "br_y": 0.56, "label": "Copy key" }
+      ],
+      "zoom": true
+    },
+    {
+      "id": "new-key-row",
+      "image": "v7/plugins/cloudimage/spotlight/settings-api-keys-with-new-created-key.png",
+      "title": "Key Listed",
+      "description": "The CDN crops to the single region, giving a close-up view of the new API key row.",
+      "regions": [
+        { "tl_x": 0.085, "tl_y": 0.10, "br_x": 0.975, "br_y": 0.16, "label": "New key" }
+      ],
+      "zoom": true
+    }
+  ]
+}

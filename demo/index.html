@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>@cloudimage/spotlight — Demo</title>
+  <link rel="icon" href="https://cdn.prod.website-files.com/623086c828f7c9787009cf20/6267d5ef7488f536294d267b_favicon-256x526.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-tsx.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js" defer></script>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <!-- Topbar -->
+  <header id="topbar">
+    <div class="topbar-inner">
+    <div class="topbar-left">
+      <button id="sidebar-toggle" class="sidebar-toggle" aria-label="Toggle sidebar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <a href="#/" class="topbar-brand">
+        <img src="https://assets.scaleflex.com/Marketing/Logos/Scaleflex%20Logos/Logo%20Horizontal/scaleflex%20logo%20without%20tagline%20white%20text%20%28horizontal%29%20.png?vh=85bc00" alt="Scaleflex" class="topbar-logo" />
+      </a>
+    </div>
+    <nav class="topbar-nav">
+      <a href="#/" class="topbar-nav-link" data-section="home">Home</a>
+      <a href="#/docs/getting-started" class="topbar-nav-link" data-section="docs">Documentation</a>
+      <a href="#/examples/basic" class="topbar-nav-link" data-section="examples">Examples</a>
+    </nav>
+    <div class="topbar-right">
+      <a href="https://www.npmjs.com/package/@cloudimage/spotlight" target="_blank" rel="noopener" class="topbar-btn" aria-label="npm">
+        <svg width="16" height="16" viewBox="0 0 256 256" fill="currentColor"><path d="M0 256V0h256v256H0zm41-41h59.2v-133H141v133h33.4V41H41v174z"/></svg>
+      </a>
+    </div>
+    </div>
+  </header>
+
+  <!-- Layout -->
+  <div id="app">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar hidden">
+      <nav id="sidebar-docs" class="sidebar-nav hidden">
+        <a href="#/docs/getting-started" class="sidebar-link" data-route="/docs/getting-started">Getting started</a>
+        <a href="#/docs/configuration" class="sidebar-link" data-route="/docs/configuration">Configuration</a>
+        <a href="#/docs/api" class="sidebar-link" data-route="/docs/api">API</a>
+        <a href="#/docs/theming" class="sidebar-link" data-route="/docs/theming">Theming</a>
+      </nav>
+      <nav id="sidebar-examples" class="sidebar-nav hidden">
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">Getting started</div>
+          <a href="#/examples/basic" class="sidebar-link" data-route="/examples/basic">Basic usage</a>
+          <a href="#/examples/multi-scene" class="sidebar-link" data-route="/examples/multi-scene">Multi-scene tour</a>
+        </div>
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">Features</div>
+          <a href="#/examples/multi-region" class="sidebar-link" data-route="/examples/multi-region">Multiple regions</a>
+          <a href="#/examples/zoom-single" class="sidebar-link" data-route="/examples/zoom-single">Zoom (single region)</a>
+          <a href="#/examples/zoom-multi" class="sidebar-link" data-route="/examples/zoom-multi">Zoom (multi region)</a>
+          <a href="#/examples/blur-mode" class="sidebar-link" data-route="/examples/blur-mode">Blur mode</a>
+          <a href="#/examples/intro" class="sidebar-link" data-route="/examples/intro">Intro screen</a>
+          <a href="#/examples/autoplay" class="sidebar-link" data-route="/examples/autoplay">Autoplay</a>
+        </div>
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">Customization</div>
+          <a href="#/examples/annotation-styles" class="sidebar-link" data-route="/examples/annotation-styles">Annotation styles</a>
+          <a href="#/examples/theming" class="sidebar-link" data-route="/examples/theming">Theming</a>
+          <a href="#/examples/events" class="sidebar-link" data-route="/examples/events">Event handling</a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Content -->
+    <main id="content"></main>
+  </div>
+
+  <script type="module" src="./main.ts"></script>
+</body>
+</html>

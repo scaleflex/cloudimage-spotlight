@@ -1,0 +1,71 @@
+{
+  "version": "1.0",
+  "ciToken": "scaleflex",
+  "title": "Create an API Key",
+  "settings": {
+    "transition": "fade",
+    "maskStyle": "color",
+    "maskOpacity": 0.65,
+    "intro": {
+      "title": "Create an API Key",
+      "description": "Follow this quick 5-step guide to generate your first API key for the Asset Picker."
+    },
+    "outro": {
+      "title": "You're all set!",
+      "description": "Your API key is ready. Want to see the steps again?"
+    }
+  },
+  "scenes": [
+    {
+      "id": "home",
+      "image": "v7/plugins/cloudimage/spotlight/home.png",
+      "title": "Spotlight Dashboard",
+      "description": "Start from the Experiences home page. Navigate to API Keys in the sidebar to create credentials for the Asset Picker.",
+      "regions": [
+        { "tl_x": 0.003, "tl_y": 0.45, "br_x": 0.18, "br_y": 0.50, "label": "API Keys page" }
+      ],
+      "annotation": { "position": "auto" }
+    },
+    {
+      "id": "api-keys-empty",
+      "image": "v7/plugins/cloudimage/spotlight/settings-api-keys.png",
+      "title": "API Keys Page",
+      "description": "The API Keys page shows all your programmatic access tokens. Click \"Create key\" to generate a new one.",
+      "regions": [
+        { "tl_x": 0.40, "tl_y": 0.22, "br_x": 0.78, "br_y": 0.45, "label": "Create key" }
+      ],
+      "annotation": { "position": "auto" }
+    },
+    {
+      "id": "create-modal",
+      "image": "v7/plugins/cloudimage/spotlight/create-api-key-modal.png",
+      "title": "Name Your Key",
+      "description": "Give your API key a descriptive name (e.g. \"Asset Picker\") and optionally set an expiration date. Then click Create.",
+      "regions": [
+        { "tl_x": 0.28, "tl_y": 0.33, "br_x": 0.72, "br_y": 0.52, "label": "Key details" },
+        { "tl_x": 0.63, "tl_y": 0.57, "br_x": 0.72, "br_y": 0.63, "label": "Create" }
+      ]
+    },
+    {
+      "id": "key-generated",
+      "image": "v7/plugins/cloudimage/spotlight/api-key-generated-modal.png",
+      "title": "Copy Your API Key",
+      "description": "Your API key has been generated. Copy it now — you won't be able to see it again after closing this dialog.",
+      "regions": [
+        { "tl_x": 0.28, "tl_y": 0.36, "br_x": 0.72, "br_y": 0.44, "label": "Warning" },
+        { "tl_x": 0.28, "tl_y": 0.47, "br_x": 0.72, "br_y": 0.56, "label": "Copy key" }
+      ],
+      "zoom": true
+    },
+    {
+      "id": "key-listed",
+      "image": "v7/plugins/cloudimage/spotlight/settings-api-keys-with-new-created-key.png",
+      "title": "Key Ready to Use",
+      "description": "Your new API key is now listed and ready to integrate with the Asset Picker or any Spotlight API endpoint.",
+      "regions": [
+        { "tl_x": 0.085, "tl_y": 0.10, "br_x": 0.975, "br_y": 0.16, "label": "New key" }
+      ],
+      "cta": { "label": "View Asset Picker docs", "href": "https://www.scaleflex.com/en/asset-picker", "style": "link" }
+    }
+  ]
+}

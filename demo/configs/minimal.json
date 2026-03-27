@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "ciToken": "scaleflex",
+  "title": "Quick Overview",
+  "scenes": [
+    {
+      "id": "home",
+      "image": "v7/plugins/cloudimage/spotlight/home.png",
+      "title": "Experiences Dashboard",
+      "description": "Manage all your interactive experiences from one place — Hotspot, Before/After, 360 View, and more."
+    },
+    {
+      "id": "api-keys",
+      "image": "v7/plugins/cloudimage/spotlight/settings-api-keys-with-new-created-key.png",
+      "title": "API Keys",
+      "description": "Create API keys for programmatic access to the Spotlight API and Asset Picker integration."
+    }
+  ]
+}

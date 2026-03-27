@@ -1,0 +1,63 @@
+{
+  "version": "1.0",
+  "ciToken": "scaleflex",
+  "title": "Annotation Styles",
+  "settings": {
+    "transition": "fade",
+    "showProgress": true,
+    "allowSkip": true
+  },
+  "scenes": [
+    {
+      "id": "card-default",
+      "image": "v7/plugins/cloudimage/spotlight/home.png",
+      "title": "Card style (default)",
+      "description": "The default annotation style renders a frosted-glass card with title, description, progress pill, and navigation buttons.",
+      "regions": [
+        { "tl_x": 0.003, "tl_y": 0.45, "br_x": 0.18, "br_y": 0.50, "label": "API Keys" }
+      ],
+      "annotation": { "style": "card", "position": "right" }
+    },
+    {
+      "id": "tooltip",
+      "image": "v7/plugins/cloudimage/spotlight/settings-api-keys.png",
+      "title": "Tooltip style",
+      "description": "Compact with tighter padding.",
+      "regions": [
+        { "tl_x": 0.40, "tl_y": 0.22, "br_x": 0.78, "br_y": 0.45, "label": "Create key" }
+      ],
+      "annotation": { "style": "tooltip", "position": "bottom" }
+    },
+    {
+      "id": "minimal",
+      "image": "v7/plugins/cloudimage/spotlight/create-api-key-modal.png",
+      "title": "Minimal style",
+      "description": "Transparent background, no border or shadow. Lets the screenshot dominate.",
+      "regions": [
+        { "tl_x": 0.28, "tl_y": 0.33, "br_x": 0.72, "br_y": 0.52 }
+      ],
+      "annotation": { "style": "minimal", "position": "bottom" }
+    },
+    {
+      "id": "connector",
+      "image": "v7/plugins/cloudimage/spotlight/api-key-generated-modal.png",
+      "title": "Connector line",
+      "description": "A visible line connects the annotation card to the primary region it describes.",
+      "regions": [
+        { "tl_x": 0.28, "tl_y": 0.47, "br_x": 0.72, "br_y": 0.56, "label": "Copy key" }
+      ],
+      "annotation": { "style": "card", "position": "auto", "showConnector": true }
+    },
+    {
+      "id": "custom-width",
+      "image": "v7/plugins/cloudimage/spotlight/settings-api-keys-with-new-created-key.png",
+      "title": "Custom max-width",
+      "description": "This card uses maxWidth: 420 to allow a wider annotation panel. Useful when descriptions are longer.",
+      "regions": [
+        { "tl_x": 0.085, "tl_y": 0.10, "br_x": 0.975, "br_y": 0.16, "label": "New key" }
+      ],
+      "annotation": { "style": "card", "position": "bottom", "maxWidth": 420 },
+      "cta": { "label": "View Asset Picker docs", "href": "https://www.scaleflex.com/en/asset-picker", "style": "link" }
+    }
+  ]
+}

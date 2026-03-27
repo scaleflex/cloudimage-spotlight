@@ -1,0 +1,1024 @@
+/* ==========================================================================
+   cloudimage-spotlight — Component Styles
+   Injected via constructable stylesheet (adoptedStyleSheets).
+   Colors use Scaleflex OKLCH design system.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   Host & Custom Properties (Dark theme defaults)
+   --------------------------------------------------------------------------- */
+
+:host {
+  display: block;
+  width: var(--cis-width, 100%);
+  max-width: var(--cis-max-width, 1200px);
+  border-radius: var(--cis-border-radius, 8px);
+  overflow: hidden;
+  position: relative;
+  contain: layout style;
+
+  /* Accent */
+  --cis-accent: oklch(0.578 0.198 268.129);
+
+  /* Mask (dark theme defaults) */
+  --cis-mask-color: oklch(0 0 0);
+  --cis-mask-opacity: 0.65;
+  --cis-mask-transition: 450ms ease;
+
+  /* Responsive */
+  --cis-mobile-breakpoint: 600px;
+}
+
+/* ---------------------------------------------------------------------------
+   Root container
+   --------------------------------------------------------------------------- */
+
+.cis-root {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--cis-aspect-ratio, 16 / 9);
+  background: oklch(0.13 0.027 261.692);
+  border-radius: inherit;
+  overflow: hidden;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: oklch(0.95 0.01 264.55);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------------------------------------------------------------------------
+   Stage (image + overlays container)
+   --------------------------------------------------------------------------- */
+
+.cis-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ---------------------------------------------------------------------------
+   Images
+   --------------------------------------------------------------------------- */
+
+.cis-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: var(--cis-object-fit, contain);
+}
+
+.cis-image--base {
+  z-index: var(--cis-z-base, 1);
+}
+
+.cis-image-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--cis-z-base, 1);
+  background: var(--cis-skeleton-bg, oklch(0.95 0.01 264.55 / 0.05));
+}
+
+.cis-image-fallback__text {
+  color: var(--cis-card-body-color, oklch(0.75 0.01 249.82));
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.cis-image--zoomed {
+  z-index: var(--cis-z-base, 1);
+  opacity: 0;
+  transition: opacity var(--cis-transition-duration, 300ms) var(--cis-transition-easing, ease);
+}
+
+.cis-image--zoomed.cis-image--visible {
+  opacity: 1;
+}
+
+.cis-image--blurred {
+  z-index: var(--cis-z-base, 1);
+}
+
+.cis-image--sharp {
+  z-index: var(--cis-z-base, 1); /* Same as --blurred; DOM order ensures sharp renders above */
+}
+
+/* ---------------------------------------------------------------------------
+   SVG Mask overlay
+   --------------------------------------------------------------------------- */
+
+.cis-mask {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: calc(var(--cis-z-base, 1) + 1);
+  pointer-events: none;
+  transition: opacity var(--cis-mask-transition, 300ms ease);
+}
+
+/* ---------------------------------------------------------------------------
+   Region highlights (border + pulse)
+   --------------------------------------------------------------------------- */
+
+.cis-region-highlight {
+  position: absolute;
+  z-index: calc(var(--cis-z-base, 1) + 2);
+  border: var(--cis-region-border, 2px solid oklch(0.578 0.198 268.129 / 0.6));
+  border-radius: var(--cis-region-border-radius, 4px);
+  pointer-events: none;
+  animation: cis-pulse var(--cis-region-pulse-duration, 600ms) ease-out var(--cis-region-pulse-count, 2);
+}
+
+@keyframes cis-pulse {
+  0% { box-shadow: 0 0 0 0 var(--cis-region-pulse-color, oklch(0.578 0.198 268.129 / 0.4)); }
+  70% { box-shadow: 0 0 0 8px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+/* ---------------------------------------------------------------------------
+   Badges (numbered region labels)
+   --------------------------------------------------------------------------- */
+
+.cis-badge {
+  position: absolute;
+  z-index: calc(var(--cis-z-base, 1) + 3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--cis-badge-size, 22px);
+  height: var(--cis-badge-size, 22px);
+  border-radius: var(--cis-badge-border-radius, 50%);
+  background: var(--cis-badge-bg, var(--cis-accent));
+  color: var(--cis-badge-color, oklch(1 0 0));
+  font-size: var(--cis-badge-font-size, 11px);
+  font-weight: 600;
+  line-height: 1;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.cis-badge--label {
+  width: auto;
+  height: auto;
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+  transform: translate(-4px, calc(-100% - 4px));
+}
+
+/* ---------------------------------------------------------------------------
+   Overlay wrapper (aligns mask/highlights/badges to image content area)
+   --------------------------------------------------------------------------- */
+
+.cis-overlay-wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: calc(var(--cis-z-base, 1) + 1);
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Annotation card (contains title, description, CTA, progress, nav controls)
+   --------------------------------------------------------------------------- */
+
+.cis-annotation {
+  position: absolute;
+  z-index: calc(var(--cis-z-base, 1) + 4);
+  max-width: var(--cis-card-max-width, 340px);
+  padding: var(--cis-card-padding, 16px 20px);
+  background: var(--cis-card-bg, oklch(0.13 0.027 261.692 / 0.92));
+  backdrop-filter: var(--cis-card-backdrop-blur, blur(12px));
+  -webkit-backdrop-filter: var(--cis-card-backdrop-blur, blur(12px));
+  border: 1px solid var(--cis-card-border, oklch(0.95 0.01 264.55 / 0.1));
+  border-radius: var(--cis-card-border-radius, 12px);
+  box-shadow: 0 4px 24px oklch(0 0 0 / 0.2);
+}
+
+/* --- Header: title + progress pill + close --- */
+
+.cis-annotation__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cis-annotation__title {
+  flex: 1;
+  margin: 0;
+  font-size: var(--cis-card-title-size, 15px);
+  font-weight: 600;
+  color: var(--cis-card-title-color, oklch(0.95 0.01 264.55));
+}
+
+.cis-annotation__progress {
+  flex-shrink: 0;
+  padding: 2px 10px;
+  border-radius: 10px;
+  font-size: var(--cis-progress-font-size, 11px);
+  font-weight: 500;
+  background: var(--cis-progress-bg, oklch(0.95 0.01 264.55 / 0.1));
+  color: var(--cis-progress-color, oklch(0.75 0.01 249.82));
+  white-space: nowrap;
+  user-select: none;
+  line-height: 1.6;
+}
+
+.cis-annotation__close {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--cis-close-color, oklch(0.75 0.01 249.82));
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease;
+}
+
+.cis-annotation__close:hover {
+  background: var(--cis-close-bg-hover, oklch(0.95 0.01 264.55 / 0.1));
+  color: var(--cis-close-color-hover, oklch(0.95 0.01 264.55));
+}
+
+/* --- Body --- */
+
+.cis-annotation__body {
+  margin: 8px 0 0;
+  font-size: var(--cis-card-body-size, 13px);
+  color: var(--cis-card-body-color, oklch(0.75 0.01 249.82));
+  line-height: 1.5;
+}
+
+/* --- Navigation footer --- */
+
+.cis-annotation__nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.cis-annotation__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: var(--cis-nav-btn-padding, 7px 16px);
+  font-size: var(--cis-nav-btn-font-size, 13px);
+  font-weight: 500;
+  font-family: inherit;
+  border-radius: var(--cis-nav-btn-border-radius, 8px);
+  cursor: pointer;
+  transition: background 150ms ease, border-color 150ms ease;
+  border: none;
+  line-height: 1.4;
+}
+
+/* Previous button — ghost/outlined */
+.cis-annotation__btn--prev {
+  background: transparent;
+  border: 1px solid var(--cis-nav-btn-ghost-border, oklch(0.95 0.01 264.55 / 0.2));
+  color: var(--cis-nav-btn-ghost-color, oklch(0.85 0.01 264.55));
+  margin-right: auto;
+}
+
+.cis-annotation__btn--prev:hover {
+  background: var(--cis-nav-btn-ghost-bg-hover, oklch(0.95 0.01 264.55 / 0.08));
+}
+
+/* Next button — filled primary */
+.cis-annotation__btn--next {
+  background: var(--cis-nav-btn-primary-bg, oklch(0.15 0.02 261.692));
+  color: var(--cis-nav-btn-primary-color, oklch(0.95 0.01 264.55));
+}
+
+.cis-annotation__btn--next:hover {
+  background: var(--cis-nav-btn-primary-bg-hover, oklch(0.22 0.025 261.692));
+}
+
+/* Finish button — success color variant */
+.cis-annotation__btn--finish {
+  background: var(--cis-nav-btn-finish-bg, oklch(0.5 0.17 154.83));
+  color: var(--cis-nav-btn-finish-color, oklch(1 0 0));
+}
+
+.cis-annotation__btn--finish:hover {
+  background: var(--cis-nav-btn-finish-bg-hover, oklch(0.45 0.15 154.83));
+}
+
+/* Annotation style variants */
+.cis-annotation--tooltip {
+  padding: 8px 12px;
+  border-radius: 6px;
+  max-width: 240px;
+}
+
+.cis-annotation--minimal {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: none;
+  box-shadow: none;
+  padding: 8px 0;
+}
+
+/* ---------------------------------------------------------------------------
+   Annotation connector line (card → region)
+   --------------------------------------------------------------------------- */
+
+.cis-connector {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: calc(var(--cis-z-base, 1) + 2);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--cis-transition-duration, 0.3s) ease;
+}
+
+.cis-connector--visible {
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------------------------
+   CTA button
+   --------------------------------------------------------------------------- */
+
+.cis-cta {
+  display: inline-block;
+  margin-top: 12px;
+  padding: var(--cis-cta-padding, 8px 16px);
+  background: var(--cis-cta-bg, var(--cis-accent));
+  color: var(--cis-cta-color, oklch(1 0 0));
+  font-size: var(--cis-cta-font-size, 13px);
+  font-weight: 500;
+  text-decoration: none;
+  border: none;
+  border-radius: var(--cis-cta-border-radius, 6px);
+  cursor: pointer;
+  transition: background 150ms ease;
+}
+
+.cis-cta:hover {
+  background: var(--cis-cta-bg-hover, oklch(0.65 0.18 268.129));
+}
+
+.cis-cta--link {
+  background: none;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  color: var(--cis-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 500;
+}
+
+.cis-cta--link:hover {
+  background: none;
+  text-decoration-thickness: 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   Icon button (shared base for fullscreen)
+   --------------------------------------------------------------------------- */
+
+.cis-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--cis-btn-size, 36px);
+  height: var(--cis-btn-size, 36px);
+  border: none;
+  border-radius: var(--cis-btn-border-radius, 6px);
+  background: var(--cis-btn-bg, rgba(30, 30, 30, 0.9));
+  color: var(--cis-btn-color, #f0f0f0);
+  box-shadow: var(--cis-btn-shadow, 0 2px 8px rgba(0, 0, 0, 0.15));
+  cursor: pointer;
+  transition: background 150ms ease;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.cis-btn:hover {
+  background: var(--cis-btn-bg-hover, rgba(60, 60, 60, 0.95));
+}
+
+/* ---------------------------------------------------------------------------
+   Fullscreen button (top-right corner, standalone)
+   --------------------------------------------------------------------------- */
+
+.cis-btn--fullscreen {
+  position: absolute;
+  inset-block-start: 12px;
+  inset-inline-end: 12px;
+  z-index: calc(var(--cis-z-base, 1) + 5);
+}
+
+/* ---------------------------------------------------------------------------
+   Play/pause button (next to fullscreen, top-right corner)
+   --------------------------------------------------------------------------- */
+
+.cis-btn--play {
+  position: absolute;
+  inset-block-start: 12px;
+  inset-inline-end: 56px; /* 12px + 36px (fullscreen btn) + 8px gap */
+  z-index: calc(var(--cis-z-base, 1) + 5);
+}
+
+/* When fullscreen button is absent, play button takes its place */
+.cis-root:not(:has(.cis-btn--fullscreen)) .cis-btn--play {
+  inset-inline-end: 12px;
+}
+
+/* ---------------------------------------------------------------------------
+   Fullscreen mode
+   --------------------------------------------------------------------------- */
+
+.cis-root--fullscreen {
+  background: oklch(0 0 0);
+  width: 100vw;
+  height: 100vh;
+  border-radius: 0;
+}
+
+.cis-root--fullscreen .cis-stage {
+  width: 100%;
+  height: 100%;
+}
+
+.cis-root--fullscreen .cis-image {
+  max-height: 100vh;
+  object-fit: contain;
+}
+
+:host([theme="light"]) .cis-root--fullscreen {
+  background: oklch(0.95 0.005 264.55);
+}
+
+@media (prefers-color-scheme: light) {
+  :host([theme="auto"]) .cis-root--fullscreen {
+    background: oklch(0.95 0.005 264.55);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------
+   Loading skeleton
+   --------------------------------------------------------------------------- */
+
+.cis-skeleton {
+  position: absolute;
+  inset: 0;
+  z-index: calc(var(--cis-z-base, 1) + 8);
+  background: var(--cis-skeleton-bg, oklch(0.95 0.01 264.55 / 0.05));
+  overflow: hidden;
+}
+
+.cis-skeleton__shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--cis-skeleton-shimmer, oklch(0.95 0.01 264.55 / 0.08)) 50%,
+    transparent 100%
+  );
+  animation: cis-shimmer var(--cis-skeleton-duration, 1.5s) ease-in-out infinite;
+}
+
+@keyframes cis-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.cis-root.cis-loading .cis-stage {
+  visibility: hidden;
+}
+
+.cis-root.cis-loading .cis-skeleton {
+  visibility: visible;
+}
+
+/* ---------------------------------------------------------------------------
+   Focus ring
+   --------------------------------------------------------------------------- */
+
+:host(:focus-visible) {
+  outline: var(--cis-focus-ring-width, 2px) solid var(--cis-focus-ring-color, var(--cis-accent));
+  outline-offset: var(--cis-focus-ring-offset, 2px);
+}
+
+.cis-btn:focus-visible,
+.cis-cta:focus-visible,
+.cis-annotation__btn:focus-visible,
+.cis-annotation__close:focus-visible {
+  outline: var(--cis-focus-ring-width, 2px) solid var(--cis-focus-ring-color, var(--cis-accent));
+  outline-offset: var(--cis-focus-ring-offset, 2px);
+}
+
+/* ---------------------------------------------------------------------------
+   Light theme
+   --------------------------------------------------------------------------- */
+
+:host([theme="light"]) .cis-root {
+  background: oklch(1 0 0);
+  color: oklch(0.37 0.022 248.413);
+
+  --cis-card-bg: oklch(1 0 0 / 0.95);
+  --cis-card-border: oklch(0 0 0 / 0.08);
+  --cis-card-title-color: oklch(0.37 0.022 248.413);
+  --cis-card-body-color: oklch(0.685 0.033 249.82);
+  --cis-btn-bg: rgba(255, 255, 255, 0.9);
+  --cis-btn-bg-hover: rgba(230, 230, 230, 0.95);
+  --cis-btn-color: #333333;
+  --cis-btn-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --cis-progress-bg: oklch(0 0 0 / 0.06);
+  --cis-progress-color: oklch(0.685 0.033 249.82);
+  --cis-close-color: oklch(0.685 0.033 249.82);
+  --cis-close-bg-hover: oklch(0 0 0 / 0.06);
+  --cis-close-color-hover: oklch(0.37 0.022 248.413);
+  --cis-nav-btn-ghost-border: oklch(0 0 0 / 0.12);
+  --cis-nav-btn-ghost-color: oklch(0.37 0.022 248.413);
+  --cis-nav-btn-ghost-bg-hover: oklch(0 0 0 / 0.04);
+  --cis-nav-btn-primary-bg: oklch(0.2 0.02 261.692);
+  --cis-nav-btn-primary-color: oklch(0.97 0.005 264.55);
+  --cis-nav-btn-primary-bg-hover: oklch(0.28 0.025 261.692);
+  --cis-nav-btn-finish-bg: oklch(0.45 0.14 154.83);
+  --cis-nav-btn-finish-color: oklch(1 0 0);
+  --cis-nav-btn-finish-bg-hover: oklch(0.4 0.12 154.83);
+  --cis-skeleton-bg: oklch(0 0 0 / 0.04);
+  --cis-skeleton-shimmer: oklch(0 0 0 / 0.06);
+  --cis-overlay-bg: oklch(0 0 0 / 0.35);
+}
+
+/* ---------------------------------------------------------------------------
+   Auto theme (follows system preference)
+   --------------------------------------------------------------------------- */
+
+@media (prefers-color-scheme: light) {
+  :host([theme="auto"]) .cis-root {
+    background: oklch(1 0 0);
+    color: oklch(0.37 0.022 248.413);
+
+    --cis-card-bg: oklch(1 0 0 / 0.95);
+    --cis-card-border: oklch(0 0 0 / 0.08);
+    --cis-card-title-color: oklch(0.37 0.022 248.413);
+    --cis-card-body-color: oklch(0.685 0.033 249.82);
+    --cis-btn-bg: rgba(255, 255, 255, 0.9);
+    --cis-btn-bg-hover: rgba(230, 230, 230, 0.95);
+    --cis-btn-color: #333333;
+    --cis-btn-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    --cis-progress-bg: oklch(0 0 0 / 0.06);
+    --cis-progress-color: oklch(0.685 0.033 249.82);
+    --cis-close-color: oklch(0.685 0.033 249.82);
+    --cis-close-bg-hover: oklch(0 0 0 / 0.06);
+    --cis-close-color-hover: oklch(0.37 0.022 248.413);
+    --cis-nav-btn-ghost-border: oklch(0 0 0 / 0.12);
+    --cis-nav-btn-ghost-color: oklch(0.37 0.022 248.413);
+    --cis-nav-btn-ghost-bg-hover: oklch(0 0 0 / 0.04);
+    --cis-nav-btn-primary-bg: oklch(0.2 0.02 261.692);
+    --cis-nav-btn-primary-color: oklch(0.97 0.005 264.55);
+    --cis-nav-btn-primary-bg-hover: oklch(0.28 0.025 261.692);
+    --cis-nav-btn-finish-bg: oklch(0.45 0.14 154.83);
+    --cis-nav-btn-finish-color: oklch(1 0 0);
+    --cis-nav-btn-finish-bg-hover: oklch(0.4 0.12 154.83);
+    --cis-skeleton-bg: oklch(0 0 0 / 0.04);
+    --cis-skeleton-shimmer: oklch(0 0 0 / 0.06);
+    --cis-overlay-bg: oklch(0 0 0 / 0.35);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Scene transitions (fade / slide / zoom)
+   --------------------------------------------------------------------------- */
+
+/* --- Fade transition --- */
+
+.cis-transition-fade .cis-scene-exit {
+  opacity: 1;
+}
+
+.cis-transition-fade .cis-scene-exit-active {
+  opacity: 0;
+  transition: opacity var(--cis-transition-duration, 300ms) var(--cis-transition-easing, ease);
+}
+
+.cis-transition-fade .cis-scene-enter {
+  opacity: 0;
+}
+
+.cis-transition-fade .cis-scene-enter-active {
+  opacity: 1;
+  transition: opacity var(--cis-transition-duration, 300ms) var(--cis-transition-easing, ease);
+}
+
+/* --- Slide transition --- */
+
+.cis-transition-slide .cis-scene-exit {
+  transform: translateX(0);
+}
+
+.cis-transition-slide .cis-scene-exit-active {
+  transform: translateX(-100%);
+  transition: transform 350ms var(--cis-transition-easing, ease);
+}
+
+.cis-transition-slide.cis-transition--backward .cis-scene-exit-active {
+  transform: translateX(100%);
+}
+
+.cis-transition-slide .cis-scene-enter {
+  transform: translateX(100%);
+}
+
+.cis-transition-slide .cis-scene-enter-active {
+  transform: translateX(0);
+  transition: transform 350ms var(--cis-transition-easing, ease);
+}
+
+.cis-transition-slide.cis-transition--backward .cis-scene-enter {
+  transform: translateX(-100%);
+}
+
+/* --- Zoom transition --- */
+
+.cis-transition-zoom .cis-scene-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.cis-transition-zoom .cis-scene-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 400ms var(--cis-transition-easing, ease),
+              transform 400ms var(--cis-transition-easing, ease);
+}
+
+.cis-transition-zoom .cis-scene-enter {
+  opacity: 0;
+  transform: scale(1.1);
+}
+
+.cis-transition-zoom .cis-scene-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 400ms var(--cis-transition-easing, ease),
+              transform 400ms var(--cis-transition-easing, ease);
+}
+
+/* --- Transition active guard (suppress ResizeObserver) --- */
+
+.cis-transitioning .cis-stage {
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Staggered scene entry
+   Elements start invisible and animate in with increasing delays.
+   Activated by adding .cis-scene-stagger to the stage after render.
+   --------------------------------------------------------------------------- */
+
+@keyframes cis-stagger-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes cis-stagger-scale-in {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes cis-stagger-scale-in-label {
+  from { opacity: 0; transform: translate(-4px, calc(-100% - 4px)) scale(0.5); }
+  to { opacity: 1; transform: translate(-4px, calc(-100% - 4px)) scale(1); }
+}
+
+@keyframes cis-stagger-slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Hide overlay elements before stagger starts */
+.cis-scene-stagger .cis-overlay-wrapper,
+.cis-scene-stagger .cis-annotation,
+.cis-scene-stagger .cis-connector {
+  opacity: 0;
+}
+
+/* Phase 1: Mask + overlay wrapper fades in */
+.cis-scene-stagger-active .cis-overlay-wrapper {
+  animation: cis-stagger-fade-in var(--cis-stagger-duration, 500ms) ease forwards;
+  animation-delay: var(--cis-stagger-delay-mask, 600ms);
+}
+
+/* Phase 2: Badges pop in (later than mask) */
+.cis-scene-stagger-active .cis-badge {
+  opacity: 0;
+  animation: cis-stagger-scale-in var(--cis-stagger-duration, 500ms) ease forwards;
+  animation-delay: var(--cis-stagger-delay-badge, 900ms);
+}
+
+.cis-scene-stagger-active .cis-badge--label {
+  animation-name: cis-stagger-scale-in-label;
+}
+
+/* Phase 3: Annotation slides up */
+.cis-scene-stagger-active .cis-annotation {
+  animation: cis-stagger-slide-up var(--cis-stagger-duration, 500ms) ease forwards;
+  animation-delay: var(--cis-stagger-delay-annotation, 1050ms);
+}
+
+/* Phase 4: Connector fades in via stagger (overrides .cis-connector--visible) */
+.cis-scene-stagger .cis-connector.cis-connector--visible {
+  opacity: 0;
+  transition: none;
+}
+
+.cis-scene-stagger-active .cis-connector {
+  animation: cis-stagger-fade-in var(--cis-stagger-duration, 500ms) ease forwards;
+  animation-delay: var(--cis-stagger-delay-connector, 1200ms);
+}
+
+/* ---------------------------------------------------------------------------
+   Shared screen overlay (intro + outro)
+   --------------------------------------------------------------------------- */
+
+.cis-screen-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: calc(var(--cis-z-base, 1) + 6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cis-overlay-bg, oklch(0 0 0 / 0.5));
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  transition: opacity 400ms ease;
+}
+
+.cis-screen-card {
+  max-width: 380px;
+  padding: 28px 32px;
+  background: var(--cis-card-bg, oklch(0.13 0.027 261.692 / 0.92));
+  backdrop-filter: var(--cis-card-backdrop-blur, blur(12px));
+  -webkit-backdrop-filter: var(--cis-card-backdrop-blur, blur(12px));
+  border: 1px solid var(--cis-card-border, oklch(0.95 0.01 264.55 / 0.1));
+  border-radius: var(--cis-card-border-radius, 10px);
+  box-shadow: 0 8px 32px oklch(0 0 0 / 0.3);
+  text-align: center;
+  animation: cis-stagger-slide-up 400ms ease both;
+}
+
+.cis-screen-card__title {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--cis-card-title-color, oklch(0.95 0.01 264.55));
+}
+
+.cis-screen-card__description {
+  margin: 0 0 20px;
+  font-size: 14px;
+  color: var(--cis-card-body-color, oklch(0.75 0.01 249.82));
+}
+
+.cis-screen-card__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 24px;
+  background: var(--cis-cta-bg, var(--cis-accent));
+  color: var(--cis-cta-color, oklch(1 0 0));
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: var(--cis-cta-border-radius, 6px);
+  cursor: pointer;
+  transition: background 150ms ease;
+}
+
+.cis-screen-card__btn:hover {
+  background: var(--cis-cta-bg-hover, oklch(0.65 0.18 268.129));
+}
+
+.cis-screen-card__btn:focus-visible {
+  outline: var(--cis-focus-ring-width, 2px) solid var(--cis-focus-ring-color, var(--cis-accent));
+  outline-offset: var(--cis-focus-ring-offset, 2px);
+}
+
+/* ---------------------------------------------------------------------------
+   Intro screen — starts visible
+   --------------------------------------------------------------------------- */
+
+.cis-intro {
+  opacity: 1;
+}
+
+.cis-intro--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Outro screen — starts hidden, fades in
+   --------------------------------------------------------------------------- */
+
+.cis-outro {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cis-outro--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ---------------------------------------------------------------------------
+   Outro scene grid
+   --------------------------------------------------------------------------- */
+
+.cis-screen-card:has(.cis-outro-grid) {
+  max-width: 520px;
+}
+
+.cis-outro-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cis-outro-grid-cols, 3), 1fr);
+  gap: 10px;
+  margin-top: 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.cis-outro-grid__item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0;
+  background: none;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 150ms ease, transform 150ms ease;
+  overflow: hidden;
+}
+
+.cis-outro-grid__item:hover {
+  border-color: var(--cis-accent);
+  transform: scale(1.04);
+}
+
+.cis-outro-grid__item:focus-visible {
+  outline: var(--cis-focus-ring-width, 2px) solid var(--cis-focus-ring-color, var(--cis-accent));
+  outline-offset: var(--cis-focus-ring-offset, 2px);
+}
+
+.cis-outro-grid__thumb {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.cis-outro-grid__label {
+  display: block;
+  padding: 0 4px 6px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--cis-card-body-color, oklch(0.75 0.01 249.82));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+/* ---------------------------------------------------------------------------
+   Reduced motion
+   --------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .cis-image,
+  .cis-mask,
+  .cis-annotation,
+  .cis-annotation__btn,
+  .cis-annotation__close,
+  .cis-region-highlight,
+  .cis-badge,
+  .cis-btn,
+  .cis-cta,
+  .cis-scene-exit-active,
+  .cis-scene-enter-active,
+  .cis-screen-overlay,
+  .cis-screen-card {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .cis-skeleton__shimmer {
+    animation: none !important;
+  }
+
+  /* Stagger: show everything immediately with no animation */
+  .cis-scene-stagger .cis-overlay-wrapper,
+  .cis-scene-stagger .cis-annotation,
+  .cis-scene-stagger .cis-connector,
+  .cis-scene-stagger-active .cis-badge {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Print
+   --------------------------------------------------------------------------- */
+
+@media print {
+  .cis-annotation__nav,
+  .cis-annotation__close,
+  .cis-annotation__progress,
+  .cis-mask,
+  .cis-region-highlight,
+  .cis-badge,
+  .cis-skeleton,
+  .cis-connector,
+  .cis-image--zoomed,
+  .cis-btn--fullscreen,
+  .cis-screen-overlay {
+    display: none !important;
+  }
+
+  .cis-annotation {
+    position: static !important;
+    max-width: 100% !important;
+    background: transparent !important;
+    color: oklch(0 0 0) !important;
+    border: 1px solid oklch(0.75 0 0) !important;
+    margin-top: 8px;
+    backdrop-filter: none !important;
+  }
+
+  .cis-root {
+    break-inside: avoid;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Mobile bottom-sheet (activated via JS class toggle)
+   --------------------------------------------------------------------------- */
+
+.cis-root.cis-root--mobile .cis-annotation {
+  position: static;
+}
+
+.cis-root.cis-root--mobile .cis-connector {
+  display: none;
+}
+
+.cis-bottom-sheet {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline: 0;
+  z-index: calc(var(--cis-z-base, 1) + 7);
+  max-height: var(--cis-bottom-sheet-max-height, 40%);
+  padding: var(--cis-bottom-sheet-padding, 16px 20px);
+  background: var(--cis-bottom-sheet-bg, var(--cis-card-bg, oklch(0.13 0.027 261.692 / 0.92)));
+  backdrop-filter: var(--cis-card-backdrop-blur, blur(12px));
+  -webkit-backdrop-filter: var(--cis-card-backdrop-blur, blur(12px));
+  border-radius: var(--cis-bottom-sheet-border-radius, 12px 12px 0 0);
+  overflow-y: auto;
+}
+
+/* Keep nav footer visible when bottom-sheet scrolls */
+.cis-bottom-sheet .cis-annotation__nav {
+  position: sticky;
+  bottom: 0;
+  background: inherit;
+  padding-bottom: 2px;
+}
+
+/* Screen overlays on mobile — bottom-aligned, full-width card */
+.cis-root.cis-root--mobile .cis-screen-overlay {
+  align-items: flex-end;
+}
+
+.cis-root.cis-root--mobile .cis-screen-card {
+  max-width: 100%;
+  border-radius: 12px 12px 0 0;
+  padding: 20px 24px;
+}
