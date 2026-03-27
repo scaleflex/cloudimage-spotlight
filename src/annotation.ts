@@ -1,7 +1,7 @@
 import type { SpotlightScene, SpotlightCTA, CISCTAClickDetail, CISStrings } from './types';
 import { sanitizeCtaHref } from './validation';
 import { interpolate } from './i18n';
-import { iconX, iconCheck } from './icons';
+import { iconX, iconCheck, iconArrowLeft, iconArrowRight } from './icons';
 
 export interface AnnotationCallbacks {
   onCtaClick: (detail: CISCTAClickDetail) => void;
@@ -108,7 +108,10 @@ export function createAnnotation(
     prevBtn.className = 'cis-annotation__btn cis-annotation__btn--prev';
     prevBtn.setAttribute('aria-label', strings.prev);
     prevBtn.setAttribute('type', 'button');
-    prevBtn.textContent = strings.prev;
+    prevBtn.appendChild(iconArrowLeft(14));
+    const prevLabel = document.createElement('span');
+    prevLabel.textContent = strings.prev;
+    prevBtn.appendChild(prevLabel);
     prevBtn.addEventListener('click', callbacks.onPrev);
     nav.appendChild(prevBtn);
   }
@@ -125,7 +128,10 @@ export function createAnnotation(
   } else {
     nextBtn.className = 'cis-annotation__btn cis-annotation__btn--next';
     nextBtn.setAttribute('aria-label', strings.next);
-    nextBtn.textContent = strings.next;
+    const nextLabel = document.createElement('span');
+    nextLabel.textContent = strings.next;
+    nextBtn.appendChild(nextLabel);
+    nextBtn.appendChild(iconArrowRight(14));
   }
   nextBtn.addEventListener('click', callbacks.onNext);
   nav.appendChild(nextBtn);
@@ -167,7 +173,11 @@ export function updateAnnotation(
   const prevBtn = card.querySelector('.cis-annotation__btn--prev');
   if (prevBtn) {
     prevBtn.setAttribute('aria-label', strings.prev);
-    prevBtn.textContent = strings.prev;
+    prevBtn.textContent = '';
+    prevBtn.appendChild(iconArrowLeft(14));
+    const prevLabel = document.createElement('span');
+    prevLabel.textContent = strings.prev;
+    prevBtn.appendChild(prevLabel);
   }
 
   // Update next button
@@ -185,7 +195,10 @@ export function updateAnnotation(
       nextBtn.appendChild(iconCheck(14));
     } else {
       nextBtn.classList.remove('cis-annotation__btn--finish');
-      nextBtn.textContent = strings.next;
+      const nextLabel = document.createElement('span');
+      nextLabel.textContent = strings.next;
+      nextBtn.appendChild(nextLabel);
+      nextBtn.appendChild(iconArrowRight(14));
     }
   }
 }

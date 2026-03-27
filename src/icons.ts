@@ -94,3 +94,13 @@ export function iconPause(size = 18): SVGSVGElement {
   svg.setAttribute('stroke', 'none');
   return svg;
 }
+
+/** Arrow left / chevron left (Lucide ChevronLeft) */
+export function iconArrowLeft(size = 14): SVGSVGElement {
+  return createSvg(size, [polyline('15 18 9 12 15 6')]);
+}
+
+/** Arrow right / chevron right (Lucide ChevronRight) */
+export function iconArrowRight(size = 14): SVGSVGElement {
+  return createSvg(size, [polyline('9 18 15 12 9 6')]);
+}
