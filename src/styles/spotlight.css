@@ -371,11 +371,12 @@
   border: none;
   border-radius: var(--cis-cta-border-radius, 6px);
   cursor: pointer;
-  transition: background 150ms ease;
+  transition: background 150ms ease, box-shadow 150ms ease;
 }
 
 .cis-cta:hover {
-  background: var(--cis-cta-bg-hover, oklch(0.65 0.18 268.129));
+  background: var(--cis-cta-bg-hover, var(--cis-cta-bg, var(--cis-accent)));
+  box-shadow: inset 0 0 0 100px oklch(0 0 0 / 0.1);
 }
 
 .cis-cta--link {
@@ -810,11 +811,12 @@
   border: none;
   border-radius: var(--cis-cta-border-radius, 6px);
   cursor: pointer;
-  transition: background 150ms ease;
+  transition: background 150ms ease, box-shadow 150ms ease;
 }
 
 .cis-screen-card__btn:hover {
-  background: var(--cis-cta-bg-hover, oklch(0.65 0.18 268.129));
+  background: var(--cis-cta-bg-hover, var(--cis-cta-bg, var(--cis-accent)));
+  box-shadow: inset 0 0 0 100px oklch(0 0 0 / 0.1);
 }
 
 .cis-screen-card__btn:focus-visible {
