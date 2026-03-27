@@ -85,7 +85,7 @@
 }
 
 .cis-image-fallback__text {
-  color: var(--cis-card-body-color, oklch(0.75 0.01 249.82));
+  color: var(--cis-card-body-color, oklch(0.82 0.025 249.89));
   font-size: 13px;
   opacity: 0.7;
 }
@@ -259,7 +259,7 @@
 .cis-annotation__body {
   margin: 8px 0 0;
   font-size: var(--cis-card-body-size, 13px);
-  color: var(--cis-card-body-color, oklch(0.75 0.01 249.82));
+  color: var(--cis-card-body-color, oklch(0.82 0.025 249.89));
   line-height: 1.5;
 }
 
@@ -542,7 +542,7 @@
   --cis-card-bg: oklch(1 0 0 / 0.95);
   --cis-card-border: oklch(0 0 0 / 0.08);
   --cis-card-title-color: oklch(0.37 0.022 248.413);
-  --cis-card-body-color: oklch(0.685 0.033 249.82);
+  --cis-card-body-color: oklch(0.5303 0.039 249.89);
   --cis-btn-bg: rgba(255, 255, 255, 0.9);
   --cis-btn-bg-hover: rgba(230, 230, 230, 0.95);
   --cis-btn-color: #333333;
@@ -578,7 +578,7 @@
     --cis-card-bg: oklch(1 0 0 / 0.95);
     --cis-card-border: oklch(0 0 0 / 0.08);
     --cis-card-title-color: oklch(0.37 0.022 248.413);
-    --cis-card-body-color: oklch(0.685 0.033 249.82);
+    --cis-card-body-color: oklch(0.5303 0.039 249.89);
     --cis-btn-bg: rgba(255, 255, 255, 0.9);
     --cis-btn-bg-hover: rgba(230, 230, 230, 0.95);
     --cis-btn-color: #333333;
@@ -794,7 +794,7 @@
 .cis-screen-card__description {
   margin: 0 0 20px;
   font-size: 14px;
-  color: var(--cis-card-body-color, oklch(0.75 0.01 249.82));
+  color: var(--cis-card-body-color, oklch(0.82 0.025 249.89));
 }
 
 .cis-screen-card__btn {
@@ -901,7 +901,7 @@
   padding: 0 4px 6px;
   font-size: 11px;
   font-weight: 500;
-  color: var(--cis-card-body-color, oklch(0.75 0.01 249.82));
+  color: var(--cis-card-body-color, oklch(0.82 0.025 249.89));
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
