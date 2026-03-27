@@ -227,7 +227,7 @@
   font-size: var(--cis-progress-font-size, 11px);
   font-weight: 500;
   background: var(--cis-progress-bg, oklch(0.95 0.01 264.55 / 0.1));
-  color: var(--cis-progress-color, oklch(0.75 0.01 249.82));
+  color: var(--cis-progress-color, oklch(0.82 0.025 249.89));
   white-space: nowrap;
   user-select: none;
   line-height: 1.6;
@@ -548,7 +548,7 @@
   --cis-btn-color: #333333;
   --cis-btn-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   --cis-progress-bg: oklch(0 0 0 / 0.06);
-  --cis-progress-color: oklch(0.685 0.033 249.82);
+  --cis-progress-color: oklch(0.5303 0.039 249.89);
   --cis-close-color: oklch(0.685 0.033 249.82);
   --cis-close-bg-hover: oklch(0 0 0 / 0.06);
   --cis-close-color-hover: oklch(0.37 0.022 248.413);
@@ -584,7 +584,7 @@
     --cis-btn-color: #333333;
     --cis-btn-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     --cis-progress-bg: oklch(0 0 0 / 0.06);
-    --cis-progress-color: oklch(0.685 0.033 249.82);
+    --cis-progress-color: oklch(0.5303 0.039 249.89);
     --cis-close-color: oklch(0.685 0.033 249.82);
     --cis-close-bg-hover: oklch(0 0 0 / 0.06);
     --cis-close-color-hover: oklch(0.37 0.022 248.413);
