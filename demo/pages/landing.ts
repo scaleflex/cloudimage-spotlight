@@ -47,7 +47,7 @@ const page: Page = {
               </div>
             </div>
             <div class="demo-control-group">
-              <span class="demo-control-label">Colors</span>
+              <span class="demo-control-label">Color</span>
               <div class="demo-pills" id="color-pills">
                 <button class="demo-pill active" data-value="default"><span class="demo-pill-dot" style="background: #155bcd"></span>Default</button>
                 <button class="demo-pill" data-value="emerald"><span class="demo-pill-dot" style="background: #10b981"></span>Emerald</button>
