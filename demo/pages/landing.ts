@@ -52,7 +52,7 @@ const page: Page = {
                 <button class="demo-pill active" data-value="default"><span class="demo-pill-dot" style="background: #155bcd"></span>Default</button>
                 <button class="demo-pill" data-value="emerald"><span class="demo-pill-dot" style="background: #10b981"></span>Emerald</button>
                 <button class="demo-pill" data-value="purple"><span class="demo-pill-dot" style="background: #8b5cf6"></span>Purple</button>
-                <button class="demo-pill" data-value="sunset"><span class="demo-pill-dot" style="background: #f59e0b"></span>Sunset</button>
+                <button class="demo-pill" data-value="sunset"><span class="demo-pill-dot" style="background: #E07B00"></span>Sunset</button>
               </div>
             </div>
             <div class="demo-control-group">
@@ -282,16 +282,17 @@ const page: Page = {
         '--cis-nav-btn-finish-bg-hover': 'oklch(0.52 0.2 292)',
       },
       sunset: {
-        '--cis-accent': 'oklch(0.75 0.17 65)',
-        '--cis-badge-bg': 'oklch(0.75 0.17 65)',
-        '--cis-cta-bg': 'oklch(0.75 0.17 65)',
-        '--cis-cta-color': 'oklch(0.2 0.02 65)',
-        '--cis-badge-color': 'oklch(0.2 0.02 65)',
-        '--cis-nav-btn-primary-bg': 'oklch(0.7 0.15 65)',
-        '--cis-nav-btn-primary-bg-hover': 'oklch(0.65 0.14 65)',
-        '--cis-nav-btn-finish-bg': 'oklch(0.75 0.17 65)',
-        '--cis-nav-btn-finish-bg-hover': 'oklch(0.7 0.15 65)',
-        '--cis-nav-btn-finish-color': 'oklch(0.2 0.02 65)',
+        '--cis-accent': '#E07B00',
+        '--cis-badge-bg': '#E07B00',
+        '--cis-cta-bg': '#E07B00',
+        '--cis-cta-color': '#fff',
+        '--cis-badge-color': '#fff',
+        '--cis-badge-font-weight': '500',
+        '--cis-nav-btn-primary-bg': '#C86D00',
+        '--cis-nav-btn-primary-bg-hover': '#B06000',
+        '--cis-nav-btn-finish-bg': '#E07B00',
+        '--cis-nav-btn-finish-bg-hover': '#C86D00',
+        '--cis-nav-btn-finish-color': '#fff',
       },
     };
 

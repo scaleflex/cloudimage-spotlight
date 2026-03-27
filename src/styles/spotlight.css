@@ -158,7 +158,7 @@
   background: var(--cis-badge-bg, var(--cis-accent));
   color: var(--cis-badge-color, oklch(1 0 0));
   font-size: var(--cis-badge-font-size, 11px);
-  font-weight: 600;
+  font-weight: var(--cis-badge-font-weight, 600);
   line-height: 1;
   pointer-events: none;
   transform: translate(-50%, -50%);
