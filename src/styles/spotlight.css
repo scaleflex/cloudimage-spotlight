@@ -337,6 +337,15 @@
   padding: 8px 0;
 }
 
+.cis-annotation--minimal .cis-annotation__title,
+.cis-annotation--minimal .cis-annotation__body {
+  color: #fff;
+}
+
+.cis-annotation--minimal .cis-annotation__progress {
+  color: oklch(0.82 0.025 249.89);
+}
+
 /* ---------------------------------------------------------------------------
    Annotation connector line (card → region)
    --------------------------------------------------------------------------- */
