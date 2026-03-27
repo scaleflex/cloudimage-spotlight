@@ -334,7 +334,7 @@
   -webkit-backdrop-filter: none;
   border: none;
   box-shadow: none;
-  padding: 8px 0;
+  padding: 0;
 }
 
 .cis-annotation--minimal .cis-annotation__title,
