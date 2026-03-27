@@ -278,7 +278,8 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: var(--cis-nav-btn-padding, 7px 16px);
+  height: 32px;
+  padding: var(--cis-nav-btn-padding, 0 16px);
   font-size: var(--cis-nav-btn-font-size, 13px);
   font-weight: 500;
   font-family: inherit;
@@ -286,7 +287,7 @@
   cursor: pointer;
   transition: background 150ms ease, border-color 150ms ease;
   border: none;
-  line-height: 1.4;
+  line-height: 1;
 }
 
 /* Previous button — ghost/outlined */
@@ -344,6 +345,11 @@
 
 .cis-annotation--minimal .cis-annotation__progress {
   color: oklch(0.82 0.025 249.89);
+}
+
+.cis-annotation--minimal .cis-annotation__btn--prev {
+  color: #fff;
+  border-color: #fff;
 }
 
 /* ---------------------------------------------------------------------------
