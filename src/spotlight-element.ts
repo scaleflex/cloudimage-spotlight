@@ -1140,9 +1140,13 @@ export class CloudimageSpotlight extends HTMLElement {
           this._dispatchEvent('cis:complete', detail);
           // Clear hash on complete
           this._deepLinkController?.clearHash();
-          // Show outro if configured
+          // Show outro → intro → first scene (fallback chain)
           if (this._config?.settings?.outro) {
             this._showOutro(this._config);
+          } else if (this._config?.settings?.intro) {
+            this._renderIntro(this._config);
+          } else {
+            this.goTo(0);
           }
         },
       };

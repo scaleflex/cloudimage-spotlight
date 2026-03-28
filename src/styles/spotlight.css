@@ -301,14 +301,14 @@
   background: var(--cis-nav-btn-ghost-bg-hover, oklch(0.95 0.01 264.55 / 0.08));
 }
 
-/* Next button — filled primary */
+/* Next button — filled primary (dark bg in both themes) */
 .cis-annotation__btn--next {
-  background: var(--cis-nav-btn-primary-bg, oklch(0.95 0.01 264.55));
-  color: var(--cis-nav-btn-primary-color, oklch(0.15 0.02 261.692));
+  background: var(--cis-nav-btn-primary-bg, oklch(0.3 0.03 261.692));
+  color: var(--cis-nav-btn-primary-color, oklch(0.95 0.01 264.55));
 }
 
 .cis-annotation__btn--next:hover {
-  background: var(--cis-nav-btn-primary-bg-hover, oklch(0.88 0.015 264.55));
+  background: var(--cis-nav-btn-primary-bg-hover, oklch(0.36 0.035 261.692));
 }
 
 /* Finish button — success color variant */
@@ -344,6 +344,17 @@
 
 .cis-annotation--minimal .cis-annotation__progress {
   color: oklch(0.82 0.025 249.89);
+}
+
+/* Minimal style: force light-on-dark button colors regardless of theme,
+   since the card background is transparent (sits over the screenshot). */
+.cis-annotation--minimal .cis-annotation__btn--prev {
+  border-color: oklch(0.95 0.01 264.55 / 0.2);
+  color: oklch(0.85 0.01 264.55);
+}
+
+.cis-annotation--minimal .cis-annotation__btn--prev:hover {
+  background: oklch(0.95 0.01 264.55 / 0.08);
 }
 
 /* ---------------------------------------------------------------------------
@@ -566,9 +577,9 @@
   --cis-nav-btn-ghost-border: oklch(0 0 0 / 0.12);
   --cis-nav-btn-ghost-color: oklch(0.37 0.022 248.413);
   --cis-nav-btn-ghost-bg-hover: oklch(0 0 0 / 0.04);
-  --cis-nav-btn-primary-bg: oklch(0.2 0.02 261.692);
-  --cis-nav-btn-primary-color: oklch(0.97 0.005 264.55);
-  --cis-nav-btn-primary-bg-hover: oklch(0.28 0.025 261.692);
+  --cis-nav-btn-primary-bg: oklch(0.15 0.02 261.692);
+  --cis-nav-btn-primary-color: oklch(0.95 0.01 264.55);
+  --cis-nav-btn-primary-bg-hover: oklch(0.22 0.025 261.692);
   --cis-nav-btn-finish-bg: oklch(0.45 0.14 154.83);
   --cis-nav-btn-finish-color: oklch(1 0 0);
   --cis-nav-btn-finish-bg-hover: oklch(0.4 0.12 154.83);

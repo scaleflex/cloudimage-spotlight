@@ -14,10 +14,11 @@
       "title": "Warning & Copy",
       "description": "With zoom and multiple regions, the CDN crops to the bounding box that contains all regions. Both highlighted areas remain visible in the zoomed view.",
       "regions": [
-        { "tl_x": 0.28, "tl_y": 0.36, "br_x": 0.72, "br_y": 0.44, "label": "Warning" },
-        { "tl_x": 0.28, "tl_y": 0.47, "br_x": 0.72, "br_y": 0.56, "label": "Copy key" }
+        { "tl_x": 0.34, "tl_y": 0.425, "br_x": 0.66, "br_y": 0.485, "label": "Warning" },
+        { "tl_x": 0.34, "tl_y": 0.52, "br_x": 0.66, "br_y": 0.57, "label": "Copy key" }
       ],
-      "zoom": true
+      "zoom": true,
+      "zoomPadding": 0.15
     },
     {
       "id": "key-row-details",
@@ -25,9 +26,9 @@
       "title": "Key Row Breakdown",
       "description": "Three regions on the key row — zoom crops to the bounding box of all three, showing the full row in detail.",
       "regions": [
-        { "tl_x": 0.085, "tl_y": 0.07, "br_x": 0.40, "br_y": 0.16, "label": "Name & prefix" },
-        { "tl_x": 0.40, "tl_y": 0.07, "br_x": 0.80, "br_y": 0.16, "label": "Metadata" },
-        { "tl_x": 0.88, "tl_y": 0.10, "br_x": 0.975, "br_y": 0.15, "label": "Delete" }
+        { "tl_x": 0.29, "tl_y": 0.21, "br_x": 0.49, "br_y": 0.265, "label": "Name & prefix" },
+        { "tl_x": 0.495, "tl_y": 0.21, "br_x": 0.83, "br_y": 0.265, "label": "Metadata" },
+        { "tl_x": 0.84, "tl_y": 0.21, "br_x": 0.9, "br_y": 0.265, "label": "Delete" }
       ],
       "zoom": true
     }

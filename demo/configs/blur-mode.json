@@ -4,7 +4,10 @@
   "title": "Blur Mask Demo",
   "settings": {
     "maskStyle": "blur",
-    "maskBlurRadius": 10
+    "maskBlurRadius": 10,
+    "annotation": {
+      "style": "tooltip"
+    }
   },
   "scenes": [
     {
@@ -13,7 +16,7 @@
       "title": "Focus on the Modal",
       "description": "Blur mode keeps the background visible but blurred, drawing attention to the modal dialog.",
       "regions": [
-        { "tl_x": 0.27, "tl_y": 0.27, "br_x": 0.73, "br_y": 0.65 }
+        { "tl_x": 0.32, "tl_y": 0.31, "br_x": 0.68, "br_y": 0.69 }
       ]
     },
     {
@@ -22,8 +25,8 @@
       "title": "Highlight Multiple Areas",
       "description": "Multiple sharp regions cut through the blurred background, guiding the user's eye to what matters.",
       "regions": [
-        { "tl_x": 0.28, "tl_y": 0.36, "br_x": 0.72, "br_y": 0.44 },
-        { "tl_x": 0.28, "tl_y": 0.47, "br_x": 0.72, "br_y": 0.56 }
+        { "tl_x": 0.34, "tl_y": 0.425, "br_x": 0.66, "br_y": 0.485 },
+        { "tl_x": 0.34, "tl_y": 0.52, "br_x": 0.66, "br_y": 0.57 }
       ]
     }
   ]

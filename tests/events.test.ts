@@ -162,14 +162,14 @@ describe('Custom events', () => {
       expect(detail.config).toBeDefined();
     });
 
-    it('does not advance past last scene', async () => {
+    it('wraps to first scene after last when no outro/intro configured', async () => {
       document.body.appendChild(el);
       await vi.waitFor(() => expect(el.totalScenes).toBe(3));
 
       el.goTo(2);
       el.next();
 
-      expect(el.currentIndex).toBe(2); // stayed on last
+      expect(el.currentIndex).toBe(0); // wraps to first scene
     });
   });
 

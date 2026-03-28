@@ -1,4 +1,4 @@
-import type { SpotlightScene, SpotlightCTA, CISCTAClickDetail, CISStrings } from './types';
+import type { SpotlightScene, SpotlightAnnotation, SpotlightCTA, CISCTAClickDetail, CISStrings } from './types';
 import { sanitizeCtaHref } from './validation';
 import { interpolate } from './i18n';
 import { iconX, iconCheck, iconArrowLeft, iconArrowRight } from './icons';
@@ -16,6 +16,8 @@ export interface AnnotationOptions {
   strings: CISStrings;
   showProgress: boolean;
   allowSkip: boolean;
+  /** Global annotation defaults from settings.annotation. Per-scene overrides. */
+  globalAnnotation?: SpotlightAnnotation;
 }
 
 /**
@@ -28,8 +30,8 @@ export function createAnnotation(
   options: AnnotationOptions,
   callbacks: AnnotationCallbacks,
 ): HTMLDivElement {
-  const { index, totalScenes, strings, showProgress, allowSkip } = options;
-  const annotation = scene.annotation ?? {};
+  const { index, totalScenes, strings, showProgress, allowSkip, globalAnnotation } = options;
+  const annotation = { ...globalAnnotation, ...scene.annotation };
   const maxWidth = annotation.maxWidth;
   const isFirst = index === 0;
   const isLast = index >= totalScenes - 1;

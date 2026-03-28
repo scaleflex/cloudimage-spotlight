@@ -180,8 +180,9 @@ describe('deep-link integration', () => {
 
     // Navigate to last scene and trigger complete
     el.goTo(2);
-    el.next(); // triggers cis:complete
-    expect(window.location.hash).toBe('');
+    el.next(); // triggers cis:complete — wraps to scene 0 (no outro/intro)
+    // Hash is cleared on complete, then set to scene-0 id by goTo(0)
+    expect(window.location.hash).toBe('#cis-intro');
   });
 
   it('deep link initializes at correct scene', async () => {

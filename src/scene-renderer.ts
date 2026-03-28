@@ -68,6 +68,8 @@ export function renderScene(
   const maskStyle = scene.maskStyle ?? settings?.maskStyle ?? 'color';
   const isBlurMode = maskStyle === 'blur' && regions.length > 0;
   const isZoom = !!(scene.zoom && regions.length > 0 && !isBlurMode);
+  // Merge global annotation defaults with per-scene overrides
+  const mergedAnnotation = { ...settings?.annotation, ...scene.annotation };
 
   // Clear previous scene content + stagger classes
   stage.textContent = '';
@@ -227,7 +229,7 @@ export function renderScene(
           );
           const updatedStageRect = stage.getBoundingClientRect();
           const pos = resolveAnnotationPosition(
-            scene.annotation, annotationCard, updatedStageRect,
+            mergedAnnotation, annotationCard, updatedStageRect,
             overlayRegions, isRTL, ctx.reservedRects, zoomedContentRect,
           );
           applyAnnotationPosition(annotationCard, pos, updatedStageRect, overlayRegions, zoomedContentRect);
@@ -237,8 +239,7 @@ export function renderScene(
           });
 
           // Create connector with correct zoomed coordinates
-          const connAnnotation = scene.annotation ?? {};
-          if (connAnnotation.showConnector === true && overlayRegions.length > 0) {
+          if (mergedAnnotation.showConnector === true && overlayRegions.length > 0) {
             const cLeft = parseFloat(annotationCard.style.left) || 0;
             const cTop = parseFloat(annotationCard.style.top) || 0;
             const cW = annotationCard.offsetWidth || 320;
@@ -269,7 +270,7 @@ export function renderScene(
             stage.appendChild(annotationCard);
             const errStageRect = stage.getBoundingClientRect();
             const errPos = resolveAnnotationPosition(
-              scene.annotation, annotationCard, errStageRect,
+              mergedAnnotation, annotationCard, errStageRect,
               overlayRegions, isRTL, ctx.reservedRects,
             );
             applyAnnotationPosition(annotationCard, errPos, errStageRect, overlayRegions);
@@ -330,6 +331,7 @@ export function renderScene(
       strings,
       showProgress: ctx.showProgress,
       allowSkip: ctx.allowSkip,
+      globalAnnotation: ctx.config.settings?.annotation,
     },
     {
       onCtaClick: (detail) => ctx.onCtaClick(detail),
@@ -344,7 +346,7 @@ export function renderScene(
     stage.appendChild(annotationCard);
     const stageRect = stage.getBoundingClientRect();
     const position = resolveAnnotationPosition(
-      scene.annotation,
+      mergedAnnotation,
       annotationCard,
       stageRect,
       regions,
@@ -361,8 +363,7 @@ export function renderScene(
   // positioning places the card adjacent to the region already.
   // For zoom scenes, connector is created in finishZoom after annotation
   // is repositioned to the correct zoomed coordinates.
-  const annotation = scene.annotation ?? {};
-  if (annotation.showConnector === true && regions.length > 0 && !isZoom) {
+  if (mergedAnnotation.showConnector === true && regions.length > 0 && !isZoom) {
     const connStageRect = stage.getBoundingClientRect();
     const cardLeft = parseFloat(annotationCard.style.left) || 0;
     const cardTop = parseFloat(annotationCard.style.top) || 0;

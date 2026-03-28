@@ -46,6 +46,8 @@ export interface SpotlightSettings {
   staggerAnimationDuration?: number;
   showBadges?: boolean;
   showPlayButton?: boolean;
+  /** Global annotation defaults. Per-scene `annotation` overrides these. */
+  annotation?: SpotlightAnnotation;
 }
 
 export interface SpotlightScene {
