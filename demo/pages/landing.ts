@@ -9,7 +9,7 @@ const page: Page = {
         <div class="hero-inner">
           <div class="hero-badge">@cloudimage/spotlight</div>
           <h1><span class="gradient-text">Spotlight</span></h1>
-          <p>CDN-native, screenshot-based interactive experience player. Build guided product tours with region highlighting, zoom, and annotations — powered by Cloudimage.</p>
+          <p>Turn screenshots into interactive product tours — with CDN-native zoom, region highlighting, and guided annotations.</p>
           <div class="hero-actions">
             <a href="#/docs/getting-started" class="btn-primary">
               Get Started
@@ -108,15 +108,15 @@ const page: Page = {
                 </button>
               </div>
             </div>
-            <div class="quick-start-step">
+            <div class="quick-start-step quick-start-step--full">
               <div class="step-header">
                 <div class="step-number">3</div>
                 <h3>Embed</h3>
               </div>
               <p class="step-description">Add <code>&lt;cloudimage-spotlight&gt;</code> to your HTML and point it at your config JSON.</p>
+              <div id="quick-start-code"></div>
             </div>
           </div>
-          <div id="quick-start-code"></div>
         </div>
       </section>
 
@@ -128,40 +128,88 @@ const page: Page = {
           </div>
           <div class="quick-start-grid">
             <a href="#/examples/basic" class="quick-start-card">
+              <div class="card-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+              </div>
               <h3>Basic usage</h3>
-              <p>Minimal config to render a single-scene spotlight tour.</p>
+              <p>Minimal config to render a spotlight tour with no regions or zoom.</p>
             </a>
             <a href="#/examples/multi-scene" class="quick-start-card">
+              <div class="card-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 10h20"/><path d="M12 4v16"/></svg>
+              </div>
               <h3>Multi-scene tour</h3>
               <p>A full 5-scene guided walkthrough with CTA buttons.</p>
             </a>
             <a href="#/examples/multi-region" class="quick-start-card">
+              <div class="card-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+              </div>
               <h3>Multiple regions</h3>
               <p>Highlight multiple areas on a single screenshot with numbered badges.</p>
             </a>
+            <a href="#/examples/zoom-single" class="quick-start-card">
+              <div class="card-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+              </div>
+              <h3>Zoom — Single region</h3>
+              <p>CDN-native cropping zooms into a single highlighted region.</p>
+            </a>
+            <a href="#/examples/zoom-multi" class="quick-start-card">
+              <div class="card-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              </div>
+              <h3>Zoom — Multiple regions</h3>
+              <p>Zoom to the bounding box of multiple highlighted areas at once.</p>
+            </a>
             <a href="#/examples/blur-mode" class="quick-start-card">
+              <div class="card-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              </div>
               <h3>Blur mode</h3>
               <p>Use CDN-powered blur instead of color overlay for the mask.</p>
             </a>
             <a href="#/examples/intro" class="quick-start-card">
+              <div class="card-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+              </div>
               <h3>Intro screen</h3>
               <p>Add a branded intro screen before the tour starts.</p>
             </a>
             <a href="#/examples/theming" class="quick-start-card">
+              <div class="card-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+              </div>
               <h3>Theming</h3>
               <p>Switch between dark, light, and auto themes with CSS custom properties.</p>
             </a>
             <a href="#/examples/annotation-styles" class="quick-start-card">
+              <div class="card-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </div>
               <h3>Annotation styles</h3>
               <p>Card, tooltip, and minimal styles with connector lines, progress pill, and close button.</p>
             </a>
             <a href="#/examples/autoplay" class="quick-start-card">
+              <div class="card-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
               <h3>Autoplay</h3>
               <p>Automatically advance through scenes with configurable timing.</p>
             </a>
             <a href="#/examples/events" class="quick-start-card">
+              <div class="card-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              </div>
               <h3>Event handling</h3>
               <p>Listen to scene changes, completion, CTA clicks, and errors.</p>
+            </a>
+            <a href="#/examples/customization" class="quick-start-card">
+              <div class="card-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              </div>
+              <h3>CSS customization</h3>
+              <p>Override every visual detail with <code>--cis-*</code> CSS custom properties.</p>
             </a>
           </div>
         </div>
@@ -246,6 +294,8 @@ const page: Page = {
             <a href="https://www.scaleflex.com" target="_blank" rel="noopener">Website</a>
             <a href="https://www.cloudimage.io" target="_blank" rel="noopener">Cloudimage</a>
             <a href="https://www.scaleflex.com/en/digital-asset-management" target="_blank" rel="noopener">Scaleflex DAM</a>
+            <a href="https://scaleflex.github.io/scaleflex-plugins/" target="_blank" rel="noopener">Scaleflex Plugins</a>
+            <a href="https://scaleflex.github.io/cloudimage-plugins/" target="_blank" rel="noopener">Cloudimage Plugins</a>
           </div>
         </div>
         <div class="demo-footer-bottom">

@@ -33,6 +33,7 @@ const page: Page = {
             show-progress
             autoplay
             autoplay-interval="4000"
+            show-play-button
           ></cloudimage-spotlight>
         </div>
       </section>
@@ -75,6 +76,7 @@ const page: Page = {
   config="..."
   autoplay
   autoplay-interval="4000"
+  show-play-button
 ></cloudimage-spotlight>`,
       },
       {

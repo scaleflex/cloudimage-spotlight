@@ -67,11 +67,10 @@ const page: Page = {
         code: `
 /* Custom brand colors */
 cloudimage-spotlight {
-  --cis-accent: #7c3aed;
-  --cis-accent-rgb: 124, 58, 237;
-  --cis-card-bg: rgba(30, 20, 60, 0.95);
-  --cis-cta-bg: #7c3aed;
-  --cis-badge-bg: #7c3aed;
+  --cis-accent: oklch(0.58 0.22 292);
+  --cis-card-bg: oklch(0.15 0.04 292 / 0.95);
+  --cis-cta-bg: oklch(0.58 0.22 292);
+  --cis-badge-bg: oklch(0.58 0.22 292);
   --cis-border-radius: 16px;
 }`,
       },

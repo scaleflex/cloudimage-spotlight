@@ -13,7 +13,8 @@
     },
     "outro": {
       "title": "You're all set!",
-      "description": "Your API key is ready. Want to see the steps again?"
+      "description": "Your API key is ready. Jump to any step or restart the tour.",
+      "sceneNav": "list"
     }
   },
   "scenes": [

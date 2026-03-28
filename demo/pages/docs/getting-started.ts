@@ -85,15 +85,16 @@ const page: Page = {
         <h3>React</h3>
         ${code('tsx', `import { useRef } from 'react';
 import {
-  CloudimageSpotlight,
-  type CloudimageSpotlightRef,
+  CloudimageSpotlightReact,
+  type CloudimageSpotlightProps,
 } from '@cloudimage/spotlight/react';
+import type { CloudimageSpotlightElement } from '@cloudimage/spotlight';
 
 function App() {
-  const ref = useRef<CloudimageSpotlightRef>(null);
+  const ref = useRef<CloudimageSpotlightElement>(null);
 
   return (
-    <CloudimageSpotlight
+    <CloudimageSpotlightReact
       ref={ref}
       config="https://your-cdn.com/spotlight-config.json"
       theme="light"

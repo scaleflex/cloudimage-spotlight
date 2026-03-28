@@ -6,7 +6,7 @@ const page: Page = {
     return `
       <div class="page-header">
         <h1>Basic usage</h1>
-        <p>The simplest Spotlight embed — a single-scene config with just an image, title, and description.</p>
+        <p>The simplest Spotlight embed — a minimal config with just images, titles, and descriptions.</p>
       </div>
 
       <section class="page-section">

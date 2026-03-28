@@ -489,9 +489,9 @@ describe('outro screen', () => {
     expect(el.shadowRoot!.querySelector('.cis-outro')).toBeNull();
   });
 
-  it('renders scene grid when showSceneGrid is true', async () => {
+  it('renders scene grid when sceneNav is grid', async () => {
     el = createElement(makeConfig({
-      outro: { showSceneGrid: true },
+      outro: { sceneNav: 'grid' },
     }));
     await mountAndWait(el);
 
@@ -524,7 +524,7 @@ describe('outro screen', () => {
 
   it('navigates to scene when grid item is clicked', async () => {
     el = createElement(makeConfig({
-      outro: { showSceneGrid: true },
+      outro: { sceneNav: 'grid' },
     }));
     await mountAndWait(el);
 
@@ -547,7 +547,7 @@ describe('outro screen', () => {
     });
   });
 
-  it('does not render grid when showSceneGrid is false', async () => {
+  it('does not render scene nav when sceneNav is omitted', async () => {
     el = createElement(makeConfig({
       outro: { title: 'Done' },
     }));
@@ -562,11 +562,12 @@ describe('outro screen', () => {
     });
 
     expect(el.shadowRoot!.querySelector('.cis-outro-grid')).toBeNull();
+    expect(el.shadowRoot!.querySelector('.cis-outro-list')).toBeNull();
   });
 
   it('sets grid columns via sceneGridColumns', async () => {
     el = createElement(makeConfig({
-      outro: { showSceneGrid: true, sceneGridColumns: 4 },
+      outro: { sceneNav: 'grid', sceneGridColumns: 4 },
     }));
     await mountAndWait(el);
 
@@ -585,7 +586,7 @@ describe('outro screen', () => {
   it('clamps grid columns to 2-4 range', async () => {
     // Test column count below minimum
     el = createElement(makeConfig({
-      outro: { showSceneGrid: true, sceneGridColumns: 1 },
+      outro: { sceneNav: 'grid', sceneGridColumns: 1 },
     }));
     await mountAndWait(el);
 
@@ -605,7 +606,7 @@ describe('outro screen', () => {
     const config: SpotlightConfig = {
       version: '1.0',
       ciToken: 'demo',
-      settings: { outro: { showSceneGrid: true } },
+      settings: { outro: { sceneNav: 'grid' } },
       scenes: [
         { id: 's1', image: 'https://example.com/1.jpg' },
         { id: 's2', image: 'https://example.com/2.jpg', title: 'Named Step' },
@@ -625,5 +626,65 @@ describe('outro screen', () => {
     const labels = el.shadowRoot!.querySelectorAll('.cis-outro-grid__label');
     expect(labels[0].textContent).toBe('1');
     expect(labels[1].textContent).toBe('Named Step');
+  });
+
+  it('renders scene list when sceneNav is list', async () => {
+    el = createElement(makeConfig({
+      outro: { sceneNav: 'list' },
+    }));
+    await mountAndWait(el);
+
+    el.next();
+    await vi.waitFor(() => expect(el.currentIndex).toBe(1));
+    el.next();
+
+    await vi.waitFor(() => {
+      expect(el.shadowRoot!.querySelector('.cis-outro')).not.toBeNull();
+    });
+
+    const list = el.shadowRoot!.querySelector('.cis-outro-list')!;
+    expect(list).not.toBeNull();
+    expect(list.getAttribute('role')).toBe('list');
+
+    const items = list.querySelectorAll('.cis-outro-list__item');
+    expect(items.length).toBe(2);
+
+    // Each item has number, title, and thumbnail
+    items.forEach((item) => {
+      expect(item.querySelector('.cis-outro-list__number')).not.toBeNull();
+      expect(item.querySelector('.cis-outro-list__title')).not.toBeNull();
+      expect(item.querySelector('.cis-outro-list__thumb')).not.toBeNull();
+    });
+
+    // Numbers are sequential
+    expect(items[0].querySelector('.cis-outro-list__number')!.textContent).toBe('1');
+    expect(items[1].querySelector('.cis-outro-list__number')!.textContent).toBe('2');
+
+    // Titles match scene titles
+    expect(items[0].querySelector('.cis-outro-list__title')!.textContent).toBe('Step One');
+    expect(items[1].querySelector('.cis-outro-list__title')!.textContent).toBe('Step Two');
+  });
+
+  it('navigates to scene when list item is clicked', async () => {
+    el = createElement(makeConfig({
+      outro: { sceneNav: 'list' },
+    }));
+    await mountAndWait(el);
+
+    el.next();
+    await vi.waitFor(() => expect(el.currentIndex).toBe(1));
+    el.next();
+
+    await vi.waitFor(() => {
+      expect(el.shadowRoot!.querySelector('.cis-outro')).not.toBeNull();
+    });
+
+    const items = el.shadowRoot!.querySelectorAll('.cis-outro-list__item');
+    (items[0] as HTMLButtonElement).click();
+
+    await vi.waitFor(() => {
+      expect(el.currentIndex).toBe(0);
+      expect(el.shadowRoot!.querySelector('.cis-outro')).toBeNull();
+    });
   });
 });

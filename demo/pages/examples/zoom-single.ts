@@ -37,14 +37,32 @@ const page: Page = {
 {
   "version": "1.0",
   "ciToken": "your-token",
+  "settings": {
+    "transition": "fade",
+    "maskStyle": "color",
+    "maskOpacity": 0.65
+  },
   "scenes": [
     {
       "id": "copy-key",
-      "image": "https://scaleflex.cloudimg.io/v7/...",
+      "image": "v7/plugins/cloudimage/spotlight/api-key-generated-modal.png",
       "title": "Copy Your API Key",
+      "description": "With zoom enabled, the image crops directly to the highlighted area via the Cloudimage CDN.",
       "regions": [
-        { "tl_x": 0.28, "tl_y": 0.47, "br_x": 0.72, "br_y": 0.56, "label": "Copy key" }
+        { "tl_x": 0.34, "tl_y": 0.49, "br_x": 0.66, "br_y": 0.58, "label": "Copy key" }
       ],
+      "zoomPadding": 0.15,
+      "zoom": true
+    },
+    {
+      "id": "new-key-row",
+      "image": "v7/plugins/cloudimage/spotlight/settings-api-keys-with-new-created-key.png",
+      "title": "Key Listed",
+      "description": "The CDN crops to the single region, giving a close-up view.",
+      "regions": [
+        { "tl_x": 0.29, "tl_y": 0.21, "br_x": 0.9, "br_y": 0.265, "label": "New key" }
+      ],
+      "zoomPadding": 0.15,
       "zoom": true
     }
   ]

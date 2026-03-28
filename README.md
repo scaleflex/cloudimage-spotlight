@@ -2,7 +2,7 @@
 
 CDN-native, screenshot-based interactive experience player. Built as a Web Component (`<cloudimage-spotlight>`) with zero runtime dependencies.
 
-Part of the Scaleflex Cloudimage plugin ecosystem.
+Part of the [Scaleflex plugin ecosystem](https://scaleflex.github.io/scaleflex-plugins/) and the [Cloudimage plugin family](https://scaleflex.github.io/cloudimage-plugins/).
 
 ## Installation
 
@@ -120,6 +120,9 @@ interface SpotlightConfig {
     showProgress?: boolean;
     allowSkip?: boolean;
     allowKeyboard?: boolean;
+    intro?: boolean | SpotlightIntro;
+    outro?: boolean | SpotlightOutro;
+    staggerEntry?: boolean;
   };
   scenes: Array<{
     id: string;
@@ -137,7 +140,7 @@ interface SpotlightConfig {
     maskStyle?: "color" | "blur";
     cta?: { label: string; href?: string };
     annotation?: {
-      position?: "top-left"|"top-center"|"top-right"|"bottom-left"|"bottom-center"|"bottom-right"|"auto";
+      position?: "top"|"bottom"|"left"|"right"|"auto";
       style?: "card"|"tooltip"|"minimal";
     };
   }>;
@@ -155,6 +158,7 @@ interface SpotlightConfig {
 | `cis:cta-click` | `{ scene, cta, metadata }` | CTA button clicked |
 | `cis:region-enter` | `{ scene, regions }` | Scene with regions entered |
 | `cis:error` | `{ message, code }` | Error occurred |
+| `cis:fullscreen-change` | `{ isFullscreen }` | Fullscreen mode toggled |
 
 ## Public Methods
 

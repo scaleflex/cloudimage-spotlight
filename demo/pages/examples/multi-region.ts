@@ -45,9 +45,20 @@ const page: Page = {
       "title": "Dashboard Layout",
       "description": "The dashboard has three key areas.",
       "regions": [
-        { "tl_x": 0.003, "tl_y": 0.03, "br_x": 0.08, "br_y": 0.60, "label": "Sidebar" },
-        { "tl_x": 0.085, "tl_y": 0.06, "br_x": 0.99, "br_y": 0.13, "label": "Filters" },
-        { "tl_x": 0.085, "tl_y": 0.14, "br_x": 0.99, "br_y": 0.72, "label": "Experiences" }
+        { "tl_x": 0, "tl_y": 0.07, "br_x": 0.17, "br_y": 0.98, "label": "Sidebar" },
+        { "tl_x": 0.185, "tl_y": 0.16, "br_x": 0.99, "br_y": 0.275, "label": "Filters" },
+        { "tl_x": 0.185, "tl_y": 0.28, "br_x": 0.99, "br_y": 0.98, "label": "Experiences" }
+      ]
+    },
+    {
+      "id": "api-key-details",
+      "image": "v7/plugins/cloudimage/spotlight/settings-api-keys-with-new-created-key.png",
+      "title": "API Key Details",
+      "description": "Each key shows the name, prefix, creator, and expiration.",
+      "regions": [
+        { "tl_x": 0.29, "tl_y": 0.21, "br_x": 0.49, "br_y": 0.265, "label": "Name & prefix" },
+        { "tl_x": 0.495, "tl_y": 0.21, "br_x": 0.83, "br_y": 0.265, "label": "Metadata" },
+        { "tl_x": 0.84, "tl_y": 0.21, "br_x": 0.9, "br_y": 0.265, "label": "Delete" }
       ]
     }
   ]

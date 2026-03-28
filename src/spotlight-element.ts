@@ -1004,46 +1004,92 @@ export class CloudimageSpotlight extends HTMLElement {
     restartBtn.addEventListener('click', () => this._dismissOutro(config));
     card.appendChild(restartBtn);
 
-    // Scene grid for direct navigation
-    if (outroConfig.showSceneGrid && config.scenes.length > 0) {
-      const cols = Math.min(4, Math.max(2, outroConfig.sceneGridColumns ?? 3));
-      const grid = document.createElement('div');
-      grid.className = 'cis-outro-grid';
-      grid.style.setProperty('--cis-outro-grid-cols', String(cols));
-      grid.setAttribute('role', 'list');
-      grid.setAttribute('aria-label', 'Scenes');
+    // Scene navigation for direct jump-to-step
+    const sceneNav = outroConfig.sceneNav;
+    if (sceneNav && config.scenes.length > 0) {
+      if (sceneNav === 'list') {
+        const list = document.createElement('div');
+        list.className = 'cis-outro-list';
+        list.setAttribute('role', 'list');
+        list.setAttribute('aria-label', 'Scenes');
 
-      config.scenes.forEach((scene, i) => {
-        const item = document.createElement('button');
-        item.className = 'cis-outro-grid__item';
-        item.setAttribute('type', 'button');
-        item.setAttribute('role', 'listitem');
-        item.setAttribute(
-          'aria-label',
-          scene.title || interpolate(this._resolvedStrings.outroGoToStep, { n: i + 1 }),
-        );
-        item.addEventListener('click', () => {
-          this._clearOutro();
-          this.goTo(i);
+        config.scenes.forEach((scene, i) => {
+          const item = document.createElement('button');
+          item.className = 'cis-outro-list__item';
+          item.setAttribute('type', 'button');
+          item.setAttribute('role', 'listitem');
+          item.setAttribute(
+            'aria-label',
+            scene.title || interpolate(this._resolvedStrings.outroGoToStep, { n: i + 1 }),
+          );
+          item.addEventListener('click', () => {
+            this._clearOutro();
+            this.goTo(i);
+          });
+
+          const number = document.createElement('span');
+          number.className = 'cis-outro-list__number';
+          number.textContent = `${i + 1}`;
+          item.appendChild(number);
+
+          const title = document.createElement('span');
+          title.className = 'cis-outro-list__title';
+          title.textContent = scene.title || interpolate(this._resolvedStrings.outroGoToStep, { n: i + 1 });
+          item.appendChild(title);
+
+          const thumb = document.createElement('img');
+          thumb.className = 'cis-outro-list__thumb';
+          thumb.src = buildCiUrl(scene.image, config.ciToken, 'full', undefined, 120, 1);
+          thumb.alt = '';
+          thumb.loading = 'lazy';
+          thumb.draggable = false;
+          item.appendChild(thumb);
+
+          list.appendChild(item);
         });
 
-        const thumb = document.createElement('img');
-        thumb.className = 'cis-outro-grid__thumb';
-        thumb.src = buildCiUrl(scene.image, config.ciToken, 'full', undefined, 200, 1);
-        thumb.alt = scene.title || `Step ${i + 1}`;
-        thumb.loading = 'lazy';
-        thumb.draggable = false;
-        item.appendChild(thumb);
+        card.appendChild(list);
+      } else {
+        // Grid mode
+        const cols = Math.min(4, Math.max(2, outroConfig.sceneGridColumns ?? 3));
+        const grid = document.createElement('div');
+        grid.className = 'cis-outro-grid';
+        grid.style.setProperty('--cis-outro-grid-cols', String(cols));
+        grid.setAttribute('role', 'list');
+        grid.setAttribute('aria-label', 'Scenes');
 
-        const label = document.createElement('span');
-        label.className = 'cis-outro-grid__label';
-        label.textContent = scene.title || `${i + 1}`;
-        item.appendChild(label);
+        config.scenes.forEach((scene, i) => {
+          const item = document.createElement('button');
+          item.className = 'cis-outro-grid__item';
+          item.setAttribute('type', 'button');
+          item.setAttribute('role', 'listitem');
+          item.setAttribute(
+            'aria-label',
+            scene.title || interpolate(this._resolvedStrings.outroGoToStep, { n: i + 1 }),
+          );
+          item.addEventListener('click', () => {
+            this._clearOutro();
+            this.goTo(i);
+          });
 
-        grid.appendChild(item);
-      });
+          const thumb = document.createElement('img');
+          thumb.className = 'cis-outro-grid__thumb';
+          thumb.src = buildCiUrl(scene.image, config.ciToken, 'full', undefined, 200, 1);
+          thumb.alt = scene.title || `Step ${i + 1}`;
+          thumb.loading = 'lazy';
+          thumb.draggable = false;
+          item.appendChild(thumb);
 
-      card.appendChild(grid);
+          const label = document.createElement('span');
+          label.className = 'cis-outro-grid__label';
+          label.textContent = scene.title || `${i + 1}`;
+          item.appendChild(label);
+
+          grid.appendChild(item);
+        });
+
+        card.appendChild(grid);
+      }
     }
 
     outroEl.appendChild(card);
@@ -1340,9 +1386,11 @@ export class CloudimageSpotlight extends HTMLElement {
         return this._navState.currentIndex >= this._navState.totalScenes - 1;
       },
       onComplete: () => {
-        // Autoplay reached last scene — cis:complete is dispatched by navigateNext
+        // Autoplay reached last scene — call next() to trigger the navigation
+        // onComplete flow (which shows outro/intro or restarts)
         this._isPlaying = false;
         this._syncPlayButton();
+        this.next();
       },
     });
   }

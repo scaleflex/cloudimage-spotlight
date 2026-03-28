@@ -91,6 +91,11 @@ setTimeout(() => spotlight.pause(), 10000);`)}
               <td>Config fetch or validation error</td>
               <td><code>{ message, code }</code></td>
             </tr>
+            <tr>
+              <td><code>cis:fullscreen-change</code></td>
+              <td>Fullscreen mode entered or exited</td>
+              <td><code>{ isFullscreen }</code></td>
+            </tr>
           </tbody>
         </table>
 

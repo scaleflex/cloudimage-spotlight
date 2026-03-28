@@ -20,9 +20,9 @@ export interface SpotlightOutro {
   title?: string;
   description?: string;
   restartLabel?: string;
-  /** Show a grid of scene thumbnails for direct navigation. Default: false. */
-  showSceneGrid?: boolean;
-  /** Max columns in the scene grid. Default: 3 (clamped 2–4). */
+  /** Scene navigation style on the outro screen. 'grid' shows thumbnails, 'list' shows a numbered list. Default: none. */
+  sceneNav?: 'grid' | 'list';
+  /** Max columns in the scene grid (only for sceneNav: 'grid'). Default: 3 (clamped 2–4). */
   sceneGridColumns?: number;
 }
 

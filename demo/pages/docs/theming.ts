@@ -69,11 +69,10 @@ const page: Page = {
 
         <h3>Accent &amp; regions</h3>
         ${code('css', `cloudimage-spotlight {
-  --cis-accent: #5b8fff;
-  --cis-accent-rgb: 91, 143, 255;
-  --cis-region-border: 2px solid rgba(var(--cis-accent-rgb), 0.6);
+  --cis-accent: oklch(0.578 0.198 268.129);
+  --cis-region-border: 2px solid oklch(0.578 0.198 268.129 / 0.6);
   --cis-region-border-radius: 4px;
-  --cis-region-pulse-color: rgba(var(--cis-accent-rgb), 0.4);
+  --cis-region-pulse-color: oklch(0.578 0.198 268.129 / 0.4);
   --cis-region-pulse-duration: 600ms;
   --cis-region-pulse-count: 2;
 }`)}
@@ -119,11 +118,10 @@ const page: Page = {
         <h2>Custom brand example</h2>
         ${code('css', `/* Purple brand accent */
 cloudimage-spotlight.purple-brand {
-  --cis-accent: #7c3aed;
-  --cis-accent-rgb: 124, 58, 237;
+  --cis-accent: oklch(0.541 0.281 293.009);
   --cis-card-bg: rgba(30, 20, 60, 0.95);
-  --cis-cta-bg: #7c3aed;
-  --cis-badge-bg: #7c3aed;
+  --cis-cta-bg: oklch(0.541 0.281 293.009);
+  --cis-badge-bg: oklch(0.541 0.281 293.009);
   --cis-border-radius: 16px;
   --cis-card-border-radius: 12px;
 }`)}

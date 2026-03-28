@@ -788,6 +788,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   background: var(--cis-overlay-bg, oklch(0 0 0 / 0.5));
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
@@ -876,6 +877,15 @@
    Outro scene grid
    --------------------------------------------------------------------------- */
 
+.cis-screen-card:has(.cis-outro-grid),
+.cis-screen-card:has(.cis-outro-list) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: calc(100% - 40px);
+  overflow: hidden;
+}
+
 .cis-screen-card:has(.cis-outro-grid) {
   max-width: 520px;
 }
@@ -887,6 +897,9 @@
   margin-top: 20px;
   padding: 0;
   list-style: none;
+  overflow-y: auto;
+  min-height: 0;
+  align-self: stretch;
 }
 
 .cis-outro-grid__item {
@@ -916,6 +929,7 @@
   width: 100%;
   aspect-ratio: 16 / 10;
   object-fit: cover;
+  border: 1px solid oklch(0.5 0.02 264.55 / 0.3);
   border-radius: 4px;
   pointer-events: none;
 }
@@ -930,6 +944,83 @@
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;
+}
+
+/* ---------------------------------------------------------------------------
+   Outro scene list
+   --------------------------------------------------------------------------- */
+
+.cis-screen-card:has(.cis-outro-list) {
+  max-width: 480px;
+}
+
+.cis-outro-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 20px;
+  overflow-y: auto;
+  min-height: 0;
+  align-self: stretch;
+}
+
+.cis-outro-list__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  background: oklch(0.95 0.01 264.55 / 0.06);
+  border: 1.5px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 150ms ease, background 150ms ease;
+}
+
+.cis-outro-list__item:hover {
+  border-color: var(--cis-accent);
+  background: oklch(0.95 0.01 264.55 / 0.12);
+}
+
+.cis-outro-list__item:focus-visible {
+  outline: var(--cis-focus-ring-width, 2px) solid var(--cis-focus-ring-color, var(--cis-accent));
+  outline-offset: var(--cis-focus-ring-offset, 2px);
+}
+
+.cis-outro-list__number {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--cis-accent);
+  color: oklch(1 0 0);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.cis-outro-list__title {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--cis-card-body-color, oklch(0.82 0.025 249.89));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cis-outro-list__thumb {
+  flex-shrink: 0;
+  width: 48px;
+  height: 32px;
+  object-fit: cover;
+  border: 1px solid oklch(0.5 0.02 264.55 / 0.3);
+  border-radius: 4px;
+  pointer-events: none;
 }
 
 /* ---------------------------------------------------------------------------
