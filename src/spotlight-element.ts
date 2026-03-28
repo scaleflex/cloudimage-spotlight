@@ -123,6 +123,9 @@ export class CloudimageSpotlight extends HTMLElement {
   private _outroVisible = false;
   private _outroEl: HTMLDivElement | null = null;
   private _outroKeyHandler: ((e: KeyboardEvent) => void) | null = null;
+  private _resetting = false;
+  private _introFadeTimer: ReturnType<typeof setTimeout> | null = null;
+  private _outroFadeTimer: ReturnType<typeof setTimeout> | null = null;
 
   // --- Lifecycle resources (cleaned up on disconnect/destroy) ---
   private _abortController: AbortController | null = null;
@@ -204,12 +207,9 @@ export class CloudimageSpotlight extends HTMLElement {
   set config(value: SpotlightConfig | string | null) {
     this._configProperty = value;
     if (this._initialized && !this._destroyed) {
-      // Config changed after init — reload
-      if (typeof value === 'object' && value !== null) {
-        this.reload(value).catch(() => { /* errors dispatched via cis:error */ });
-      } else if (typeof value === 'string') {
-        this.setAttribute('config', value);
-      }
+      // Config changed after init — reload (handles both object and URL string)
+      this.reload(typeof value === 'object' && value !== null ? value : undefined)
+        .catch(() => { /* errors dispatched via cis:error */ });
     }
   }
 
@@ -347,24 +347,24 @@ export class CloudimageSpotlight extends HTMLElement {
   // ---------------------------------------------------------------------------
 
   next(): void {
-    if (this._destroyed || this._failed || this._introVisible || this._outroVisible || !this._navState || !this._config) return;
+    if (this._destroyed || this._failed || this._introVisible || this._outroVisible || this._resetting || !this._navState || !this._config) return;
     navigateNext(this._navState, this._config, this._getNavCallbacks());
   }
 
   prev(): void {
-    if (this._destroyed || this._failed || this._introVisible || this._outroVisible || !this._navState || !this._config) return;
+    if (this._destroyed || this._failed || this._introVisible || this._outroVisible || this._resetting || !this._navState || !this._config) return;
     navigatePrev(this._navState, this._config, this._getNavCallbacks());
   }
 
   goTo(index: number): void {
-    if (this._destroyed || this._failed || this._introVisible || !this._navState || !this._config) return;
+    if (this._destroyed || this._failed || this._introVisible || this._resetting || !this._navState || !this._config) return;
     // Clear outro if navigating away (e.g., restart from outro)
     if (this._outroVisible) this._clearOutro();
     navigateGoTo(index, this._navState, this._config, this._getNavCallbacks());
   }
 
   goToId(id: string): void {
-    if (this._destroyed || this._failed || this._introVisible || !this._navState || !this._config) return;
+    if (this._destroyed || this._failed || this._introVisible || this._resetting || !this._navState || !this._config) return;
     if (this._outroVisible) this._clearOutro();
     navigateGoToId(id, this._navState, this._config, this._getNavCallbacks());
   }
@@ -375,6 +375,13 @@ export class CloudimageSpotlight extends HTMLElement {
 
   play(): void {
     if (this._destroyed || this._failed || !this._config) return;
+    // Clear reset state and restart tour if in reset view
+    if (this._resetting) {
+      this._resetting = false;
+      this._keyboardController?.setEnabled(true);
+      if (this._navState) this._navState.currentIndex = -1;
+      this.goTo(0);
+    }
     this._ensureAutoplayController();
     this._autoplayController!.play();
     this._isPlaying = true;
@@ -428,6 +435,9 @@ export class CloudimageSpotlight extends HTMLElement {
     this._playBtn = null;
     this._isFullscreen = false;
     this._introVisible = false;
+    this._resetting = false;
+    if (this._introFadeTimer !== null) { clearTimeout(this._introFadeTimer); this._introFadeTimer = null; }
+    if (this._outroFadeTimer !== null) { clearTimeout(this._outroFadeTimer); this._outroFadeTimer = null; }
     this._introEl?.remove();
     this._introEl = null;
     if (this._introKeyHandler) {
@@ -464,7 +474,9 @@ export class CloudimageSpotlight extends HTMLElement {
       this._rebuildShadowShell();
     }
     this._failed = false;
+    this._resolutionChecked = false;
     this._currentIndex = 0;
+    this._abortPendingFetch();
     this._cancelPendingTransition();
     if (this._cancelStagger) { this._cancelStagger(); this._cancelStagger = null; }
     this._autoplayController?.destroy();
@@ -481,6 +493,9 @@ export class CloudimageSpotlight extends HTMLElement {
     this._playBtn = null;
     this._isFullscreen = false;
     this._introVisible = false;
+    this._resetting = false;
+    if (this._introFadeTimer !== null) { clearTimeout(this._introFadeTimer); this._introFadeTimer = null; }
+    if (this._outroFadeTimer !== null) { clearTimeout(this._outroFadeTimer); this._outroFadeTimer = null; }
     this._introEl?.remove();
     this._introEl = null;
     if (this._introKeyHandler) {
@@ -938,7 +953,8 @@ export class CloudimageSpotlight extends HTMLElement {
     // Fade out intro overlay
     this._introEl.classList.add('cis-intro--hidden');
     const introRef = this._introEl;
-    setTimeout(() => introRef.remove(), 400);
+    if (this._introFadeTimer !== null) clearTimeout(this._introFadeTimer);
+    this._introFadeTimer = setTimeout(() => { introRef.remove(); this._introFadeTimer = null; }, 400);
     this._introEl = null;
 
     // Reset tour timer — intro idle time shouldn't count toward timeSpent
@@ -1133,13 +1149,15 @@ export class CloudimageSpotlight extends HTMLElement {
     // Remove outro overlay
     this._outroEl.classList.remove('cis-outro--visible');
     const outroRef = this._outroEl;
-    setTimeout(() => outroRef.remove(), 400);
+    if (this._outroFadeTimer !== null) clearTimeout(this._outroFadeTimer);
+    this._outroFadeTimer = setTimeout(() => { outroRef.remove(); this._outroFadeTimer = null; }, 400);
     this._outroEl = null;
 
     // Re-enable keyboard navigation
     this._keyboardController?.setEnabled(true);
 
-    // Restart tour from scene 0
+    // Restart tour from scene 0 (force re-render even if already at 0)
+    if (this._navState) this._navState.currentIndex = -1;
     this.goTo(0);
   }
 
@@ -1162,7 +1180,9 @@ export class CloudimageSpotlight extends HTMLElement {
     if (!this._cachedNavCallbacks) {
       this._cachedNavCallbacks = {
         onSceneChange: (detail: import('./types').CISSceneChangeDetail) => {
-          const direction: TransitionDirection = detail.to > detail.from ? 'forward' : 'backward';
+          // Clamp `from` to 0 — may be -1 after restart tricks (outro dismiss, single-scene reset)
+          if (detail.from < 0) detail.from = 0;
+          const direction: TransitionDirection = detail.to >= detail.from ? 'forward' : 'backward';
           this._transitionToScene(direction, () => {
             this._currentIndex = detail.to;
             this._dispatchEvent('cis:scene-change', detail);
@@ -1183,6 +1203,7 @@ export class CloudimageSpotlight extends HTMLElement {
           // Pause autoplay at end
           this._autoplayController?.pause();
           this._isPlaying = false;
+          this._syncPlayButton();
           this._dispatchEvent('cis:complete', detail);
           // Clear hash on complete
           this._deepLinkController?.clearHash();
@@ -1190,8 +1211,12 @@ export class CloudimageSpotlight extends HTMLElement {
           if (this._config?.settings?.outro) {
             this._showOutro(this._config);
           } else if (this._config?.settings?.intro) {
+            // Reset to scene 0 so dismissing intro renders the first scene
+            if (this._navState) { this._navState.currentIndex = 0; this._currentIndex = 0; }
             this._renderIntro(this._config);
           } else {
+            // Force re-render even if already at scene 0 (single-scene tour)
+            if (this._navState) this._navState.currentIndex = -1;
             this.goTo(0);
           }
         },
@@ -1239,7 +1264,7 @@ export class CloudimageSpotlight extends HTMLElement {
   private _renderResetScene(config: SpotlightConfig): void {
     if (!this._stage || !this._root) return;
 
-    this._introVisible = true; // Block navigation while in reset state
+    this._resetting = true; // Block navigation while in reset state
 
     // Render scene-0 base image only
     const scene = config.scenes[0];
@@ -1612,8 +1637,8 @@ export class CloudimageSpotlight extends HTMLElement {
     if (!this._config || !this._stage || !this._navState) return;
     // Evaluate responsive breakpoint (may toggle mobile layout)
     this._responsiveController?.evaluate();
-    // Skip re-render during intro or outro — the overlay is independent of scene content
-    if (this._introVisible || this._outroVisible) return;
+    // Skip re-render during intro, outro, or reset — the overlay is independent of scene content
+    if (this._introVisible || this._outroVisible || this._resetting) return;
     // Re-render current scene with new container width
     this._renderCurrentScene(this._config);
   }
@@ -1667,13 +1692,7 @@ export class CloudimageSpotlight extends HTMLElement {
       ? { message: err.message, code: err.code }
       : { message: String(err), code: 'INVALID_JSON' };
 
-    this.dispatchEvent(
-      new CustomEvent('cis:error', {
-        detail,
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    this._dispatchEvent<CISErrorDetail>('cis:error', detail);
 
     // Render error state in shadow DOM
     if (this._root) {
@@ -1685,7 +1704,7 @@ export class CloudimageSpotlight extends HTMLElement {
         errorEl.style.cssText = 'position:static;margin:16px;';
         const title = document.createElement('p');
         title.className = 'cis-annotation__title';
-        title.textContent = 'Failed to load experience';
+        title.textContent = this._resolvedStrings.errorTitle;
         const body = document.createElement('p');
         body.className = 'cis-annotation__body';
         body.textContent = detail.message;

@@ -105,7 +105,6 @@ setTimeout(() => spotlight.pause(), 10000);`)}
           <tbody>
             <tr><td><code>FETCH_FAILED</code></td><td>Config URL returned non-OK status or network error</td></tr>
             <tr><td><code>INVALID_JSON</code></td><td>Config is not valid JSON</td></tr>
-            <tr><td><code>INVALID_VERSION</code></td><td>Unknown config version string</td></tr>
             <tr><td><code>MISSING_TOKEN</code></td><td>No <code>ciToken</code> in config or <code>ci-token</code> attribute</td></tr>
             <tr><td><code>MISSING_IMAGE</code></td><td>A scene is missing the <code>image</code> field</td></tr>
             <tr><td><code>INVALID_REGION</code></td><td>Region coordinates are out of 0\u20131 range</td></tr>

@@ -245,7 +245,7 @@ interface SpotlightSettings {
   allowSkip?: boolean;                       // Default: true
   allowKeyboard?: boolean;                   // Default: true
   maskOpacity?: number;                      // 0–1, default: 0.65
-  maskColor?: string;                        // CSS color, default: "#000000"
+  maskColor?: string;                        // CSS color, default: "oklch(0 0 0)"
   maskStyle?: "color" | "blur";              // Default: "color". "blur" uses CDN-blurred full image instead of solid overlay.
   maskBlurRadius?: number;                   // 1–20, default: 8. Only used when maskStyle is "blur".
   intro?: boolean | SpotlightIntro;          // Default: false. Show welcome screen before first scene.
@@ -304,14 +304,14 @@ interface SpotlightAnnotation {
     | "top" | "bottom" | "left" | "right"
     | "auto";   // Default: "auto" — picks the side of the primary region with most space
   style?: "card" | "tooltip" | "minimal";  // Default: "card"
-  maxWidth?: number;  // px, default: 320
+  maxWidth?: number;  // px, default: 340
   showConnector?: boolean;  // Default: false — opt-in connector line from card to region
 }
 ```
 
 > **Auto-positioning algorithm:** The annotation card is positioned **relative to the primary region** (first in the `regions[]` array). The card is placed on the side with the most available space (top, bottom, left, or right of the region) with a 20px gap. The algorithm checks each side's primary axis to ensure the card fits without overlapping the region, then scores by available space minus overlap with reserved UI rects (action buttons, controls bar). Cross-axis positioning aligns to the region's start edge, clamped to stage bounds with a 12px edge margin. In RTL mode, left/right are mirrored. If no regions exist, the card is centered in the stage.
 
-> The annotation card is rendered only if at least one of `scene.title`, `scene.description`, or `scene.cta` is present. If `annotation` is absent but title/description exist, default annotation settings are used (`position: "auto"`, `style: "card"`, `maxWidth: 320`). `annotation.maxWidth` is applied as an inline style on the card element. The `--cis-card-max-width` CSS variable is used as a fallback when `annotation.maxWidth` is not set. Consumer-defined CSS custom properties on the host element override both.
+> The annotation card is rendered only if at least one of `scene.title`, `scene.description`, or `scene.cta` is present. If `annotation` is absent but title/description exist, default annotation settings are used (`position: "auto"`, `style: "card"`, `maxWidth: 340`). `annotation.maxWidth` is applied as an inline style on the card element. The `--cis-card-max-width` CSS variable is used as a fallback when `annotation.maxWidth` is not set. Consumer-defined CSS custom properties on the host element override both.
 
 ### Minimal valid config
 
@@ -670,12 +670,12 @@ When `settings.staggerEntry !== false` (default: `true`), overlay elements anima
 | Phase | Delay | Element | Animation |
 |---|---|---|---|
 | 0 | 0ms | Base image | Visible immediately |
-| 1 | `--cis-stagger-delay-mask` (200ms) | Mask + overlay wrapper | Fade in |
-| 2 | `--cis-stagger-delay-badge` (400ms) | Badges | Scale + fade in |
-| 3 | `--cis-stagger-delay-annotation` (500ms) | Annotation card | Slide up + fade in |
-| 4 | `--cis-stagger-delay-connector` (650ms) | Connector line | Fade in |
+| 1 | `--cis-stagger-delay-mask` (600ms) | Mask + overlay wrapper | Fade in |
+| 2 | `--cis-stagger-delay-badge` (900ms) | Badges | Scale + fade in |
+| 3 | `--cis-stagger-delay-annotation` (1050ms) | Annotation card | Slide up + fade in |
+| 4 | `--cis-stagger-delay-connector` (1200ms) | Connector line | Fade in |
 
-Animation duration per element: `--cis-stagger-duration` (default: 300ms).
+Animation duration per element: `--cis-stagger-duration` (default: 500ms).
 
 ### Stagger + transitions
 
@@ -876,43 +876,41 @@ cloudimage-spotlight {
   --cis-object-fit: contain;               /* "contain" | "cover" | "fill" */
 
   /* Mask */
-  --cis-mask-color: #000000;
+  --cis-mask-color: oklch(0 0 0);
   --cis-mask-opacity: 0.65;
-  --cis-mask-transition: 300ms ease;
+  --cis-mask-transition: 450ms ease;
 
   /* Annotation card */
-  --cis-card-bg: rgba(10, 12, 18, 0.92);
-  --cis-card-border: rgba(255, 255, 255, 0.1);
-  --cis-card-border-radius: 10px;
+  --cis-card-bg: oklch(0.13 0.027 261.692 / 0.92);
+  --cis-card-border: oklch(0.95 0.01 264.55 / 0.1);
+  --cis-card-border-radius: 12px;
   --cis-card-padding: 16px 20px;
-  --cis-card-max-width: 320px;
-  --cis-card-title-color: #ffffff;
+  --cis-card-max-width: 340px;
+  --cis-card-title-color: oklch(0.95 0.01 264.55);
   --cis-card-title-size: 15px;
-  --cis-card-body-color: rgba(255, 255, 255, 0.7);
+  --cis-card-body-color: oklch(0.82 0.025 249.89);
   --cis-card-body-size: 13px;
   --cis-card-backdrop-blur: blur(12px);
 
   /* Controls */
-  --cis-btn-bg: rgba(255, 255, 255, 0.1);
-  --cis-btn-bg-hover: rgba(255, 255, 255, 0.2);
-  --cis-btn-color: #ffffff;
+  --cis-btn-bg: oklch(0.18 0.01 261 / 0.9);
+  --cis-btn-bg-hover: oklch(0.3 0.01 261 / 0.95);
+  --cis-btn-color: oklch(0.94 0.005 264);
   --cis-btn-border-radius: 6px;
   --cis-btn-size: 36px;
-  --cis-progress-color: rgba(255, 255, 255, 0.6);
-  --cis-progress-font-size: 12px;
-  --cis-skip-color: rgba(255, 255, 255, 0.5);
-  --cis-skip-bg: transparent;
+  --cis-btn-shadow: 0 2px 8px oklch(0 0 0 / 0.15);
+  --cis-progress-color: oklch(0.82 0.025 249.89);
+  --cis-progress-font-size: 11px;
 
   /* Accent (progress indicator, region border) */
-  --cis-accent: #5b8fff;
-  --cis-accent-rgb: 91, 143, 255;
+  --cis-accent: oklch(0.578 0.198 268.129);
 
   /* Region highlight border */
-  --cis-region-border: 2px solid rgba(var(--cis-accent-rgb), 0.6);
+  --cis-region-border: 2px solid oklch(0.578 0.198 268.129 / 0.6);
   --cis-region-border-radius: 4px;
 
   /* Region pulse animation (plays on scene entry, 1–2 cycles) */
-  --cis-region-pulse-color: rgba(var(--cis-accent-rgb), 0.4);
+  --cis-region-pulse-color: oklch(0.578 0.198 268.129 / 0.4);
   --cis-region-pulse-duration: 600ms;
   --cis-region-pulse-count: 2;
 
@@ -922,7 +920,7 @@ cloudimage-spotlight {
 
   /* Badge (region number labels) */
   --cis-badge-bg: var(--cis-accent);
-  --cis-badge-color: #ffffff;
+  --cis-badge-color: oklch(1 0 0);
   --cis-badge-size: 22px;
   --cis-badge-font-size: 11px;
   --cis-badge-border-radius: 50%;
@@ -930,7 +928,7 @@ cloudimage-spotlight {
   /* CTA button */
   --cis-cta-bg: var(--cis-accent);
   --cis-cta-bg-hover: color-mix(in srgb, var(--cis-accent) 85%, white);
-  --cis-cta-color: #ffffff;
+  --cis-cta-color: oklch(1 0 0);
   --cis-cta-border-radius: 6px;
   --cis-cta-padding: 8px 16px;
   --cis-cta-font-size: 13px;
@@ -965,15 +963,15 @@ cloudimage-spotlight {
 
 ```css
 cloudimage-spotlight[theme="light"] {
-  --cis-card-bg: rgba(255, 255, 255, 0.95);
-  --cis-card-border: rgba(0, 0, 0, 0.08);
-  --cis-card-title-color: #0b0c0f;
-  --cis-card-body-color: rgba(0, 0, 0, 0.6);
-  --cis-btn-bg: rgba(0, 0, 0, 0.08);
-  --cis-btn-bg-hover: rgba(0, 0, 0, 0.14);
-  --cis-btn-color: #0b0c0f;
-  --cis-progress-color: rgba(0, 0, 0, 0.5);
-  --cis-skip-color: rgba(0, 0, 0, 0.4);
+  --cis-card-bg: oklch(1 0 0 / 0.95);
+  --cis-card-border: oklch(0 0 0 / 0.08);
+  --cis-card-title-color: oklch(0.37 0.022 248.413);
+  --cis-card-body-color: oklch(0.5303 0.039 249.89);
+  --cis-btn-bg: oklch(1 0 0 / 0.9);
+  --cis-btn-bg-hover: oklch(0.92 0.005 264 / 0.95);
+  --cis-btn-color: oklch(0.27 0.01 261);
+  --cis-btn-shadow: 0 2px 8px oklch(0 0 0 / 0.15);
+  --cis-progress-color: oklch(0.5303 0.039 249.89);
 }
 ```
 
@@ -984,15 +982,15 @@ When `theme="auto"`, the component applies dark or light variables based on the 
 ```css
 @media (prefers-color-scheme: light) {
   :host([theme="auto"]) .cis-root {
-    --cis-card-bg: rgba(255, 255, 255, 0.95);
-    --cis-card-border: rgba(0, 0, 0, 0.08);
-    --cis-card-title-color: #0b0c0f;
-    --cis-card-body-color: rgba(0, 0, 0, 0.6);
-    --cis-btn-bg: rgba(0, 0, 0, 0.08);
-    --cis-btn-bg-hover: rgba(0, 0, 0, 0.14);
-    --cis-btn-color: #0b0c0f;
-    --cis-progress-color: rgba(0, 0, 0, 0.5);
-    --cis-skip-color: rgba(0, 0, 0, 0.4);
+    --cis-card-bg: oklch(1 0 0 / 0.95);
+    --cis-card-border: oklch(0 0 0 / 0.08);
+    --cis-card-title-color: oklch(0.37 0.022 248.413);
+    --cis-card-body-color: oklch(0.5303 0.039 249.89);
+    --cis-btn-bg: oklch(1 0 0 / 0.9);
+    --cis-btn-bg-hover: oklch(0.92 0.005 264 / 0.95);
+    --cis-btn-color: oklch(0.27 0.01 261);
+    --cis-btn-shadow: 0 2px 8px oklch(0 0 0 / 0.15);
+    --cis-progress-color: oklch(0.5303 0.039 249.89);
   }
 }
 ```
@@ -1022,8 +1020,8 @@ When the page is printed, the component renders a clean, ink-friendly layout:
     position: static !important;
     max-width: 100% !important;
     background: transparent !important;
-    color: #000 !important;
-    border: 1px solid #ccc !important;
+    color: oklch(0 0 0) !important;
+    border: 1px solid oklch(0.75 0 0) !important;
     margin-top: 8px;
   }
 
@@ -1063,8 +1061,8 @@ The `.cis-loading` class is added to `.cis-root` during states 1 and 2, removed 
 
 ```css
   /* Loading skeleton */
-  --cis-skeleton-bg: rgba(255, 255, 255, 0.05);
-  --cis-skeleton-shimmer: rgba(255, 255, 255, 0.08);
+  --cis-skeleton-bg: oklch(0.95 0.01 264.55 / 0.05);
+  --cis-skeleton-shimmer: oklch(0.95 0.01 264.55 / 0.08);
   --cis-skeleton-duration: 1.5s;
 ```
 

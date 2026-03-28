@@ -128,7 +128,7 @@ export const CloudimageSpotlightReact = forwardRef<
     import('./define');
   }, []);
 
-  // Set JS properties that can't be expressed as attributes
+  // Set JS properties that can't be expressed as attributes.
   useEffect(() => {
     const el = elRef.current;
     if (!el) return;

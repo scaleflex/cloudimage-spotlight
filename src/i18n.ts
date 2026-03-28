@@ -19,6 +19,7 @@ export const DEFAULT_STRINGS: CISStrings = {
   outroGoToStep: 'Go to step {n}',
   playAutoplay: 'Play',
   pauseAutoplay: 'Pause',
+  errorTitle: 'Failed to load experience',
 };
 
 /**

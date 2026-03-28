@@ -125,13 +125,12 @@ describe('Type definitions compile correctly', () => {
     const codes: CISErrorCode[] = [
       'FETCH_FAILED',
       'INVALID_JSON',
-      'INVALID_VERSION',
       'MISSING_TOKEN',
       'MISSING_IMAGE',
       'INVALID_REGION',
       'IMAGE_LOAD_FAILED',
     ];
-    expect(codes).toHaveLength(7);
+    expect(codes).toHaveLength(6);
   });
 
   it('Event detail types have correct shapes', () => {
@@ -200,8 +199,12 @@ describe('Type definitions compile correctly', () => {
       introDefault: 'Learn about {title}',
       outroRestart: 'Watch again',
       outroDefault: 'Tour complete',
+      outroGoToStep: 'Go to step {n}',
+      playAutoplay: 'Play',
+      pauseAutoplay: 'Pause',
+      errorTitle: 'Failed to load experience',
     };
-    expect(Object.keys(strings)).toHaveLength(15);
+    expect(Object.keys(strings)).toHaveLength(19);
   });
 });
 
@@ -217,7 +220,7 @@ describe('CloudimageSpotlight class', () => {
     expect(CloudimageSpotlight.prototype).toBeInstanceOf(HTMLElement);
   });
 
-  it('has observedAttributes with all 12 attributes', () => {
+  it('has observedAttributes with all 13 attributes', () => {
     const attrs = CloudimageSpotlight.observedAttributes;
     expect(attrs).toContain('config');
     expect(attrs).toContain('ci-token');

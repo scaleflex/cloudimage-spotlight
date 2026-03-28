@@ -63,6 +63,13 @@ export function validateConfig(raw: unknown): SpotlightConfig {
 
   const scenes = config.scenes as SpotlightScene[];
 
+  // Validate scene IDs are non-empty strings
+  for (let i = 0; i < scenes.length; i++) {
+    if (!scenes[i].id || typeof scenes[i].id !== 'string') {
+      throw new CISError('INVALID_JSON', `Scene at index ${i} is missing a valid 'id' string.`);
+    }
+  }
+
   // Validate unique scene IDs
   const ids = scenes.map((s) => s.id);
   if (new Set(ids).size !== ids.length) {

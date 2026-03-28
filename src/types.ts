@@ -119,7 +119,6 @@ export interface BoundingBox {
 export type CISErrorCode =
   | 'FETCH_FAILED'
   | 'INVALID_JSON'
-  | 'INVALID_VERSION'
   | 'MISSING_TOKEN'
   | 'MISSING_IMAGE'
   | 'INVALID_REGION'
@@ -206,6 +205,7 @@ export interface CISStrings {
   outroGoToStep: string;
   playAutoplay: string;
   pauseAutoplay: string;
+  errorTitle: string;
 }
 
 // ---------------------------------------------------------------------------
