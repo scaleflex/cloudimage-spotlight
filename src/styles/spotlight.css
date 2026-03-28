@@ -339,7 +339,7 @@
 
 .cis-annotation--minimal .cis-annotation__title,
 .cis-annotation--minimal .cis-annotation__body {
-  color: #fff;
+  color: oklch(1 0 0);
 }
 
 .cis-annotation--minimal .cis-annotation__progress {
