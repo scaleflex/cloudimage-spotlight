@@ -37,20 +37,23 @@ const page: Page = {
 {
   "version": "1.0",
   "ciToken": "your-token",
-  "title": "Product Tour",
+  "title": "Create an API Key",
   "settings": {
     "intro": {
-      "title": "Welcome to the Product Tour",
-      "description": "Learn how to use the key features.",
-      "startLabel": "Start Tour"
+      "title": "Create an API Key",
+      "description": "Follow this quick 5-step guide to generate your first API key."
+    },
+    "outro": {
+      "title": "You're all set!",
+      "description": "Your API key is ready. Want to see the steps again?"
     }
   },
   "scenes": [
     {
-      "id": "step-1",
+      "id": "home",
       "image": "https://scaleflex.cloudimg.io/v7/...",
-      "title": "First Step",
-      "description": "This is the first thing you need to know."
+      "title": "Spotlight Dashboard",
+      "description": "Start from the Experiences home page."
     }
   ]
 }`,
@@ -63,10 +66,7 @@ const page: Page = {
   "settings": {
     "intro": true
   }
-}
-
-// Uses the config "title" as the intro heading
-// and default "Start" button label`,
+}`,
       },
     ]);
   },

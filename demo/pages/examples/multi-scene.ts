@@ -41,38 +41,84 @@ const page: Page = {
 ></cloudimage-spotlight>`,
       },
       {
-        label: 'Config (excerpt)',
+        label: 'Config',
         lang: 'json',
         code: `
 {
   "version": "1.0",
   "ciToken": "your-token",
-  "title": "Create API Key Tour",
+  "title": "Create an API Key",
   "settings": {
     "transition": "fade",
+    "maskStyle": "color",
     "maskOpacity": 0.65,
-    "maskStyle": "color"
+    "allowSkip": true,
+    "intro": {
+      "title": "Create an API Key",
+      "description": "Follow this quick 5-step guide to generate your first API key for the Asset Picker."
+    },
+    "outro": {
+      "title": "You're all set!",
+      "description": "Your API key is ready. Want to see the steps again?"
+    }
   },
   "scenes": [
     {
-      "id": "navigate",
-      "image": "https://scaleflex.cloudimg.io/v7/...",
-      "title": "Navigate to API Keys",
-      "description": "Open the sidebar and find API Keys.",
-      "regions": [{ "tl_x": 0.0, "tl_y": 0.3, "br_x": 0.15, "br_y": 0.45 }],
-      "mask": true
+      "id": "home",
+      "image": "v7/plugins/cloudimage/spotlight/home.png",
+      "title": "Spotlight Dashboard",
+      "description": "Start from the Experiences home page. Navigate to API Keys in the sidebar.",
+      "regions": [
+        { "tl_x": 0.003, "tl_y": 0.45, "br_x": 0.18, "br_y": 0.50, "label": "API Keys page" }
+      ],
+      "annotation": { "position": "right" }
     },
     {
-      "id": "create-key",
-      "image": "https://scaleflex.cloudimg.io/v7/...",
-      "title": "Create New Key",
-      "description": "Click the Create API Key button.",
-      "regions": [{ "tl_x": 0.7, "tl_y": 0.05, "br_x": 0.95, "br_y": 0.12 }],
-      "mask": true,
-      "zoom": true,
+      "id": "api-keys-empty",
+      "image": "v7/plugins/cloudimage/spotlight/settings-api-keys.png",
+      "title": "API Keys Page",
+      "description": "Click \\"Create key\\" to generate a new one.",
+      "regions": [
+        { "tl_x": 0.40, "tl_y": 0.20, "br_x": 0.78, "br_y": 0.45, "label": "Create key" }
+      ],
+      "annotation": { "position": "bottom" }
+    },
+    {
+      "id": "create-modal",
+      "image": "v7/plugins/cloudimage/spotlight/create-api-key-modal.png",
+      "title": "Name Your Key",
+      "description": "Give your API key a descriptive name and click Create.",
+      "regions": [
+        { "tl_x": 0.335, "tl_y": 0.41, "br_x": 0.665, "br_y": 0.585, "label": "Fill details" },
+        { "tl_x": 0.605, "tl_y": 0.595, "br_x": 0.66, "br_y": 0.645, "label": "Click create" }
+      ],
+      "annotation": { "position": "right" }
+    },
+    {
+      "id": "key-generated",
+      "image": "v7/plugins/cloudimage/spotlight/api-key-generated-modal.png",
+      "title": "Copy Your API Key",
+      "description": "Copy it now — you won't be able to see it again after closing this dialog.",
+      "regions": [
+        { "tl_x": 0.34, "tl_y": 0.425, "br_x": 0.66, "br_y": 0.485, "label": "Warning" },
+        { "tl_x": 0.34, "tl_y": 0.52, "br_x": 0.66, "br_y": 0.57, "label": "Copy key" }
+      ],
+      "zoomPadding": 0.15,
+      "zoom": true
+    },
+    {
+      "id": "key-listed",
+      "image": "v7/plugins/cloudimage/spotlight/settings-api-keys-with-new-created-key.png",
+      "title": "Key Ready to Use",
+      "description": "Your new API key is now listed and ready to use.",
+      "regions": [
+        { "tl_x": 0.27, "tl_y": 0.14, "br_x": 0.91, "br_y": 0.29, "label": "New key" }
+      ],
+      "maskStyle": "blur",
       "cta": {
-        "label": "Learn more about API keys",
-        "href": "https://docs.scaleflex.com"
+        "label": "View Asset Picker docs",
+        "href": "https://www.scaleflex.com/en/asset-picker",
+        "style": "link"
       }
     }
   ]

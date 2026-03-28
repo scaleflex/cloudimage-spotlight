@@ -50,13 +50,20 @@ const page: Page = {
         code: `
 {
   "version": "1.0",
-  "ciToken": "demo",
+  "ciToken": "your-token",
+  "title": "Quick Overview",
   "scenes": [
     {
-      "id": "welcome",
+      "id": "home",
       "image": "https://scaleflex.cloudimg.io/v7/...",
-      "title": "Welcome",
-      "description": "This is your dashboard overview."
+      "title": "Experiences Dashboard",
+      "description": "Manage all your interactive experiences from one place."
+    },
+    {
+      "id": "api-keys",
+      "image": "https://scaleflex.cloudimg.io/v7/...",
+      "title": "API Keys",
+      "description": "Create API keys for programmatic access to the Spotlight API."
     }
   ]
 }`,

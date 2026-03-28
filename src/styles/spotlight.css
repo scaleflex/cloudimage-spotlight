@@ -303,12 +303,12 @@
 
 /* Next button — filled primary */
 .cis-annotation__btn--next {
-  background: var(--cis-nav-btn-primary-bg, oklch(0.15 0.02 261.692));
-  color: var(--cis-nav-btn-primary-color, oklch(0.95 0.01 264.55));
+  background: var(--cis-nav-btn-primary-bg, oklch(0.95 0.01 264.55));
+  color: var(--cis-nav-btn-primary-color, oklch(0.15 0.02 261.692));
 }
 
 .cis-annotation__btn--next:hover {
-  background: var(--cis-nav-btn-primary-bg-hover, oklch(0.22 0.025 261.692));
+  background: var(--cis-nav-btn-primary-bg-hover, oklch(0.88 0.015 264.55));
 }
 
 /* Finish button — success color variant */
@@ -619,73 +619,74 @@
    --------------------------------------------------------------------------- */
 
 /* --- Fade transition --- */
+/* Compound selectors (no space) — both classes are on the stage element. */
 
-.cis-transition-fade .cis-scene-exit {
+.cis-transition-fade.cis-scene-exit {
   opacity: 1;
 }
 
-.cis-transition-fade .cis-scene-exit-active {
+.cis-transition-fade.cis-scene-exit-active {
   opacity: 0;
   transition: opacity var(--cis-transition-duration, 300ms) var(--cis-transition-easing, ease);
 }
 
-.cis-transition-fade .cis-scene-enter {
+.cis-transition-fade.cis-scene-enter {
   opacity: 0;
 }
 
-.cis-transition-fade .cis-scene-enter-active {
+.cis-transition-fade.cis-scene-enter-active {
   opacity: 1;
   transition: opacity var(--cis-transition-duration, 300ms) var(--cis-transition-easing, ease);
 }
 
 /* --- Slide transition --- */
 
-.cis-transition-slide .cis-scene-exit {
+.cis-transition-slide.cis-scene-exit {
   transform: translateX(0);
 }
 
-.cis-transition-slide .cis-scene-exit-active {
+.cis-transition-slide.cis-scene-exit-active {
   transform: translateX(-100%);
   transition: transform 350ms var(--cis-transition-easing, ease);
 }
 
-.cis-transition-slide.cis-transition--backward .cis-scene-exit-active {
+.cis-transition-slide.cis-transition--backward.cis-scene-exit-active {
   transform: translateX(100%);
 }
 
-.cis-transition-slide .cis-scene-enter {
+.cis-transition-slide.cis-scene-enter {
   transform: translateX(100%);
 }
 
-.cis-transition-slide .cis-scene-enter-active {
+.cis-transition-slide.cis-scene-enter-active {
   transform: translateX(0);
   transition: transform 350ms var(--cis-transition-easing, ease);
 }
 
-.cis-transition-slide.cis-transition--backward .cis-scene-enter {
+.cis-transition-slide.cis-transition--backward.cis-scene-enter {
   transform: translateX(-100%);
 }
 
 /* --- Zoom transition --- */
 
-.cis-transition-zoom .cis-scene-exit {
+.cis-transition-zoom.cis-scene-exit {
   opacity: 1;
   transform: scale(1);
 }
 
-.cis-transition-zoom .cis-scene-exit-active {
+.cis-transition-zoom.cis-scene-exit-active {
   opacity: 0;
   transform: scale(0.9);
   transition: opacity 400ms var(--cis-transition-easing, ease),
               transform 400ms var(--cis-transition-easing, ease);
 }
 
-.cis-transition-zoom .cis-scene-enter {
+.cis-transition-zoom.cis-scene-enter {
   opacity: 0;
   transform: scale(1.1);
 }
 
-.cis-transition-zoom .cis-scene-enter-active {
+.cis-transition-zoom.cis-scene-enter-active {
   opacity: 1;
   transform: scale(1);
   transition: opacity 400ms var(--cis-transition-easing, ease),

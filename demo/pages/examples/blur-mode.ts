@@ -37,19 +37,30 @@ const page: Page = {
 {
   "version": "1.0",
   "ciToken": "your-token",
+  "title": "Blur Mask Demo",
   "settings": {
     "maskStyle": "blur",
-    "maskBlurRadius": 8
+    "maskBlurRadius": 10
   },
   "scenes": [
     {
-      "id": "blur-demo",
+      "id": "blur-create-key",
       "image": "https://scaleflex.cloudimg.io/v7/...",
-      "title": "Blur Masking",
-      "description": "The area outside the region is blurred via the CDN.",
-      "regions": [{ "tl_x": 0.3, "tl_y": 0.2, "br_x": 0.7, "br_y": 0.8 }],
-      "mask": true,
-      "maskStyle": "blur"
+      "title": "Focus on the Modal",
+      "description": "Blur mode keeps the background visible but blurred.",
+      "regions": [
+        { "tl_x": 0.27, "tl_y": 0.27, "br_x": 0.73, "br_y": 0.65 }
+      ]
+    },
+    {
+      "id": "blur-copy-key",
+      "image": "https://scaleflex.cloudimg.io/v7/...",
+      "title": "Highlight Multiple Areas",
+      "description": "Multiple sharp regions cut through the blurred background.",
+      "regions": [
+        { "tl_x": 0.28, "tl_y": 0.36, "br_x": 0.72, "br_y": 0.44 },
+        { "tl_x": 0.28, "tl_y": 0.47, "br_x": 0.72, "br_y": 0.56 }
+      ]
     }
   ]
 }`,

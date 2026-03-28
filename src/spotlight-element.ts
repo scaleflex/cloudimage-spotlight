@@ -115,6 +115,7 @@ export class CloudimageSpotlight extends HTMLElement {
   private _playBtn: HTMLButtonElement | null = null;
   private _isFullscreen = false;
   private _pendingResize = false;
+  private _zoomActive = false;
   private _resizeRafId: number | null = null;
   private _introVisible = false;
   private _introEl: HTMLDivElement | null = null;
@@ -746,6 +747,10 @@ export class CloudimageSpotlight extends HTMLElement {
   private _renderCurrentScene(config: SpotlightConfig): void {
     if (!this._stage || !this._navState) return;
 
+    // Reset zoom suppression — navigating away mid-zoom would otherwise
+    // leave _zoomActive=true permanently (onZoomFinish never fires).
+    this._zoomActive = false;
+
     const scene = config.scenes[this._navState.currentIndex];
     this._currentIndex = this._navState.currentIndex;
 
@@ -823,9 +828,16 @@ export class CloudimageSpotlight extends HTMLElement {
       onCtaClick: (detail) => {
         this._dispatchEvent<import('./types').CISCTAClickDetail>('cis:cta-click', detail);
       },
+      onZoomStart: () => { this._zoomActive = true; },
       onZoomFinish: () => {
+        this._zoomActive = false;
         // Re-evaluate responsive layout after zoom appends the annotation
         this._responsiveController?.evaluate();
+        // Apply any resize that was queued during zoom
+        if (this._pendingResize) {
+          this._pendingResize = false;
+          this._handleResize();
+        }
       },
     });
 
@@ -1523,8 +1535,8 @@ export class CloudimageSpotlight extends HTMLElement {
     this._resizeObserver?.disconnect();
 
     this._resizeObserver = new ResizeObserver(() => {
-      // Suppress rebuilds during transitions
-      if (this._root?.classList.contains(TRANSITION_ACTIVE_CLASS)) {
+      // Suppress rebuilds during transitions and zoom animations
+      if (this._root?.classList.contains(TRANSITION_ACTIVE_CLASS) || this._zoomActive) {
         this._pendingResize = true;
         return;
       }

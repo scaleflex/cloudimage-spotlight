@@ -426,8 +426,11 @@ describe('Annotation in element', () => {
     expect(blurred.src).toContain('blur=');
     expect(sharp).not.toBeNull();
 
-    // Blur reveal: blurred layer starts hidden, clip-path applied after image load
-    expect(blurred.style.opacity).toBe('0');
+    // Blur layer starts visible (no inline opacity — browser default)
+    expect(blurred.style.opacity).toBe('');
+
+    // Sharp layer starts hidden — it fades in as the "spotlight"
+    expect(sharp.style.opacity).toBe('0');
 
     // No SVG mask in blur mode
     expect(el.shadowRoot!.querySelector('.cis-mask')).toBeNull();

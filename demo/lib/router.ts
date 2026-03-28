@@ -24,6 +24,7 @@ const routes: RouteEntry[] = [
   { pattern: '/examples/theming', load: () => import('../pages/examples/theming').then((m) => m.default) },
   { pattern: '/examples/autoplay', load: () => import('../pages/examples/autoplay').then((m) => m.default) },
   { pattern: '/examples/annotation-styles', load: () => import('../pages/examples/annotation-styles').then((m) => m.default) },
+  { pattern: '/examples/customization', load: () => import('../pages/examples/customization').then((m) => m.default) },
   { pattern: '/examples/events', load: () => import('../pages/examples/events').then((m) => m.default) },
 ];
 

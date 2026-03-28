@@ -9,6 +9,19 @@ import { createAnnotation } from './annotation';
 import { resolveAnnotationPosition, applyAnnotationPosition, type Rect } from './auto-position';
 import { createConnector } from './connector';
 
+/** Run callback when image is settled (loaded or errored). */
+function whenImageReady(img: HTMLImageElement, fn: () => void): void {
+  if (img.complete) { fn(); return; }
+  const settle = () => { img.removeEventListener('load', settle); img.removeEventListener('error', settle); fn(); };
+  img.addEventListener('load', settle, { once: true });
+  img.addEventListener('error', settle, { once: true });
+}
+
+/** Block stagger CSS animation on an element (finishZoom / blur reveal manage opacity directly). */
+function cancelStaggerAnim(el: HTMLElement): void {
+  el.style.setProperty('animation', 'none', 'important');
+}
+
 export interface SceneRenderContext {
   config: SpotlightConfig;
   stage: HTMLDivElement;
@@ -29,6 +42,8 @@ export interface SceneRenderContext {
   onPrev: () => void;
   onNext: () => void;
   onSkip: () => void;
+  /** Called when zoom animation begins (suppresses resize re-renders). */
+  onZoomStart?: () => void;
   /** Called after zoom finishes and annotation is appended to the DOM. */
   onZoomFinish?: () => void;
 }
@@ -72,6 +87,7 @@ export function renderScene(
     const blurRadius = settings?.maskBlurRadius ?? 8;
     const shouldAnimateZoomBlur = !!(scene.zoom && regions.length > 0);
 
+    // Blur layer — visible from the start (the "background").
     const blurredImg = document.createElement('img');
     blurredImg.className = 'cis-image cis-image--blurred';
     blurredImg.src = buildCiUrl(scene.image, config.ciToken, 'blurred', undefined, containerWidth, dpr, blurRadius);
@@ -81,60 +97,67 @@ export function renderScene(
     blurredImg.addEventListener('error', () => {
       ctx.onImageError(scene, { message: `Failed to load blurred image for scene "${scene.id}"`, code: 'IMAGE_LOAD_FAILED' });
     });
-    // Start blurred layer hidden — it will fade in after the sharp image loads
-    blurredImg.style.opacity = '0';
     stage.appendChild(blurredImg);
 
+    // Sharp layer — clipped to region shapes, starts hidden, fades in as the "spotlight".
     const sharpImg = document.createElement('img');
     sharpImg.className = 'cis-image cis-image--sharp';
     sharpImg.src = buildCiUrl(scene.image, config.ciToken, 'full', undefined, containerWidth, dpr);
     sharpImg.alt = generateAltText(scene, index, totalScenes, strings);
     sharpImg.draggable = false;
+    sharpImg.style.opacity = '0';
     stage.appendChild(sharpImg);
-
-    // Hide overlays and blur layer until reveal animation
-    overlayWrapper.style.opacity = '0';
 
     sharpImg.addEventListener('load', () => {
       positionOverlayWrapper(overlayWrapper, sharpImg, stage);
+      // Pre-apply clip-path so the sharp image is already shaped before fading in
+      applyBlurClipPath(sharpImg, regions, instanceId, scene.id, stage);
       ctx.onImageLoad(sharpImg, scene);
 
       if (shouldAnimateZoomBlur) {
-        // Zoom + blur: animate blurred image zooming into crop, then reveal sharp clip + overlays
+        // Zoom + blur: animate blurred image zooming into crop, then reveal
+        overlayWrapper.style.opacity = '0';
         const transform = computeZoomTransform(
           sharpImg, stage, regions, scene.zoomPadding,
         );
         if (transform) {
-          // Show blurred layer immediately for zoom animation
-          blurredImg.style.opacity = '1';
-          blurredImg.style.transformOrigin = '0 0';
-          blurredImg.style.transition = 'transform 600ms cubic-bezier(0.4, 0, 0.2, 1)';
-          requestAnimationFrame(() => {
-            blurredImg.style.transform = `translate(${transform.tx}px, ${transform.ty}px) scale(${transform.scale})`;
-          });
-          const reveal = () => {
-            applyBlurClipPath(sharpImg, regions, instanceId, scene.id, stage);
+          const startZoomAnim = () => {
+            blurredImg.style.transformOrigin = '0 0';
+            blurredImg.style.transition = 'transform 600ms cubic-bezier(0.4, 0, 0.2, 1)';
+            requestAnimationFrame(() => {
+              blurredImg.style.transform = `translate(${transform.tx}px, ${transform.ty}px) scale(${transform.scale})`;
+            });
+            let revealed = false;
+            const reveal = () => {
+              if (revealed) return;
+              revealed = true;
+              sharpImg.style.transition = 'opacity 300ms ease';
+              sharpImg.style.opacity = '1';
+              cancelStaggerAnim(overlayWrapper);
+              overlayWrapper.style.transition = 'opacity 300ms ease';
+              overlayWrapper.style.opacity = '1';
+            };
+            blurredImg.addEventListener('transitionend', reveal, { once: true });
+            setTimeout(reveal, 700); // fallback
+          };
+          whenImageReady(blurredImg, startZoomAnim);
+        } else {
+          whenImageReady(blurredImg, () => {
             sharpImg.style.transition = 'opacity 300ms ease';
             sharpImg.style.opacity = '1';
-            overlayWrapper.style.transition = 'opacity 300ms ease';
+            cancelStaggerAnim(overlayWrapper);
             overlayWrapper.style.opacity = '1';
-          };
-          blurredImg.addEventListener('transitionend', reveal, { once: true });
-          setTimeout(reveal, 700); // fallback
-        } else {
-          blurredImg.style.opacity = '1';
-          applyBlurClipPath(sharpImg, regions, instanceId, scene.id, stage);
-          overlayWrapper.style.opacity = '1';
+          });
         }
       } else {
-        // Non-zoom blur: show sharp image first, then reveal blur + spotlight regions
-        setTimeout(() => {
-          blurredImg.style.transition = 'opacity 400ms ease';
-          blurredImg.style.opacity = '1';
-          applyBlurClipPath(sharpImg, regions, instanceId, scene.id, stage);
-          overlayWrapper.style.transition = 'opacity 400ms ease';
-          overlayWrapper.style.opacity = '1';
-        }, 150);
+        // Non-zoom blur: blur is already visible, fade in the sharp spotlight regions.
+        // Wait for blur image to load (avoid sharp regions over empty background).
+        whenImageReady(blurredImg, () => {
+          requestAnimationFrame(() => {
+            sharpImg.style.transition = 'opacity 600ms ease';
+            sharpImg.style.opacity = '1';
+          });
+        });
       }
     });
     sharpImg.addEventListener('error', () => {
@@ -147,8 +170,8 @@ export function renderScene(
     const baseImg = appendBaseImage(stage, scene, index, totalScenes, ctx);
     baseImg.addEventListener('load', () => positionOverlayWrapper(overlayWrapper, baseImg, stage));
   } else {
-    // Normal mode: single base image
-    const baseImg = appendBaseImage(stage, scene, index, totalScenes, ctx);
+    // Normal mode: single base image (original resolution for zoom — see appendBaseImage)
+    const baseImg = appendBaseImage(stage, scene, index, totalScenes, ctx, isZoom);
     if (!isZoom) {
       baseImg.addEventListener('load', () => positionOverlayWrapper(overlayWrapper, baseImg, stage));
     } else {
@@ -159,6 +182,8 @@ export function renderScene(
       baseImg.addEventListener('load', () => {
         positionOverlayWrapper(overlayWrapper, baseImg, stage);
         if (!baseImg.isConnected) return;
+
+        ctx.onZoomStart?.();
 
         // Start loading the sharp CDN crop in parallel
         const zoomedImg = document.createElement('img');
@@ -176,17 +201,24 @@ export function renderScene(
         // Track readiness of both animation and CDN image
         let animDone = false;
         let zoomLoaded = false;
+        let zoomFinished = false;
 
         const finishZoom = () => {
           if (!animDone || !zoomLoaded || !baseImg.isConnected) return;
+          // Guard against double-fire: transitionend + setTimeout fallback
+          // can both invoke finishZoom. Without this, the second call resets
+          // annotation opacity mid-transition, causing a visible flash.
+          if (zoomFinished) return;
+          zoomFinished = true;
           positionOverlayWrapper(overlayWrapper, zoomedImg, stage);
           zoomedImg.classList.add('cis-image--visible');
+          // Block stagger animations — finishZoom manages the reveal directly.
+          cancelStaggerAnim(overlayWrapper);
           overlayWrapper.style.transition = 'opacity 300ms ease';
           overlayWrapper.style.opacity = '1';
 
-          // Append and position annotation now that zoomed image is ready.
-          // Appending here (not at render time) prevents stagger from revealing
-          // the card at approximate coordinates before the zoom finishes.
+          // Block stagger on annotation BEFORE appending to prevent flash.
+          cancelStaggerAnim(annotationCard);
           annotationCard.style.opacity = '0';
           stage.appendChild(annotationCard);
           const zoomedContentRect = computeImageContentRect(
@@ -199,8 +231,6 @@ export function renderScene(
             overlayRegions, isRTL, ctx.reservedRects, zoomedContentRect,
           );
           applyAnnotationPosition(annotationCard, pos, updatedStageRect, overlayRegions, zoomedContentRect);
-          // Block stagger animation — zoom handles the reveal directly
-          annotationCard.style.setProperty('animation', 'none', 'important');
           requestAnimationFrame(() => {
             annotationCard.style.transition = 'opacity 300ms ease';
             annotationCard.style.opacity = '1';
@@ -244,7 +274,7 @@ export function renderScene(
             );
             applyAnnotationPosition(annotationCard, errPos, errStageRect, overlayRegions);
           }
-          annotationCard.style.setProperty('animation', 'none', 'important');
+          cancelStaggerAnim(annotationCard);
           annotationCard.style.opacity = '1';
         });
         stage.appendChild(zoomedImg);
@@ -386,8 +416,14 @@ export function clearStagger(stage: HTMLElement): void {
   stage.classList.remove('cis-scene-stagger', 'cis-scene-stagger-active');
 }
 
+/** Max width the CDN accepts (values above ~10000 return errors). */
+const CDN_MAX_WIDTH = 9999;
+
 /**
- * Append the standard base image element. Returns the img for load hooking.
+ * Append the base image element. Returns the img for load hooking.
+ * When `originalResolution` is true, requests the image at CDN max width
+ * with DPR 1 so that naturalWidth/naturalHeight reflect the original
+ * source dimensions — needed for zoom crop coordinate calculation.
  */
 function appendBaseImage(
   stage: HTMLDivElement,
@@ -395,10 +431,13 @@ function appendBaseImage(
   index: number,
   totalScenes: number,
   ctx: SceneRenderContext,
+  originalResolution = false,
 ): HTMLImageElement {
   const img = document.createElement('img');
   img.className = 'cis-image cis-image--base';
-  img.src = buildCiUrl(scene.image, ctx.config.ciToken, 'full', undefined, ctx.containerWidth, ctx.dpr);
+  img.src = originalResolution
+    ? buildCiUrl(scene.image, ctx.config.ciToken, 'full', undefined, CDN_MAX_WIDTH, 1)
+    : buildCiUrl(scene.image, ctx.config.ciToken, 'full', undefined, ctx.containerWidth, ctx.dpr);
   img.alt = generateAltText(scene, index, totalScenes, ctx.strings);
   img.draggable = false;
 

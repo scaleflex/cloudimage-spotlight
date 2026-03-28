@@ -96,8 +96,7 @@ console.log(spotlight.isPlaying); // boolean`,
         code: `
 {
   "settings": {
-    "autoplay": true,
-    "autoplayInterval": 5000
+    "autoplayInterval": 4000
   }
 }`,
       },

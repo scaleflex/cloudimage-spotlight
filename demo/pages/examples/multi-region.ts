@@ -37,18 +37,18 @@ const page: Page = {
 {
   "version": "1.0",
   "ciToken": "your-token",
+  "title": "Multi-Region Demo",
   "scenes": [
     {
-      "id": "dashboard-regions",
-      "image": "https://scaleflex.cloudimg.io/v7/...",
-      "title": "Key Areas",
-      "description": "These are the important parts of the dashboard.",
+      "id": "dashboard-layout",
+      "image": "v7/plugins/cloudimage/spotlight/home.png",
+      "title": "Dashboard Layout",
+      "description": "The dashboard has three key areas.",
       "regions": [
-        { "tl_x": 0.0, "tl_y": 0.0, "br_x": 0.15, "br_y": 1.0, "label": "Sidebar" },
-        { "tl_x": 0.15, "tl_y": 0.0, "br_x": 1.0, "br_y": 0.08, "label": "Toolbar" },
-        { "tl_x": 0.6, "tl_y": 0.15, "br_x": 1.0, "br_y": 0.5, "label": "Details" }
-      ],
-      "mask": true
+        { "tl_x": 0.003, "tl_y": 0.03, "br_x": 0.08, "br_y": 0.60, "label": "Sidebar" },
+        { "tl_x": 0.085, "tl_y": 0.06, "br_x": 0.99, "br_y": 0.13, "label": "Filters" },
+        { "tl_x": 0.085, "tl_y": 0.14, "br_x": 0.99, "br_y": 0.72, "label": "Experiences" }
+      ]
     }
   ]
 }`,
