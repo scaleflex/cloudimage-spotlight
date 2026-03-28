@@ -18,7 +18,7 @@ import {
   applyStagger,
 } from './scene-renderer';
 import { updateAnnotation } from './annotation';
-import { buildCiUrl } from './url-builder';
+import { buildCiUrl, roundWidth } from './url-builder';
 import {
   runTransition,
   prefersReducedMotion,
@@ -28,8 +28,7 @@ import {
 import { createAutoplayController, type AutoplayController } from './autoplay';
 import { createSkeleton, setLoadingPhase } from './loading';
 import { createKeyboardController, type KeyboardController } from './keyboard';
-import { hideDecorativeElements } from './a11y';
-import { createDeepLinkController, type DeepLinkController } from './deep-link';
+import { createDeepLinkController, parseHash, type DeepLinkController } from './deep-link';
 import { createResponsiveController, type ResponsiveController } from './responsive';
 import { createFullscreenController, type FullscreenController } from './fullscreen';
 import { iconFullscreen, iconFullscreenExit, iconPlay, iconPause } from './icons';
@@ -117,6 +116,7 @@ export class CloudimageSpotlight extends HTMLElement {
   private _pendingResize = false;
   private _zoomActive = false;
   private _resizeRafId: number | null = null;
+  private _lastRenderedWidth = 0;
   private _introVisible = false;
   private _introEl: HTMLDivElement | null = null;
   private _introKeyHandler: ((e: KeyboardEvent) => void) | null = null;
@@ -418,33 +418,7 @@ export class CloudimageSpotlight extends HTMLElement {
     this._destroyed = true;
     this._isPlaying = false;
     this._teardownObservers();
-    this._abortPendingFetch();
-    this._cancelPendingTransition();
-    if (this._cancelStagger) { this._cancelStagger(); this._cancelStagger = null; }
-    this._autoplayController?.destroy();
-    this._autoplayController = null;
-    this._keyboardController?.detach();
-    this._keyboardController = null;
-    this._deepLinkController?.detach();
-    this._deepLinkController = null;
-    this._responsiveController?.destroy();
-    this._responsiveController = null;
-    this._fullscreenController?.destroy();
-    this._fullscreenController = null;
-    this._fullscreenBtn = null;
-    this._playBtn = null;
-    this._isFullscreen = false;
-    this._introVisible = false;
-    this._resetting = false;
-    if (this._introFadeTimer !== null) { clearTimeout(this._introFadeTimer); this._introFadeTimer = null; }
-    if (this._outroFadeTimer !== null) { clearTimeout(this._outroFadeTimer); this._outroFadeTimer = null; }
-    this._introEl?.remove();
-    this._introEl = null;
-    if (this._introKeyHandler) {
-      this.removeEventListener('keydown', this._introKeyHandler);
-      this._introKeyHandler = null;
-    }
-    this._clearOutro();
+    this._cleanupControllers();
 
     if (this._resizeRafId !== null) {
       cancelAnimationFrame(this._resizeRafId);
@@ -476,35 +450,10 @@ export class CloudimageSpotlight extends HTMLElement {
     this._failed = false;
     this._resolutionChecked = false;
     this._currentIndex = 0;
-    this._abortPendingFetch();
-    this._cancelPendingTransition();
-    if (this._cancelStagger) { this._cancelStagger(); this._cancelStagger = null; }
-    this._autoplayController?.destroy();
-    this._autoplayController = null;
-    this._deepLinkController?.detach();
-    this._deepLinkController = null;
-    this._responsiveController?.destroy();
-    this._responsiveController = null;
-    this._fullscreenController?.destroy();
-    this._fullscreenController = null;
-    this._fullscreenBtn?.remove();
-    this._fullscreenBtn = null;
-    this._playBtn?.remove();
-    this._playBtn = null;
-    this._isFullscreen = false;
-    this._introVisible = false;
-    this._resetting = false;
-    if (this._introFadeTimer !== null) { clearTimeout(this._introFadeTimer); this._introFadeTimer = null; }
-    if (this._outroFadeTimer !== null) { clearTimeout(this._outroFadeTimer); this._outroFadeTimer = null; }
-    this._introEl?.remove();
-    this._introEl = null;
-    if (this._introKeyHandler) {
-      this.removeEventListener('keydown', this._introKeyHandler);
-      this._introKeyHandler = null;
-    }
-    this._clearOutro();
-
     this._isPlaying = false;
+    this._cleanupControllers();
+    this._fullscreenBtn?.remove();
+    this._playBtn?.remove();
     this._cachedNavCallbacks = null;
 
     if (config) {
@@ -622,17 +571,7 @@ export class CloudimageSpotlight extends HTMLElement {
    */
   private _getDeepLinkIndex(config: SpotlightConfig): number {
     const hash = typeof window !== 'undefined' ? window.location.hash : '';
-    if (!hash) return -1;
-
-    const id = this.getAttribute('id');
-    let sceneId: string | null = null;
-
-    if (id && hash.startsWith(`#${id}:`)) {
-      sceneId = hash.slice(id.length + 2); // skip `#{id}:`
-    } else if (!id && hash.startsWith('#cis-')) {
-      sceneId = hash.slice(5); // skip `#cis-`
-    }
-
+    const sceneId = parseHash(hash, this.getAttribute('id'));
     if (!sceneId) return -1;
 
     const sceneIndex = config.scenes.findIndex((s) => s.id === sceneId);
@@ -644,13 +583,7 @@ export class CloudimageSpotlight extends HTMLElement {
 
   private _hasMatchingDeepLink(): boolean {
     const hash = typeof window !== 'undefined' ? window.location.hash : '';
-    if (!hash) return false;
-
-    const id = this.getAttribute('id');
-    if (id) {
-      return hash.startsWith(`#${id}:`);
-    }
-    return hash.startsWith('#cis-');
+    return parseHash(hash, this.getAttribute('id')) !== null;
   }
 
   private _setupLazyLoading(): void {
@@ -793,11 +726,14 @@ export class CloudimageSpotlight extends HTMLElement {
     const showProgress = this._getBoolAttr('show-progress', config.settings?.showProgress ?? true);
     const allowSkip = this._getBoolAttr('allow-skip', config.settings?.allowSkip ?? false);
 
+    const containerWidth = this._getContainerWidth();
+    this._lastRenderedWidth = roundWidth(containerWidth);
+
     renderSceneDOM(scene, this._navState.currentIndex, this._navState.totalScenes, {
       config,
       stage: this._stage,
-      containerWidth: this._getContainerWidth(),
-      dpr: typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1,
+      containerWidth,
+      dpr: this._getDpr(),
       strings: this._resolvedStrings,
       instanceId: this._instanceId,
       isRTL: this._isRTL(),
@@ -829,7 +765,7 @@ export class CloudimageSpotlight extends HTMLElement {
           this._navState!,
           config,
           this._getContainerWidth(),
-          typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1,
+          this._getDpr(),
         );
       },
       onImageError: (_scene, detail) => {
@@ -856,9 +792,6 @@ export class CloudimageSpotlight extends HTMLElement {
       },
     });
 
-    // Mark decorative overlay elements as aria-hidden
-    hideDecorativeElements(this._stage);
-
     // Re-evaluate responsive layout (annotation may have moved)
     this._responsiveController?.evaluate();
   }
@@ -877,7 +810,7 @@ export class CloudimageSpotlight extends HTMLElement {
     this._stage.textContent = '';
     const img = document.createElement('img');
     img.className = 'cis-image cis-image--base';
-    img.src = buildCiUrl(scene.image, config.ciToken, 'full', undefined, this._getContainerWidth(), typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1);
+    img.src = buildCiUrl(scene.image, config.ciToken, 'full', undefined, this._getContainerWidth(), this._getDpr());
     img.alt = scene.title || '';
     img.draggable = false;
     this._stage.appendChild(img);
@@ -1271,7 +1204,7 @@ export class CloudimageSpotlight extends HTMLElement {
     this._stage.textContent = '';
     const img = document.createElement('img');
     img.className = 'cis-image cis-image--base';
-    img.src = buildCiUrl(scene.image, config.ciToken, 'full', undefined, this._getContainerWidth(), typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1);
+    img.src = buildCiUrl(scene.image, config.ciToken, 'full', undefined, this._getContainerWidth(), this._getDpr());
     img.alt = scene.title || '';
     img.draggable = false;
     this._stage.appendChild(img);
@@ -1282,6 +1215,10 @@ export class CloudimageSpotlight extends HTMLElement {
 
   private _getContainerWidth(): number {
     return this._root?.clientWidth || 1200;
+  }
+
+  private _getDpr(): number {
+    return typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1;
   }
 
   /**
@@ -1639,6 +1576,10 @@ export class CloudimageSpotlight extends HTMLElement {
     this._responsiveController?.evaluate();
     // Skip re-render during intro, outro, or reset — the overlay is independent of scene content
     if (this._introVisible || this._outroVisible || this._resetting) return;
+    // Skip re-render when the rounded CDN width hasn't changed (avoids
+    // unnecessary DOM teardown/rebuild during continuous resize)
+    const newWidth = roundWidth(this._getContainerWidth());
+    if (newWidth === this._lastRenderedWidth) return;
     // Re-render current scene with new container width
     this._renderCurrentScene(this._config);
   }
@@ -1673,6 +1614,37 @@ export class CloudimageSpotlight extends HTMLElement {
       cancelAnimationFrame(this._resizeRafId);
       this._resizeRafId = null;
     }
+  }
+
+  /** Shared cleanup for controllers, timers, and screen overlays. Used by destroy() and reload(). */
+  private _cleanupControllers(): void {
+    this._abortPendingFetch();
+    this._cancelPendingTransition();
+    if (this._cancelStagger) { this._cancelStagger(); this._cancelStagger = null; }
+    this._autoplayController?.destroy();
+    this._autoplayController = null;
+    this._keyboardController?.detach();
+    this._keyboardController = null;
+    this._deepLinkController?.detach();
+    this._deepLinkController = null;
+    this._responsiveController?.destroy();
+    this._responsiveController = null;
+    this._fullscreenController?.destroy();
+    this._fullscreenController = null;
+    this._fullscreenBtn = null;
+    this._playBtn = null;
+    this._isFullscreen = false;
+    this._introVisible = false;
+    this._resetting = false;
+    if (this._introFadeTimer !== null) { clearTimeout(this._introFadeTimer); this._introFadeTimer = null; }
+    if (this._outroFadeTimer !== null) { clearTimeout(this._outroFadeTimer); this._outroFadeTimer = null; }
+    this._introEl?.remove();
+    this._introEl = null;
+    if (this._introKeyHandler) {
+      this.removeEventListener('keydown', this._introKeyHandler);
+      this._introKeyHandler = null;
+    }
+    this._clearOutro();
   }
 
   private _abortPendingFetch(): void {

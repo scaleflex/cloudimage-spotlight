@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeAll, afterEach } from 'vitest';
 import { CloudimageSpotlight } from '../src/spotlight-element';
 import type { SpotlightConfig } from '../src/types';
-import { applyStagger, clearStagger } from '../src/scene-renderer';
+import { applyStagger } from '../src/scene-renderer';
 
 const TAG = 'cis-intro-stagger-test';
 beforeAll(() => {
@@ -124,19 +124,11 @@ describe('staggered scene entry', () => {
   });
 });
 
-describe('applyStagger / clearStagger helpers', () => {
+describe('applyStagger helper', () => {
   it('applyStagger adds cis-scene-stagger class', () => {
     const div = document.createElement('div');
     applyStagger(div);
     expect(div.classList.contains('cis-scene-stagger')).toBe(true);
-  });
-
-  it('clearStagger removes both stagger classes', () => {
-    const div = document.createElement('div');
-    div.classList.add('cis-scene-stagger', 'cis-scene-stagger-active');
-    clearStagger(div);
-    expect(div.classList.contains('cis-scene-stagger')).toBe(false);
-    expect(div.classList.contains('cis-scene-stagger-active')).toBe(false);
   });
 });
 

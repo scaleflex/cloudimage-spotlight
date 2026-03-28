@@ -38,12 +38,7 @@ export function buildCiUrl(
       if (!regions || regions.length === 0 || !naturalWidth || !naturalHeight) {
         return buildCiUrl(originUrl, ciToken, 'full', undefined, containerWidth, dpr);
       }
-      const bounds = getRegionsBoundingBox(regions);
-      const pad = zoomPadding ?? bounds.padding;
-      const x1 = Math.max(0, bounds.tl_x - pad);
-      const y1 = Math.max(0, bounds.tl_y - pad);
-      const x2 = Math.min(1, bounds.br_x + pad);
-      const y2 = Math.min(1, bounds.br_y + pad);
+      const { x1, y1, x2, y2 } = getPaddedCropBounds(regions, zoomPadding);
       const tlX = Math.round(x1 * naturalWidth);
       const tlY = Math.round(y1 * naturalHeight);
       const brX = Math.round(x2 * naturalWidth);
@@ -79,6 +74,24 @@ export function getRegionsBoundingBox(regions: SpotlightRegion[]): BoundingBox {
     br_x: Math.max(...regions.map((r) => r.br_x)),
     br_y: Math.max(...regions.map((r) => r.br_y)),
     padding: Math.max(...regions.map((r) => r.padding ?? 0.02)),
+  };
+}
+
+/**
+ * Compute the padded bounding box for a set of regions, clamped to 0–1.
+ * Shared by buildCiUrl (zoomed), remapRegionsForZoom, and computeZoomTransform.
+ */
+export function getPaddedCropBounds(
+  regions: SpotlightRegion[],
+  zoomPadding?: number,
+): { x1: number; y1: number; x2: number; y2: number } {
+  const bounds = getRegionsBoundingBox(regions);
+  const pad = zoomPadding ?? bounds.padding;
+  return {
+    x1: Math.max(0, bounds.tl_x - pad),
+    y1: Math.max(0, bounds.tl_y - pad),
+    x2: Math.min(1, bounds.br_x + pad),
+    y2: Math.min(1, bounds.br_y + pad),
   };
 }
 

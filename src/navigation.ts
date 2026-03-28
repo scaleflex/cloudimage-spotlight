@@ -140,37 +140,31 @@ function preloadScene(
   settingsBlurRadius?: number,
 ): void {
   const fullUrl = buildCiUrl(scene.image, ciToken, 'full', undefined, containerWidth, dpr);
-  const urls = [fullUrl];
 
   // Preload blurred variant if scene or settings use blur mask
   const maskStyle = scene.maskStyle ?? settingsMaskStyle;
   if (maskStyle === 'blur') {
-    urls.push(buildCiUrl(scene.image, ciToken, 'blurred', undefined, containerWidth, dpr, settingsBlurRadius));
-  }
-
-  for (const url of urls) {
-    const img = new Image();
-    img.src = url;
-    img.addEventListener('load', () => {}, { once: true });
-    img.addEventListener('error', () => {}, { once: true });
+    const blurImg = new Image();
+    blurImg.src = buildCiUrl(scene.image, ciToken, 'blurred', undefined, containerWidth, dpr, settingsBlurRadius);
   }
 
   // Zoomed variant requires natural dimensions (pixel coords). Two-phase:
   // load full image first → use naturalWidth/Height → build & preload zoomed URL.
+  // The full image is also preloaded as a side effect of this first fetch.
   if (scene.zoom && scene.regions?.length) {
     const fullImg = new Image();
     fullImg.src = fullUrl;
     fullImg.addEventListener('load', () => {
-      const zoomedUrl = buildCiUrl(
+      const zoomedImg = new Image();
+      zoomedImg.src = buildCiUrl(
         scene.image, ciToken, 'zoomed', scene.regions,
         containerWidth, dpr, undefined,
         fullImg.naturalWidth, fullImg.naturalHeight,
       );
-      const zoomedImg = new Image();
-      zoomedImg.src = zoomedUrl;
-      zoomedImg.addEventListener('load', () => {}, { once: true });
-      zoomedImg.addEventListener('error', () => {}, { once: true });
     }, { once: true });
-    fullImg.addEventListener('error', () => {}, { once: true });
+  } else {
+    // Non-zoom: just preload the full image
+    const img = new Image();
+    img.src = fullUrl;
   }
 }

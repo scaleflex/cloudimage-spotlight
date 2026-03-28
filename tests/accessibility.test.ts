@@ -1,7 +1,5 @@
 import { describe, it, expect, vi, beforeAll, afterEach } from 'vitest';
 import { CloudimageSpotlight } from '../src/spotlight-element';
-import { hideDecorativeElements, setupRootARIA } from '../src/a11y';
-import { resolveStrings } from '../src/i18n';
 import type { SpotlightConfig } from '../src/types';
 
 const TAG = 'cis-a11y-test';
@@ -53,69 +51,6 @@ async function mountAndWait(el: CloudimageSpotlight): Promise<void> {
     expect(el.shadowRoot!.querySelector('.cis-annotation')).not.toBeNull();
   });
 }
-
-// ---------------------------------------------------------------------------
-// a11y module unit tests
-// ---------------------------------------------------------------------------
-
-describe('a11y module', () => {
-  describe('setupRootARIA', () => {
-    it('sets role, aria-roledescription, and aria-label', () => {
-      const root = document.createElement('div');
-      const strings = resolveStrings();
-      setupRootARIA(root, strings, 'My Tour');
-
-      expect(root.getAttribute('role')).toBe('region');
-      expect(root.getAttribute('aria-roledescription')).toBe('Interactive tour');
-      expect(root.getAttribute('aria-label')).toBe('My Tour');
-    });
-
-    it('skips aria-label when title is undefined', () => {
-      const root = document.createElement('div');
-      const strings = resolveStrings();
-      setupRootARIA(root, strings);
-
-      expect(root.getAttribute('role')).toBe('region');
-      expect(root.hasAttribute('aria-label')).toBe(false);
-    });
-  });
-
-  describe('hideDecorativeElements', () => {
-    it('marks all decorative elements as aria-hidden', () => {
-      const stage = document.createElement('div');
-      const mask = document.createElement('div');
-      mask.className = 'cis-mask';
-      const highlight = document.createElement('div');
-      highlight.className = 'cis-region-highlight';
-      const badge = document.createElement('span');
-      badge.className = 'cis-badge';
-      const zoomed = document.createElement('img');
-      zoomed.className = 'cis-image--zoomed';
-      const blurred = document.createElement('img');
-      blurred.className = 'cis-image--blurred';
-
-      stage.appendChild(mask);
-      stage.appendChild(highlight);
-      stage.appendChild(badge);
-      stage.appendChild(zoomed);
-      stage.appendChild(blurred);
-
-      hideDecorativeElements(stage);
-
-      expect(mask.getAttribute('aria-hidden')).toBe('true');
-      expect(highlight.getAttribute('aria-hidden')).toBe('true');
-      expect(badge.getAttribute('aria-hidden')).toBe('true');
-      expect(zoomed.getAttribute('aria-hidden')).toBe('true');
-      expect(blurred.getAttribute('aria-hidden')).toBe('true');
-    });
-
-    it('is safe when no decorative elements exist', () => {
-      const stage = document.createElement('div');
-      expect(() => hideDecorativeElements(stage)).not.toThrow();
-    });
-  });
-
-});
 
 // ---------------------------------------------------------------------------
 // Integration: ARIA attributes on the live component

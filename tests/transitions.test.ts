@@ -2,7 +2,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import {
   runTransition,
   prefersReducedMotion,
-  getTransitionDuration,
   TRANSITION_ACTIVE_CLASS,
 } from '../src/transitions';
 
@@ -75,30 +74,6 @@ describe('transitions', () => {
     it('returns false when matchMedia reports no preference', () => {
       mockMatchMedia(false);
       expect(prefersReducedMotion()).toBe(false);
-    });
-  });
-
-  // -------------------------------------------------------------------------
-  // getTransitionDuration
-  // -------------------------------------------------------------------------
-
-  describe('getTransitionDuration', () => {
-    it('returns 300 for fade', () => {
-      expect(getTransitionDuration('fade', false)).toBe(300);
-    });
-
-    it('returns 350 for slide', () => {
-      expect(getTransitionDuration('slide', false)).toBe(350);
-    });
-
-    it('returns 400 for zoom', () => {
-      expect(getTransitionDuration('zoom', false)).toBe(400);
-    });
-
-    it('returns 0 for any type when reduced motion', () => {
-      expect(getTransitionDuration('fade', true)).toBe(0);
-      expect(getTransitionDuration('slide', true)).toBe(0);
-      expect(getTransitionDuration('zoom', true)).toBe(0);
     });
   });
 

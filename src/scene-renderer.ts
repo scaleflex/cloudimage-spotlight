@@ -1,5 +1,5 @@
 import type { SpotlightConfig, SpotlightScene, CISErrorDetail, CISCTAClickDetail, SpotlightRegion } from './types';
-import { buildCiUrl, getRegionsBoundingBox } from './url-builder';
+import { buildCiUrl, getPaddedCropBounds } from './url-builder';
 import { interpolate } from './i18n';
 import type { CISStrings } from './types';
 import { createMask } from './svg-mask';
@@ -131,7 +131,7 @@ export function renderScene(
             });
             let revealed = false;
             const reveal = () => {
-              if (revealed) return;
+              if (revealed || !sharpImg.isConnected) return;
               revealed = true;
               sharpImg.style.transition = 'opacity 300ms ease';
               sharpImg.style.opacity = '1';
@@ -410,13 +410,6 @@ export function applyStagger(stage: HTMLElement): () => void {
   return () => {};
 }
 
-/**
- * Remove stagger classes from a stage (cleanup after animation completes).
- */
-export function clearStagger(stage: HTMLElement): void {
-  stage.classList.remove('cis-scene-stagger', 'cis-scene-stagger-active');
-}
-
 /** Max width the CDN accepts (values above ~10000 return errors). */
 const CDN_MAX_WIDTH = 9999;
 
@@ -466,12 +459,8 @@ export function remapRegionsForZoom(
   naturalHeight?: number,
   zoomPadding?: number,
 ): SpotlightRegion[] {
-  const bounds = getRegionsBoundingBox(regions);
-  const pad = zoomPadding ?? bounds.padding;
-  let x1 = Math.max(0, bounds.tl_x - pad);
-  let y1 = Math.max(0, bounds.tl_y - pad);
-  let x2 = Math.min(1, bounds.br_x + pad);
-  let y2 = Math.min(1, bounds.br_y + pad);
+  const crop = getPaddedCropBounds(regions, zoomPadding);
+  let { x1, y1, x2, y2 } = crop;
 
   // Snap to the same pixel grid the CDN crop uses
   if (naturalWidth && naturalHeight) {
@@ -510,12 +499,7 @@ export function computeZoomTransform(
   }
 
   const contentRect = computeImageContentRect(img.naturalWidth, img.naturalHeight, stageW, stageH);
-  const bounds = getRegionsBoundingBox(regions);
-  const pad = zoomPadding ?? bounds.padding;
-  const x1 = Math.max(0, bounds.tl_x - pad);
-  const y1 = Math.max(0, bounds.tl_y - pad);
-  const x2 = Math.min(1, bounds.br_x + pad);
-  const y2 = Math.min(1, bounds.br_y + pad);
+  const { x1, y1, x2, y2 } = getPaddedCropBounds(regions, zoomPadding);
 
   // Crop region in stage pixel coordinates
   const cropLeft = contentRect.left + x1 * contentRect.width;

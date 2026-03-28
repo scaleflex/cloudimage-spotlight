@@ -38,14 +38,6 @@ export function prefersReducedMotion(): boolean {
 }
 
 /**
- * Get the CSS duration for a transition type, or 0 for instant cut.
- */
-export function getTransitionDuration(type: TransitionType, reducedMotion: boolean): number {
-  if (reducedMotion) return 0;
-  return DURATIONS[type];
-}
-
-/**
  * Run a scene transition on the stage element.
  *
  * The strategy is a class-swap approach:

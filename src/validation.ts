@@ -1,22 +1,4 @@
-import { CISError } from './types';
-
 const ALLOWED_SCHEMES = ['https://', 'http://'];
-
-/**
- * Validate that a scene has a valid image URL and ciToken.
- * Throws CISError if either is missing.
- */
-export function validateSceneImage(image: string, ciToken: string): void {
-  if (!image) {
-    throw new CISError('MISSING_IMAGE', "Scene is missing an 'image' field.");
-  }
-  if (!ciToken) {
-    throw new CISError(
-      'MISSING_TOKEN',
-      "'ciToken' is required. Set it in the config JSON or via the ci-token attribute.",
-    );
-  }
-}
 
 /**
  * Sanitize a CTA href value.

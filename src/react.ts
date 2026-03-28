@@ -92,7 +92,9 @@ function useStableRef<T>(value: T): { current: T } {
 // ---------------------------------------------------------------------------
 
 function boolAttr(value: boolean | undefined): string | undefined {
-  return value === true ? '' : undefined;
+  if (value === true) return '';
+  if (value === false) return 'false';
+  return undefined;
 }
 
 // ---------------------------------------------------------------------------

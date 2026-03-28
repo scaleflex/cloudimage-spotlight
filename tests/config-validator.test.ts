@@ -1,38 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { validateSceneImage, sanitizeCtaHref } from '../src/validation';
-import { CISError } from '../src/types';
-
-// ---------------------------------------------------------------------------
-// validateSceneImage
-// ---------------------------------------------------------------------------
-
-describe('validateSceneImage', () => {
-  it('passes with valid image and token', () => {
-    expect(() =>
-      validateSceneImage('https://example.com/img.jpg', 'demo'),
-    ).not.toThrow();
-  });
-
-  it('throws MISSING_IMAGE when image is empty', () => {
-    try {
-      validateSceneImage('', 'demo');
-      expect.unreachable();
-    } catch (e) {
-      expect(e).toBeInstanceOf(CISError);
-      expect((e as CISError).code).toBe('MISSING_IMAGE');
-    }
-  });
-
-  it('throws MISSING_TOKEN when token is empty', () => {
-    try {
-      validateSceneImage('https://example.com/img.jpg', '');
-      expect.unreachable();
-    } catch (e) {
-      expect(e).toBeInstanceOf(CISError);
-      expect((e as CISError).code).toBe('MISSING_TOKEN');
-    }
-  });
-});
+import { sanitizeCtaHref } from '../src/validation';
 
 // ---------------------------------------------------------------------------
 // sanitizeCtaHref
