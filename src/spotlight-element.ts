@@ -610,6 +610,14 @@ export class CloudimageSpotlight extends HTMLElement {
   // ---------------------------------------------------------------------------
 
   private _renderConfig(config: SpotlightConfig): void {
+    // Bridge config values → CSS custom properties on the host element
+    if (config.aspectRatio) {
+      const cssRatio = config.aspectRatio.replace(':', ' / ');
+      this.style.setProperty('--cis-aspect-ratio', cssRatio);
+    } else {
+      this.style.removeProperty('--cis-aspect-ratio');
+    }
+
     this._navState = createNavigationState(config);
     this._currentIndex = 0;
     this._readyDispatched = false;

@@ -44,6 +44,7 @@ describe('Type definitions compile correctly', () => {
       version: '1.0',
       ciToken: 'demo',
       title: 'Feature Tour',
+      aspectRatio: '16:9',
       settings: {
         transition: 'fade',
         autoplay: false,

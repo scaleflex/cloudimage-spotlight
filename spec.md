@@ -233,6 +233,7 @@ interface SpotlightConfig {
   version: "1.0";
   ciToken: string;                    // Cloudimage token
   title?: string;                     // Experience title (used in aria-label)
+  aspectRatio?: string;               // Display aspect ratio, e.g. "16:9". Overrides --cis-aspect-ratio CSS var.
   settings?: SpotlightSettings;
   scenes: SpotlightScene[];
 }
@@ -873,7 +874,7 @@ cloudimage-spotlight {
   --cis-max-width: 1200px;
   --cis-aspect-ratio: 16/9;         /* Container aspect ratio */
   --cis-border-radius: 8px;
-  --cis-object-fit: contain;               /* "contain" | "cover" | "fill" */
+  --cis-object-fit: contain;               /* "contain" | "cover" */
 
   /* Mask */
   --cis-mask-color: oklch(0 0 0);

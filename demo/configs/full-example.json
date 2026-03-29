@@ -2,20 +2,12 @@
   "version": "1.0",
   "ciToken": "scaleflex",
   "title": "Create an API Key",
+  "aspectRatio": "16:9",
   "settings": {
     "transition": "fade",
     "maskStyle": "color",
     "maskOpacity": 0.65,
-    "allowSkip": true,
-    "intro": {
-      "title": "Create an API Key",
-      "description": "Follow this quick 5-step guide to generate your first API key for the Asset Picker."
-    },
-    "outro": {
-      "title": "You're all set!",
-      "description": "Your API key is ready. Jump to any step or restart the tour.",
-      "sceneNav": "list"
-    }
+    "allowSkip": true
   },
   "scenes": [
     {

@@ -16,6 +16,7 @@ const page: Page = {
   version: "1.0";
   ciToken: string;                    // Cloudimage token
   title?: string;                     // Experience title (used in aria-label)
+  aspectRatio?: string;               // Display aspect ratio, e.g. "16:9". Overrides --cis-aspect-ratio.
   settings?: SpotlightSettings;
   scenes: SpotlightScene[];
 }`)}
@@ -116,6 +117,7 @@ interface SpotlightCTA {
   "version": "1.0",
   "ciToken": "your-token",
   "title": "Asset Library Feature Tour",
+  "aspectRatio": "16:9",
   "settings": {
     "transition": "fade",
     "showProgress": true,

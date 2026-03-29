@@ -6,6 +6,8 @@ export interface SpotlightConfig {
   version: '1.0';
   ciToken?: string;
   title?: string;
+  /** Display aspect ratio, e.g. "16:9", "4:3", "1:1". Overrides `--cis-aspect-ratio` CSS var. */
+  aspectRatio?: string;
   settings?: SpotlightSettings;
   scenes: SpotlightScene[];
 }

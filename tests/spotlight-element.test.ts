@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeAll, beforeEach, afterEach } from 'vitest';
 import { CloudimageSpotlight } from '../src/spotlight-element';
+import type { SpotlightConfig } from '../src/types';
 
 // Register once for all tests
 beforeAll(() => {
@@ -353,6 +354,69 @@ describe('CloudimageSpotlight element', () => {
     it('accepts partial overrides', () => {
       el.strings = { prev: 'Précédent' };
       expect(el.strings).toEqual({ prev: 'Précédent' });
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // Config → CSS custom property bridging (aspectRatio)
+  // ---------------------------------------------------------------------------
+
+  describe('config CSS bridging', () => {
+    function makeConfig(overrides?: Partial<SpotlightConfig>): SpotlightConfig {
+      return {
+        version: '1.0',
+        ciToken: 'demo',
+        scenes: [{ id: 's1', image: 'a.jpg', title: 'Scene 1' }],
+        ...overrides,
+      };
+    }
+
+    async function mountEager(
+      element: CloudimageSpotlight,
+      config: SpotlightConfig,
+    ): Promise<void> {
+      element.setAttribute('eager', '');
+      element.config = config;
+      document.body.appendChild(element);
+      await vi.waitFor(() => {
+        expect(element.shadowRoot!.querySelector('.cis-root')).not.toBeNull();
+      });
+    }
+
+    it('sets --cis-aspect-ratio from config.aspectRatio', async () => {
+      await mountEager(el, makeConfig({ aspectRatio: '16:9' }));
+      expect(el.style.getPropertyValue('--cis-aspect-ratio')).toBe('16 / 9');
+    });
+
+    it('converts colon to CSS slash syntax', async () => {
+      await mountEager(el, makeConfig({ aspectRatio: '4:3' }));
+      expect(el.style.getPropertyValue('--cis-aspect-ratio')).toBe('4 / 3');
+    });
+
+    it('handles 1:1 aspect ratio', async () => {
+      await mountEager(el, makeConfig({ aspectRatio: '1:1' }));
+      expect(el.style.getPropertyValue('--cis-aspect-ratio')).toBe('1 / 1');
+    });
+
+    it('does not set --cis-aspect-ratio when absent', async () => {
+      await mountEager(el, makeConfig());
+      expect(el.style.getPropertyValue('--cis-aspect-ratio')).toBe('');
+    });
+
+    it('clears --cis-aspect-ratio on reload without aspectRatio', async () => {
+      await mountEager(el, makeConfig({ aspectRatio: '16:9' }));
+      expect(el.style.getPropertyValue('--cis-aspect-ratio')).toBe('16 / 9');
+
+      await el.reload(makeConfig());
+      expect(el.style.getPropertyValue('--cis-aspect-ratio')).toBe('');
+    });
+
+    it('updates --cis-aspect-ratio on reload with new value', async () => {
+      await mountEager(el, makeConfig({ aspectRatio: '16:9' }));
+      expect(el.style.getPropertyValue('--cis-aspect-ratio')).toBe('16 / 9');
+
+      await el.reload(makeConfig({ aspectRatio: '4:3' }));
+      expect(el.style.getPropertyValue('--cis-aspect-ratio')).toBe('4 / 3');
     });
   });
 });

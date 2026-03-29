@@ -25,12 +25,13 @@ const page: Page = {
         <h2>CSS custom properties</h2>
 
         <h3>Layout</h3>
+        <p>The <code>aspectRatio</code> config field overrides <code>--cis-aspect-ratio</code>.</p>
         ${code('css', `cloudimage-spotlight {
   --cis-width: 100%;
   --cis-max-width: 1200px;
   --cis-aspect-ratio: 16/9;
   --cis-border-radius: 8px;
-  --cis-object-fit: contain;       /* contain | cover | fill */
+  --cis-object-fit: contain;       /* contain | cover */
 }`)}
 
         <h3>Mask overlay</h3>

@@ -110,6 +110,7 @@ interface SpotlightConfig {
   version: "1.0";
   ciToken: string;
   title?: string;
+  aspectRatio?: string;                          // e.g. "16:9", "4:3"
   settings?: {
     transition?: "fade" | "slide" | "zoom";
     autoplay?: boolean;
