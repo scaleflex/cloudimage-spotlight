@@ -188,6 +188,7 @@
 .cis-annotation {
   position: absolute;
   z-index: calc(var(--cis-z-base, 1) + 4);
+  width: 100%;
   max-width: var(--cis-card-max-width, 340px);
   padding: var(--cis-card-padding, 16px 20px);
   background: var(--cis-card-bg, oklch(0.13 0.027 261.692 / 0.92));
