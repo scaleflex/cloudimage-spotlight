@@ -620,19 +620,36 @@
 
 /* ---------------------------------------------------------------------------
    Scene transitions (fade / slide / zoom)
+   Dual-layer: outgoing + incoming layers overlap for smooth transitions.
    --------------------------------------------------------------------------- */
 
+/* Transition layers fill the stage and stack via z-index */
+.cis-transition-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.cis-transition-layer--outgoing {
+  z-index: 1;
+}
+
+.cis-transition-layer--incoming {
+  z-index: 2;
+}
+
 /* --- Fade transition --- */
-/* Compound selectors (no space) — both classes are on the stage element. */
+/* "Over-dissolve": outgoing stays fully visible while incoming fades in on
+   top. This avoids the ghostly double-exposure that a symmetric crossfade
+   produces on photographic images at the midpoint. */
 
 .cis-transition-fade.cis-scene-exit {
   opacity: 1;
 }
 
-.cis-transition-fade.cis-scene-exit-active {
-  opacity: 0;
-  transition: opacity var(--cis-transition-duration, 300ms) var(--cis-transition-easing, ease);
-}
+/* No exit-active rule — outgoing stays at opacity 1, hidden once incoming
+   is fully opaque. The layer is removed during cleanup. */
 
 .cis-transition-fade.cis-scene-enter {
   opacity: 0;
@@ -680,14 +697,14 @@
 
 .cis-transition-zoom.cis-scene-exit-active {
   opacity: 0;
-  transform: scale(0.9);
+  transform: scale(1.1);
   transition: opacity 400ms var(--cis-transition-easing, ease),
               transform 400ms var(--cis-transition-easing, ease);
 }
 
 .cis-transition-zoom.cis-scene-enter {
   opacity: 0;
-  transform: scale(1.1);
+  transform: scale(0.9);
 }
 
 .cis-transition-zoom.cis-scene-enter-active {

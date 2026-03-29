@@ -36,6 +36,8 @@ export interface SceneRenderContext {
   allowSkip: boolean;
   /** When true, overlays start hidden (stagger class applied immediately). */
   staggerEntry: boolean;
+  /** True when rendering inside a transition layer (images fade in on load). */
+  isTransition?: boolean;
   onImageLoad: (img: HTMLImageElement, scene: SpotlightScene) => void;
   onImageError: (scene: SpotlightScene, detail: CISErrorDetail) => void;
   onCtaClick: (detail: CISCTAClickDetail) => void;
@@ -96,7 +98,14 @@ export function renderScene(
     blurredImg.alt = '';
     blurredImg.setAttribute('aria-hidden', 'true');
     blurredImg.draggable = false;
+    // During transitions without zoom, start hidden and snap to visible on
+    // load. The layer-level fade handles the smooth transition.
+    if (ctx.isTransition && !shouldAnimateZoomBlur) {
+      blurredImg.style.opacity = '0';
+      blurredImg.addEventListener('load', () => { blurredImg.style.opacity = '1'; }, { once: true });
+    }
     blurredImg.addEventListener('error', () => {
+      if (ctx.isTransition && !shouldAnimateZoomBlur) blurredImg.style.opacity = '1';
       ctx.onImageError(scene, { message: `Failed to load blurred image for scene "${scene.id}"`, code: 'IMAGE_LOAD_FAILED' });
     });
     stage.appendChild(blurredImg);
@@ -214,10 +223,13 @@ export function renderScene(
           zoomFinished = true;
           positionOverlayWrapper(overlayWrapper, zoomedImg, stage);
           zoomedImg.classList.add('cis-image--visible');
+
           // Block stagger animations — finishZoom manages the reveal directly.
           cancelStaggerAnim(overlayWrapper);
+          // Ensure the browser sees the current opacity (0) before transitioning.
+          // Without this, setting transition + opacity in the same frame can
+          // cause the browser to skip the animation (no detectable change).
           overlayWrapper.style.transition = 'opacity 300ms ease';
-          overlayWrapper.style.opacity = '1';
 
           // Block stagger on annotation BEFORE appending to prevent flash.
           cancelStaggerAnim(annotationCard);
@@ -233,7 +245,10 @@ export function renderScene(
             overlayRegions, isRTL, ctx.reservedRects, zoomedContentRect,
           );
           applyAnnotationPosition(annotationCard, pos, updatedStageRect, overlayRegions, zoomedContentRect);
+          // Reveal overlay + annotation in the next frame so the browser
+          // processes the initial opacity: 0 state before transitioning.
           requestAnimationFrame(() => {
+            overlayWrapper.style.opacity = '1';
             annotationCard.style.transition = 'opacity 300ms ease';
             annotationCard.style.opacity = '1';
           });
@@ -435,8 +450,24 @@ function appendBaseImage(
   img.alt = generateAltText(scene, index, totalScenes, ctx.strings);
   img.draggable = false;
 
-  img.addEventListener('load', () => ctx.onImageLoad(img, scene));
+  // During transitions, non-zoom images start hidden and snap to visible on
+  // load. The layer-level fade handles the smooth transition; the image just
+  // needs to avoid showing a blank area while still loading.
+  // Zoom images (originalResolution) must stay visible for the zoom animation.
+  if (ctx.isTransition && !originalResolution) {
+    img.style.opacity = '0';
+  }
+
+  img.addEventListener('load', () => {
+    if (ctx.isTransition && !originalResolution) {
+      img.style.opacity = '1';
+    }
+    ctx.onImageLoad(img, scene);
+  });
   img.addEventListener('error', () => {
+    if (ctx.isTransition && !originalResolution) {
+      img.style.opacity = '1';
+    }
     ctx.onImageError(scene, { message: `Failed to load image for scene "${scene.id}"`, code: 'IMAGE_LOAD_FAILED' });
     renderImageFallback(stage, scene);
   });

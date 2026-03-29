@@ -1,6 +1,7 @@
 // ---------------------------------------------------------------------------
 // Scene transition engine
-// CSS-class-swap transitions via requestAnimationFrame.
+// Dual-layer transitions: outgoing and incoming scenes overlap for the full
+// duration, producing smooth crossfade / slide / zoom effects.
 // ---------------------------------------------------------------------------
 
 export type TransitionType = 'fade' | 'slide' | 'zoom';
@@ -10,7 +11,8 @@ export interface TransitionOptions {
   type: TransitionType;
   direction: TransitionDirection;
   reducedMotion: boolean;
-  onMidpoint: () => void;
+  /** Called to render new scene content into the incoming layer. */
+  onSwap: (incomingLayer: HTMLDivElement) => void;
   onComplete: () => void;
 }
 
@@ -24,11 +26,6 @@ const DURATIONS: Record<TransitionType, number> = {
 /** CSS class applied during transition (suppresses ResizeObserver rebuilds). */
 export const TRANSITION_ACTIVE_CLASS = 'cis-transitioning';
 
-/** CSS classes used by the transition engine. */
-const EXIT_CLASS = 'cis-scene-exit';
-const ENTER_CLASS = 'cis-scene-enter';
-const ACTIVE_SUFFIX = '-active';
-
 /**
  * Check if the user prefers reduced motion.
  */
@@ -38,67 +35,80 @@ export function prefersReducedMotion(): boolean {
 }
 
 /**
- * Run a scene transition on the stage element.
+ * Run a dual-layer scene transition on the stage element.
  *
- * The strategy is a class-swap approach:
- * 1. Add exit classes to the stage (outgoing scene starts leaving)
- * 2. At the midpoint, call onMidpoint() to swap DOM content
- * 3. Add enter classes (incoming scene starts appearing)
- * 4. On completion, clean up all transition classes
- *
- * For reduced motion: instant cut (onMidpoint + onComplete called synchronously).
+ * Strategy:
+ * 1. Wrap existing stage children into an "outgoing" layer.
+ * 2. Create an "incoming" layer and call onSwap() to populate it.
+ * 3. Both layers animate simultaneously for the full duration.
+ * 4. On completion, remove the outgoing layer and strip animation classes
+ *    from the incoming layer, leaving it as a positioned wrapper. This
+ *    preserves closure references from renderSceneDOM (zoom, annotation
+ *    appending, etc.) which target the layer as their container.
  */
 export function runTransition(
   stage: HTMLElement,
   root: HTMLElement,
   options: TransitionOptions,
 ): (() => void) | undefined {
-  const { type, direction, reducedMotion, onMidpoint, onComplete } = options;
+  const { type, direction, reducedMotion, onSwap, onComplete } = options;
 
-  // Instant cut for reduced motion
+  // Instant cut for reduced motion — render directly into the stage.
+  // No wrapper layer, so closures from renderSceneDOM reference the real
+  // stage and remain valid for deferred operations (zoom, annotation append).
   if (reducedMotion) {
-    onMidpoint();
+    stage.textContent = '';
+    onSwap(stage as HTMLDivElement);
     onComplete();
     return undefined;
   }
 
   const duration = DURATIONS[type];
-  const halfDuration = duration / 2;
   const dirClass = `cis-transition-${type}`;
   const dirModifier = direction === 'backward' ? 'cis-transition--backward' : '';
 
   // Mark root as transitioning (suppresses ResizeObserver rebuilds)
   root.classList.add(TRANSITION_ACTIVE_CLASS);
 
-  // Add direction context classes
-  stage.classList.add(dirClass);
-  if (dirModifier) {
-    stage.classList.add(dirModifier);
+  // --- Step 1: Wrap existing content into outgoing layer ---
+  const outgoing = document.createElement('div');
+  outgoing.className = 'cis-transition-layer cis-transition-layer--outgoing';
+  while (stage.firstChild) {
+    outgoing.appendChild(stage.firstChild);
   }
+  stage.appendChild(outgoing);
 
-  // Phase 1: Exit
-  stage.classList.add(EXIT_CLASS);
-  let rafId = requestAnimationFrame(() => {
-    stage.classList.add(`${EXIT_CLASS}${ACTIVE_SUFFIX}`);
-  });
+  // --- Step 2: Create incoming layer with enter classes already applied ---
+  // Classes must be set BEFORE onSwap so the layer starts hidden (opacity: 0
+  // for fade/zoom, off-screen for slide). Without this, the incoming layer
+  // is briefly visible at full opacity on top of the outgoing layer.
+  const incoming = document.createElement('div');
+  incoming.className = 'cis-transition-layer cis-transition-layer--incoming';
+  incoming.classList.add(dirClass, 'cis-scene-enter');
+  if (dirModifier) incoming.classList.add(dirModifier);
+  stage.appendChild(incoming);
+
+  // Render new scene into the (hidden) incoming layer
+  onSwap(incoming);
+
+  // --- Step 3: Add exit classes to outgoing layer ---
+  outgoing.classList.add(dirClass, 'cis-scene-exit');
+  if (dirModifier) outgoing.classList.add(dirModifier);
+
+  // Force layout so initial states are applied before triggering transitions
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  outgoing.offsetHeight;
 
   let cancelled = false;
 
-  // Phase 2: Midpoint — swap content
-  const midTimer = setTimeout(() => {
+  // Trigger the active (animated) state on next frame
+  const rafId = requestAnimationFrame(() => {
     if (cancelled) return;
-    onMidpoint();
+    outgoing.classList.add('cis-scene-exit-active');
+    incoming.classList.add('cis-scene-enter-active');
+  });
 
-    // Phase 3: Enter
-    stage.classList.remove(EXIT_CLASS, `${EXIT_CLASS}${ACTIVE_SUFFIX}`);
-    stage.classList.add(ENTER_CLASS);
-    rafId = requestAnimationFrame(() => {
-      if (cancelled) return;
-      stage.classList.add(`${ENTER_CLASS}${ACTIVE_SUFFIX}`);
-    });
-  }, halfDuration);
-
-  // Phase 4: Complete — clean up
+  // --- Step 4: Clean up after animation completes ---
   const endTimer = setTimeout(() => {
     if (cancelled) return;
     cleanup();
@@ -106,15 +116,20 @@ export function runTransition(
   }, duration);
 
   function cleanup(): void {
-    const toRemove = [
+    // Remove outgoing layer
+    if (outgoing.parentNode) {
+      outgoing.remove();
+    }
+    // Keep incoming layer in the DOM — closures from renderSceneDOM reference
+    // it as their container. Strip only transition-animation classes; keep
+    // cis-transition-layer for positioning (position:absolute;inset:0;100%×100%).
+    incoming.classList.remove(
+      'cis-transition-layer--incoming',
       dirClass,
-      EXIT_CLASS,
-      `${EXIT_CLASS}${ACTIVE_SUFFIX}`,
-      ENTER_CLASS,
-      `${ENTER_CLASS}${ACTIVE_SUFFIX}`,
-    ];
-    if (dirModifier) toRemove.push(dirModifier);
-    stage.classList.remove(...toRemove);
+      'cis-scene-enter',
+      'cis-scene-enter-active',
+    );
+    if (dirModifier) incoming.classList.remove(dirModifier);
     root.classList.remove(TRANSITION_ACTIVE_CLASS);
   }
 
@@ -123,7 +138,6 @@ export function runTransition(
     if (cancelled) return;
     cancelled = true;
     cancelAnimationFrame(rafId);
-    clearTimeout(midTimer);
     clearTimeout(endTimer);
     cleanup();
   };

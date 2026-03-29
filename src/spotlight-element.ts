@@ -692,8 +692,13 @@ export class CloudimageSpotlight extends HTMLElement {
     }
   }
 
-  private _renderCurrentScene(config: SpotlightConfig): void {
-    if (!this._stage || !this._navState) return;
+  /**
+   * Render the current scene into the given target element (defaults to this._stage).
+   * During transitions, `renderTarget` is the incoming transition layer.
+   */
+  private _renderCurrentScene(config: SpotlightConfig, renderTarget?: HTMLDivElement): void {
+    const stageEl = renderTarget || this._stage;
+    if (!stageEl || !this._navState) return;
 
     // Reset zoom suppression — navigating away mid-zoom would otherwise
     // leave _zoomActive=true permanently (onZoomFinish never fires).
@@ -705,7 +710,9 @@ export class CloudimageSpotlight extends HTMLElement {
     const staggerEntry = config.settings?.staggerEntry !== false;
     const staggerDelay = config.settings?.staggerDelay ?? 600;
     const staggerAnimDuration = config.settings?.staggerAnimationDuration ?? 500;
-    const stageRef = this._stage;
+    // Stagger classes go on the render target (incoming layer during transitions,
+    // stage otherwise). CSS custom properties go on the real stage for cascading.
+    const staggerTarget = stageEl;
 
     // Cancel any in-flight stagger timer from a previous scene
     if (this._cancelStagger) {
@@ -713,13 +720,14 @@ export class CloudimageSpotlight extends HTMLElement {
       this._cancelStagger = null;
     }
 
-    // Set CSS custom properties for stagger timing (consumed by CSS animations)
-    if (staggerEntry) {
-      stageRef.style.setProperty('--cis-stagger-delay-mask', `${staggerDelay}ms`);
-      stageRef.style.setProperty('--cis-stagger-delay-badge', `${staggerDelay + 300}ms`);
-      stageRef.style.setProperty('--cis-stagger-delay-annotation', `${staggerDelay + 450}ms`);
-      stageRef.style.setProperty('--cis-stagger-delay-connector', `${staggerDelay + 600}ms`);
-      stageRef.style.setProperty('--cis-stagger-duration', `${staggerAnimDuration}ms`);
+    // Set CSS custom properties for stagger timing (consumed by CSS animations).
+    // Always set on the real stage so they cascade into transition layers.
+    if (staggerEntry && this._stage) {
+      this._stage.style.setProperty('--cis-stagger-delay-mask', `${staggerDelay}ms`);
+      this._stage.style.setProperty('--cis-stagger-delay-badge', `${staggerDelay + 300}ms`);
+      this._stage.style.setProperty('--cis-stagger-delay-annotation', `${staggerDelay + 450}ms`);
+      this._stage.style.setProperty('--cis-stagger-delay-connector', `${staggerDelay + 600}ms`);
+      this._stage.style.setProperty('--cis-stagger-duration', `${staggerAnimDuration}ms`);
     }
 
     const showBadges = this._getBoolAttr('show-badges', config.settings?.showBadges ?? true);
@@ -731,7 +739,7 @@ export class CloudimageSpotlight extends HTMLElement {
 
     renderSceneDOM(scene, this._navState.currentIndex, this._navState.totalScenes, {
       config,
-      stage: this._stage,
+      stage: stageEl,
       containerWidth,
       dpr: this._getDpr(),
       strings: this._resolvedStrings,
@@ -741,6 +749,7 @@ export class CloudimageSpotlight extends HTMLElement {
       showProgress,
       allowSkip,
       staggerEntry,
+      isTransition: !!renderTarget && renderTarget !== this._stage,
       reservedRects: this._getActionButtonsRect(),
       onPrev: () => this.prev(),
       onNext: () => this.next(),
@@ -753,11 +762,11 @@ export class CloudimageSpotlight extends HTMLElement {
         }
 
         // Trigger staggered entry after image loads.
-        // The .cis-scene-stagger class is already on the stage (applied by renderScene),
+        // The .cis-scene-stagger class is already on the render target (applied by renderScene),
         // so overlays are hidden from the start. applyStagger triggers the CSS animations
         // which use animation-delay via --cis-stagger-delay-* custom properties.
         if (staggerEntry) {
-          this._cancelStagger = applyStagger(stageRef);
+          this._cancelStagger = applyStagger(staggerTarget);
         }
 
         // Preload adjacent scenes
@@ -773,7 +782,7 @@ export class CloudimageSpotlight extends HTMLElement {
         // Show overlays instantly on error (stagger waits for load which won't come)
         if (staggerEntry) {
           if (this._cancelStagger) { this._cancelStagger(); this._cancelStagger = null; }
-          stageRef.classList.remove('cis-scene-stagger', 'cis-scene-stagger-active');
+          staggerTarget.classList.remove('cis-scene-stagger', 'cis-scene-stagger-active');
         }
       },
       onCtaClick: (detail) => {
@@ -1286,7 +1295,8 @@ export class CloudimageSpotlight extends HTMLElement {
   // ---------------------------------------------------------------------------
 
   /**
-   * Run a scene transition, then render the new scene at the midpoint.
+   * Run a dual-layer scene transition: outgoing + incoming scenes overlap
+   * for the full duration, producing smooth crossfade / slide / zoom.
    */
   private _transitionToScene(direction: TransitionDirection, onAfterSwap: () => void): void {
     this._cancelPendingTransition();
@@ -1301,13 +1311,17 @@ export class CloudimageSpotlight extends HTMLElement {
       return;
     }
 
+    // Clean up stagger state from previous scene before wrapping into outgoing layer.
+    // Removing these classes makes all outgoing elements fully visible (no partial stagger).
+    this._stage.classList.remove('cis-scene-stagger', 'cis-scene-stagger-active');
+
     this._cancelTransition = runTransition(this._stage, this._root, {
       type: transitionType,
       direction,
       reducedMotion,
-      onMidpoint: () => {
-        // Swap scene DOM content at the midpoint of the transition
-        if (this._config) this._renderCurrentScene(this._config);
+      onSwap: (incomingLayer: HTMLDivElement) => {
+        // Render the new scene into the incoming transition layer
+        if (this._config) this._renderCurrentScene(this._config, incomingLayer);
       },
       onComplete: () => {
         this._cancelTransition = null;

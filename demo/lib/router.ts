@@ -23,6 +23,7 @@ const routes: RouteEntry[] = [
   { pattern: '/examples/intro', load: () => import('../pages/examples/intro').then((m) => m.default) },
   { pattern: '/examples/outro', load: () => import('../pages/examples/outro').then((m) => m.default) },
   { pattern: '/examples/theming', load: () => import('../pages/examples/theming').then((m) => m.default) },
+  { pattern: '/examples/transitions', load: () => import('../pages/examples/transitions').then((m) => m.default) },
   { pattern: '/examples/autoplay', load: () => import('../pages/examples/autoplay').then((m) => m.default) },
   { pattern: '/examples/annotation-styles', load: () => import('../pages/examples/annotation-styles').then((m) => m.default) },
   { pattern: '/examples/customization', load: () => import('../pages/examples/customization').then((m) => m.default) },
