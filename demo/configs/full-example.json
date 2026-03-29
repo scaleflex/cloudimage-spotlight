@@ -62,7 +62,7 @@
         { "tl_x": 0.27, "tl_y": 0.14, "br_x": 0.91, "br_y": 0.29, "label": "New key" }
       ],
       "maskStyle": "blur",
-      "cta": { "label": "View Asset Picker docs", "href": "https://www.scaleflex.com/en/asset-picker", "style": "link" }
+      "cta": { "label": "View Asset Picker docs", "href": "https://www.scaleflex.com/en/asset-picker" }
     }
   ]
 }

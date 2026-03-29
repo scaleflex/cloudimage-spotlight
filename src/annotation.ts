@@ -206,7 +206,7 @@ export function updateAnnotation(
 }
 
 /**
- * Create a CTA element — either an <a> link or a <button>.
+ * Create a CTA element — always rendered as a link.
  */
 function createCTAElement(
   scene: SpotlightScene,
@@ -215,12 +215,9 @@ function createCTAElement(
 ): HTMLElement | null {
   const safeHref = sanitizeCtaHref(cta.href);
 
-  const isLink = cta.style === 'link';
-
   if (safeHref) {
-    // Render as <a> link
     const link = document.createElement('a');
-    link.className = isLink ? 'cis-cta cis-cta--link' : 'cis-cta';
+    link.className = 'cis-cta';
     link.href = safeHref;
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
@@ -230,7 +227,7 @@ function createCTAElement(
 
   // No href (or blocked href) — render as <button> that dispatches event
   const button = document.createElement('button');
-  button.className = isLink ? 'cis-cta cis-cta--link' : 'cis-cta';
+  button.className = 'cis-cta';
   button.type = 'button';
   button.textContent = cta.label;
   button.addEventListener('click', () => {

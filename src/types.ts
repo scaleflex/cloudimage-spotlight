@@ -93,7 +93,6 @@ export interface SpotlightAnnotation {
 export interface SpotlightCTA {
   label: string;
   href?: string;
-  style?: 'button' | 'link';
   metadata?: Record<string, string>;
 }
 

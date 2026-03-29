@@ -118,7 +118,6 @@ const page: Page = {
       "cta": {
         "label": "View Asset Picker docs",
         "href": "https://www.scaleflex.com/en/asset-picker",
-        "style": "link"
       }
     }
   ]

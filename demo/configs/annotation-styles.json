@@ -57,7 +57,7 @@
         { "tl_x": 0.085, "tl_y": 0.10, "br_x": 0.975, "br_y": 0.16, "label": "New key" }
       ],
       "annotation": { "style": "card", "position": "bottom", "maxWidth": 420 },
-      "cta": { "label": "View Asset Picker docs", "href": "https://www.scaleflex.com/en/asset-picker", "style": "link" }
+      "cta": { "label": "View Asset Picker docs", "href": "https://www.scaleflex.com/en/asset-picker" }
     }
   ]
 }

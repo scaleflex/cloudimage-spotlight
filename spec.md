@@ -926,12 +926,8 @@ cloudimage-spotlight {
   --cis-badge-font-size: 11px;
   --cis-badge-border-radius: 50%;
 
-  /* CTA button */
-  --cis-cta-bg: var(--cis-accent);
-  --cis-cta-bg-hover: color-mix(in srgb, var(--cis-accent) 85%, white);
-  --cis-cta-color: oklch(1 0 0);
-  --cis-cta-border-radius: 6px;
-  --cis-cta-padding: 8px 16px;
+  /* CTA */
+  --cis-cta-color: var(--cis-accent);
   --cis-cta-font-size: 13px;
 
   /* Focus ring (Shadow DOM isolates from host :focus-visible) */

@@ -69,7 +69,6 @@ const page: Page = {
 cloudimage-spotlight {
   --cis-accent: oklch(0.58 0.22 292);
   --cis-card-bg: oklch(0.15 0.04 292 / 0.95);
-  --cis-cta-bg: oklch(0.58 0.22 292);
   --cis-badge-bg: oklch(0.58 0.22 292);
   --cis-border-radius: 16px;
 }`,

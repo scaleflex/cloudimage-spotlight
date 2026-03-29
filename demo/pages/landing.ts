@@ -316,7 +316,6 @@ const page: Page = {
       emerald: {
         '--cis-accent': 'oklch(0.6 0.2 154.83)',
         '--cis-badge-bg': 'oklch(0.6 0.2 154.83)',
-        '--cis-cta-bg': 'oklch(0.6 0.2 154.83)',
         '--cis-nav-btn-primary-bg': 'oklch(0.55 0.18 154.83)',
         '--cis-nav-btn-primary-bg-hover': 'oklch(0.5 0.16 154.83)',
         '--cis-nav-btn-finish-bg': 'oklch(0.6 0.2 154.83)',
@@ -325,7 +324,6 @@ const page: Page = {
       purple: {
         '--cis-accent': 'oklch(0.58 0.22 292)',
         '--cis-badge-bg': 'oklch(0.58 0.22 292)',
-        '--cis-cta-bg': 'oklch(0.58 0.22 292)',
         '--cis-nav-btn-primary-bg': 'oklch(0.52 0.2 292)',
         '--cis-nav-btn-primary-bg-hover': 'oklch(0.48 0.18 292)',
         '--cis-nav-btn-finish-bg': 'oklch(0.58 0.22 292)',
@@ -334,7 +332,6 @@ const page: Page = {
       sunset: {
         '--cis-accent': 'oklch(0.682 0.162 58.67)',
         '--cis-badge-bg': 'oklch(0.682 0.162 58.67)',
-        '--cis-cta-bg': 'oklch(0.682 0.162 58.67)',
         '--cis-cta-color': 'oklch(1 0 0)',
         '--cis-badge-color': 'oklch(1 0 0)',
         '--cis-badge-font-weight': '500',
@@ -354,7 +351,6 @@ const page: Page = {
       '--cis-card-border': 'oklch(0.85 0.06 280 / 0.12)',
       '--cis-card-title-color': 'oklch(0.92 0.02 280)',
       '--cis-card-body-color': 'oklch(0.75 0.03 280)',
-      '--cis-cta-bg': 'oklch(0.65 0.14 280)',
       '--cis-nav-btn-primary-bg': 'oklch(0.55 0.12 280)',
       '--cis-nav-btn-primary-bg-hover': 'oklch(0.5 0.1 280)',
       '--cis-nav-btn-ghost-border': 'oklch(0.85 0.06 280 / 0.2)',

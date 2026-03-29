@@ -86,10 +86,7 @@ const page: Page = {
   --cis-badge-font-size: 11px;
   --cis-badge-border-radius: 50%;
 
-  --cis-cta-bg: var(--cis-accent);
-  --cis-cta-color: #ffffff;
-  --cis-cta-border-radius: 6px;
-  --cis-cta-padding: 8px 16px;
+  --cis-cta-color: var(--cis-accent);
   --cis-cta-font-size: 13px;
 }`)}
 
@@ -121,7 +118,6 @@ const page: Page = {
 cloudimage-spotlight.purple-brand {
   --cis-accent: oklch(0.541 0.281 293.009);
   --cis-card-bg: rgba(30, 20, 60, 0.95);
-  --cis-cta-bg: oklch(0.541 0.281 293.009);
   --cis-badge-bg: oklch(0.541 0.281 293.009);
   --cis-border-radius: 16px;
   --cis-card-border-radius: 12px;
