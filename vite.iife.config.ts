@@ -9,7 +9,7 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/define.ts'),
       formats: ['iife'],
       name: 'CloudimageSpotlight',
-      fileName: () => 'define.min.js',
+      fileName: () => 'spotlight.min.js',
     },
     outDir: 'dist',
     emptyOutDir: false,

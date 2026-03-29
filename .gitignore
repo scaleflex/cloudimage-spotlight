@@ -12,5 +12,6 @@ yarn-error.log*
 .idea/
 .claude/
 .DS_Store
+.env.local
 dist/
 demo-dist/

@@ -5,7 +5,7 @@
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
-  "unpkg": "dist/define.min.js",
+  "unpkg": "dist/spotlight.min.js",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -36,7 +36,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "lint": "eslint src/ tests/"
+    "lint": "eslint src/ tests/",
+    "release": "node scripts/release-cdn.mjs plugin"
   },
   "keywords": [
     "cloudimage",
