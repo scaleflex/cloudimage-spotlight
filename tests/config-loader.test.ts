@@ -39,14 +39,11 @@ describe('validateConfig', () => {
     spy.mockRestore();
   });
 
-  it('throws MISSING_TOKEN when ciToken is absent', () => {
-    const config = { version: '1.0', scenes: [{ id: 'a', image: 'img' }] };
-    expect(() => validateConfig(config)).toThrow(CISError);
-    try {
-      validateConfig(config);
-    } catch (e) {
-      expect((e as CISError).code).toBe('MISSING_TOKEN');
-    }
+  it('accepts config without ciToken (direct CDN URLs)', () => {
+    const config = { version: '1.0', scenes: [{ id: 'a', image: 'https://cdn.example.com/img.jpg' }] };
+    const result = validateConfig(config);
+    expect(result.ciToken).toBeUndefined();
+    expect(result.scenes).toHaveLength(1);
   });
 
   it('throws INVALID_JSON when scenes is empty', () => {

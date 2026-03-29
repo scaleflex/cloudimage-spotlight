@@ -3,8 +3,14 @@ import type { SpotlightRegion, SceneImageVariant, BoundingBox } from './types';
 /**
  * Build a Cloudimage CDN URL for a scene image variant.
  *
- * @param originUrl - The origin image URL (with or without protocol)
- * @param ciToken - Cloudimage token
+ * When `ciToken` is provided, builds a full Cloudimage URL:
+ *   `https://{ciToken}.cloudimg.io/{originUrl}?...`
+ *
+ * When `ciToken` is omitted, the image URL is assumed to already be a
+ * complete CDN URL — query parameters are appended directly.
+ *
+ * @param originUrl - The origin image URL (full URL when no token, or path when token is set)
+ * @param ciToken - Cloudimage token (optional — omit when URLs already include CDN)
  * @param variant - Which image variant to generate
  * @param regions - Scene regions (used for "zoomed" variant bounding box)
  * @param containerWidth - Current container width in CSS pixels (default 1200)
@@ -16,7 +22,7 @@ import type { SpotlightRegion, SceneImageVariant, BoundingBox } from './types';
  */
 export function buildCiUrl(
   originUrl: string,
-  ciToken: string,
+  ciToken: string | undefined,
   variant: SceneImageVariant,
   regions?: SpotlightRegion[],
   containerWidth?: number,
@@ -26,13 +32,16 @@ export function buildCiUrl(
   naturalHeight?: number,
   zoomPadding?: number,
 ): string {
-  const base = `https://${ciToken}.cloudimg.io/${stripProtocol(originUrl)}`;
+  const base = ciToken
+    ? `https://${ciToken}.cloudimg.io/${stripProtocol(originUrl)}`
+    : originUrl;
+  const sep = base.includes('?') ? '&' : '?';
   const clampedDpr = Math.min(Math.max(dpr ?? 1, 1), 3);
   const w = roundWidth(containerWidth ?? 1200);
 
   switch (variant) {
     case 'full':
-      return `${base}?w=${w}&dpr=${clampedDpr}&q=85&org_if_sml=1`;
+      return `${base}${sep}w=${w}&dpr=${clampedDpr}&q=85&org_if_sml=1`;
 
     case 'zoomed': {
       if (!regions || regions.length === 0 || !naturalWidth || !naturalHeight) {
@@ -44,7 +53,7 @@ export function buildCiUrl(
       const brX = Math.round(x2 * naturalWidth);
       const brY = Math.round(y2 * naturalHeight);
       return (
-        `${base}?func=crop` +
+        `${base}${sep}func=crop` +
         `&tl_px=${tlX},${tlY}` +
         `&br_px=${brX},${brY}` +
         `&w=${w}&dpr=${clampedDpr}&org_if_sml=1`
@@ -53,7 +62,7 @@ export function buildCiUrl(
 
     case 'blurred': {
       const blur = blurRadius ?? 8;
-      return `${base}?blur=${blur}&w=${w}&dpr=${clampedDpr}&q=70&org_if_sml=1`;
+      return `${base}${sep}blur=${blur}&w=${w}&dpr=${clampedDpr}&q=70&org_if_sml=1`;
     }
 
     default: {

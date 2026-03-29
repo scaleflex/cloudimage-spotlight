@@ -45,19 +45,18 @@ describe('edge case: invalid config', () => {
     el.remove();
   });
 
-  it('missing ciToken dispatches cis:error', async () => {
+  it('config without ciToken uses image URLs directly', async () => {
     const handler = vi.fn();
     const el = document.createElement(TAG) as CloudimageSpotlight;
     el.setAttribute('eager', '');
-    el.addEventListener('cis:error', handler);
-    el.config = { version: '1.0', ciToken: '', scenes: [{ id: 's', image: 'x.jpg' }] } as unknown as SpotlightConfig;
+    el.addEventListener('cis:ready', handler);
+    el.config = { version: '1.0', scenes: [{ id: 's', image: 'https://cdn.example.com/x.jpg' }] } as unknown as SpotlightConfig;
     document.body.appendChild(el);
 
     await vi.waitFor(() => {
       expect(handler).toHaveBeenCalled();
     });
 
-    expect(handler.mock.calls[0][0].detail.code).toBe('MISSING_TOKEN');
     el.destroy();
     el.remove();
   });

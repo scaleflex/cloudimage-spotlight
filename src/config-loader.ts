@@ -52,11 +52,6 @@ export function validateConfig(raw: unknown): SpotlightConfig {
     );
   }
 
-  // Required fields
-  if (!config.ciToken) {
-    throw new CISError('MISSING_TOKEN', "'ciToken' is required in config JSON");
-  }
-
   if (!Array.isArray(config.scenes) || config.scenes.length === 0) {
     throw new CISError('INVALID_JSON', "'scenes' must be a non-empty array");
   }

@@ -268,4 +268,34 @@ describe('buildCiUrl', () => {
       );
     });
   });
+
+  describe('no ciToken (direct CDN URLs)', () => {
+    const cdnUrl = 'https://cdn.filerobot.com/myaccount/screenshot.jpg';
+
+    it('uses URL as-is for full variant', () => {
+      const url = buildCiUrl(cdnUrl, undefined, 'full', undefined, 800);
+      expect(url).toBe(`${cdnUrl}?w=800&dpr=1&q=85&org_if_sml=1`);
+    });
+
+    it('appends with & when URL already has query params', () => {
+      const withParams = `${cdnUrl}?vh=abc123`;
+      const url = buildCiUrl(withParams, undefined, 'full', undefined, 800);
+      expect(url).toBe(`${withParams}&w=800&dpr=1&q=85&org_if_sml=1`);
+    });
+
+    it('builds blur URL without token', () => {
+      const url = buildCiUrl(cdnUrl, undefined, 'blurred', undefined, 800, 1, 10);
+      expect(url).toContain('blur=10');
+      expect(url.startsWith(cdnUrl)).toBe(true);
+    });
+
+    it('builds zoomed URL without token', () => {
+      const regions: SpotlightRegion[] = [
+        { tl_x: 0.1, tl_y: 0.1, br_x: 0.5, br_y: 0.5 },
+      ];
+      const url = buildCiUrl(cdnUrl, undefined, 'zoomed', regions, 800, 1, undefined, 1920, 1080);
+      expect(url).toContain('func=crop');
+      expect(url.startsWith(cdnUrl)).toBe(true);
+    });
+  });
 });

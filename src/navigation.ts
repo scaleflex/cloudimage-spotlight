@@ -133,7 +133,7 @@ export function preloadAdjacentScenes(
 
 function preloadScene(
   scene: SpotlightScene,
-  ciToken: string,
+  ciToken: string | undefined,
   containerWidth: number,
   dpr: number,
   settingsMaskStyle?: string,

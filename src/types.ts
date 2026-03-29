@@ -4,7 +4,7 @@
 
 export interface SpotlightConfig {
   version: '1.0';
-  ciToken: string;
+  ciToken?: string;
   title?: string;
   settings?: SpotlightSettings;
   scenes: SpotlightScene[];
