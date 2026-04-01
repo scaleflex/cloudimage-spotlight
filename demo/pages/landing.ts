@@ -547,7 +547,7 @@ export function App() {
   destroy() {
     // Clean up demo spotlight
     const demoSpotlight = document.getElementById('demo-spotlight') as CloudimageSpotlightElement | null;
-    if (demoSpotlight) demoSpotlight.pause();
+    if (demoSpotlight && typeof demoSpotlight.pause === 'function') demoSpotlight.pause();
     (page as any)._cleanupSlider?.();
     delete (page as any)._cleanupSlider;
   },
