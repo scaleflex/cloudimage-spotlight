@@ -26,7 +26,8 @@
     "dist"
   ],
   "sideEffects": [
-    "./dist/define.*"
+    "./dist/define.*",
+    "./src/define.*"
   ],
   "scripts": {
     "dev": "vite --config vite.demo.config.ts",
