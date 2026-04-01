@@ -3,6 +3,7 @@ import { resolve } from 'path';
 import { cpSync } from 'fs';
 
 export default defineConfig({
+  base: './',
   root: 'demo',
   build: {
     outDir: '../demo-dist',
