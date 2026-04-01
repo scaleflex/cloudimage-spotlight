@@ -1,8 +1,53 @@
-# @cloudimage/spotlight
+<p align="center">
+  <img src="https://scaleflex.cloudimg.io/v7/plugins/scaleflex/logo.png?vh=b0a502&radius=25&w=700" alt="Scaleflex" width="350">
+</p>
 
-CDN-native, screenshot-based interactive experience player. Built as a Web Component (`<cloudimage-spotlight>`) with zero runtime dependencies.
+<h1 align="center">@cloudimage/spotlight</h1>
 
-Part of the [Scaleflex plugin ecosystem](https://scaleflex.github.io/scaleflex-plugins/) and the [Cloudimage plugin family](https://scaleflex.github.io/cloudimage-plugins/).
+<p align="center">
+  CDN-native, screenshot-based interactive experience player. Zero dependencies.
+</p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/@cloudimage/spotlight"><img src="https://img.shields.io/npm/v/@cloudimage/spotlight.svg?style=flat-square" alt="npm version"></a>
+  <a href="https://www.npmjs.com/package/@cloudimage/spotlight"><img src="https://img.shields.io/npm/dm/@cloudimage/spotlight.svg?style=flat-square" alt="npm downloads"></a>
+  <a href="https://github.com/scaleflex/cloudimage-spotlight/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/@cloudimage/spotlight.svg?style=flat-square" alt="license"></a>
+  <a href="https://bundlephobia.com/package/@cloudimage/spotlight"><img src="https://img.shields.io/bundlephobia/minzip/@cloudimage/spotlight?style=flat-square" alt="bundle size"></a>
+</p>
+
+<p align="center">
+  <a href="https://scaleflex.github.io/cloudimage-spotlight/">Live Demo</a>
+</p>
+
+---
+
+## Why @cloudimage/spotlight?
+
+Product tours and interactive demos shouldn't require heavy SaaS platforms or complex setups. This library was built to fill the gap:
+
+- **Lightweight** — under 16 KB gzipped with zero runtime dependencies
+- **Web Component** — works with vanilla JS, React, or any framework via `<cloudimage-spotlight>`
+- **CDN-powered zoom** — region coordinates map directly to Cloudimage crop/blur URL params
+- **Accessible by default** — WCAG 2.1 AA, full keyboard navigation, screen reader support
+- **Mobile-ready** — responsive bottom-sheet annotations below 600px
+- **Themeable** — dark/light/auto themes via CSS custom properties
+
+---
+
+## Features
+
+- **Scene-based tours** — Step through screenshots with title, description, and CTA per scene
+- **Region highlighting** — SVG mask overlay with multiple cut-out regions and numbered badges
+- **CDN zoom** — Cloudimage `tl_px`/`br_px` crop with DPR-aware sizing (no CSS zoom fallback)
+- **Blur mask mode** — CDN `?blur=` layered image for frosted-glass spotlight effect
+- **Autoplay** — Timer-based auto-advance with pause on hover
+- **Deep linking** — Hash-based URL sync for shareable scene links
+- **Intro/outro screens** — Optional title cards with staggered entry animations
+- **Fullscreen mode** — Toggle fullscreen with keyboard shortcut (`F`)
+- **Lazy loading** — IntersectionObserver-based, opt out with `eager` attribute
+- **React wrapper** — Separate entry point with ref forwarding and typed event props
+- **TypeScript** — Full type definitions
+- **Print stylesheet** — Clean print layout
 
 ## Installation
 
@@ -10,26 +55,15 @@ Part of the [Scaleflex plugin ecosystem](https://scaleflex.github.io/scaleflex-p
 npm install @cloudimage/spotlight
 ```
 
-### Script tag (CDN)
+### CDN
 
 ```html
-<script src="https://unpkg.com/@cloudimage/spotlight/dist/define.min.js"></script>
+<script src="https://cdn.cloudimage.io/spotlight/1.0.6/spotlight.min.js"></script>
 ```
 
-### ES module
+## Quick Start
 
-```js
-import '@cloudimage/spotlight/define';
-```
-
-### Manual registration
-
-```js
-import { CloudimageSpotlight } from '@cloudimage/spotlight';
-customElements.define('my-spotlight', CloudimageSpotlight);
-```
-
-## Usage
+### HTML
 
 ```html
 <cloudimage-spotlight
@@ -68,28 +102,16 @@ const el = document.querySelector('cloudimage-spotlight');
 el.config = { version: '1.0', ciToken: 'demo', scenes: [...] };
 ```
 
-## React
+### ES module (manual registration)
 
-```tsx
-import { CloudimageSpotlightReact } from '@cloudimage/spotlight/react';
-
-function App() {
-  const ref = useRef(null);
-  return (
-    <CloudimageSpotlightReact
-      ref={ref}
-      config={tourConfig}
-      theme="dark"
-      eager
-      onReady={(detail) => console.log('Ready:', detail.totalScenes)}
-      onSceneChange={(detail) => console.log('Scene:', detail.to)}
-      onComplete={(detail) => console.log('Done:', detail.timeSpent)}
-    />
-  );
-}
+```js
+import { CloudimageSpotlight } from '@cloudimage/spotlight';
+customElements.define('my-spotlight', CloudimageSpotlight);
 ```
 
-## HTML Attributes
+## API Reference
+
+### HTML Attributes
 
 | Attribute | Type | Default | Description |
 |-----------|------|---------|-------------|
@@ -103,7 +125,7 @@ function App() {
 | `sync-url` | `boolean` | `false` | Sync scene to URL hash |
 | `eager` | `boolean` | `false` | Disable lazy loading |
 
-## Config Schema
+### Config Schema
 
 ```typescript
 interface SpotlightConfig {
@@ -148,20 +170,7 @@ interface SpotlightConfig {
 }
 ```
 
-## Events
-
-| Event | Detail | Description |
-|-------|--------|-------------|
-| `cis:ready` | `{ totalScenes, config }` | Component initialized |
-| `cis:scene-change` | `{ from, to, scene, totalScenes }` | Scene navigated |
-| `cis:complete` | `{ totalScenes, timeSpent, config }` | Tour completed |
-| `cis:skip` | `{ atScene, scene, totalScenes }` | Tour skipped |
-| `cis:cta-click` | `{ scene, cta, metadata }` | CTA button clicked |
-| `cis:region-enter` | `{ scene, regions }` | Scene with regions entered |
-| `cis:error` | `{ message, code }` | Error occurred |
-| `cis:fullscreen-change` | `{ isFullscreen }` | Fullscreen mode toggled |
-
-## Public Methods
+### Public Methods
 
 ```js
 const el = document.querySelector('cloudimage-spotlight');
@@ -175,9 +184,43 @@ el.destroy();        // Full cleanup
 el.reload(config);   // Reset and reload
 ```
 
-## CSS Custom Properties
+### Events
 
-All styles are customizable via `--cis-*` CSS variables:
+| Event | Detail | Description |
+|-------|--------|-------------|
+| `cis:ready` | `{ totalScenes, config }` | Component initialized |
+| `cis:scene-change` | `{ from, to, scene, totalScenes }` | Scene navigated |
+| `cis:complete` | `{ totalScenes, timeSpent, config }` | Tour completed |
+| `cis:skip` | `{ atScene, scene, totalScenes }` | Tour skipped |
+| `cis:cta-click` | `{ scene, cta, metadata }` | CTA button clicked |
+| `cis:region-enter` | `{ scene, regions }` | Scene with regions entered |
+| `cis:error` | `{ message, code }` | Error occurred |
+| `cis:fullscreen-change` | `{ isFullscreen }` | Fullscreen mode toggled |
+
+## React Usage
+
+```tsx
+import { CloudimageSpotlightReact } from '@cloudimage/spotlight/react';
+
+function App() {
+  const ref = useRef(null);
+  return (
+    <CloudimageSpotlightReact
+      ref={ref}
+      config={tourConfig}
+      theme="dark"
+      eager
+      onReady={(detail) => console.log('Ready:', detail.totalScenes)}
+      onSceneChange={(detail) => console.log('Scene:', detail.to)}
+      onComplete={(detail) => console.log('Done:', detail.timeSpent)}
+    />
+  );
+}
+```
+
+## Theming
+
+All styles are customizable via `--cis-*` CSS custom properties:
 
 ```css
 cloudimage-spotlight {
@@ -189,6 +232,8 @@ cloudimage-spotlight {
 }
 ```
 
+Set `theme="dark"` (default), `theme="light"`, or `theme="auto"` (follows `prefers-color-scheme`).
+
 ## Keyboard Navigation
 
 | Key | Action |
@@ -198,6 +243,7 @@ cloudimage-spotlight {
 | `Escape` | Skip tour |
 | `Home` / `End` | First / last scene |
 | `1`–`9` | Jump to scene (≤9 scenes) |
+| `F` | Toggle fullscreen |
 
 RTL-aware: arrow keys swap in RTL mode.
 
@@ -220,4 +266,20 @@ RTL-aware: arrow keys swap in RTL mode.
 
 ## License
 
-MIT
+[MIT](./LICENSE)
+
+---
+
+## Support
+
+If this library helped your project, consider buying me a coffee!
+
+<a href="https://buymeacoffee.com/dzmitry.stramavus">
+  <img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee">
+</a>
+
+---
+
+<p align="center">
+  Made with care by the <a href="https://www.scaleflex.com">Scaleflex</a> team
+</p>

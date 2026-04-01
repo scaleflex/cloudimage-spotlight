@@ -112,7 +112,7 @@ When building `src/styles/spotlight.css` (Stage 3), map these OKLCH values to th
 - **Testing:** Vitest + jsdom, 80% coverage threshold
 - No external fonts — uses system emoji + CSS for icons
 - Browser targets: Chrome 73+, Firefox 101+, Safari 16.4+ (constructable stylesheets)
-- CDN: `https://scaleflex.cloudimg.io/v7/plugins/cloudimage/spotlight/{version}/spotlight.min.js`
+- CDN: `https://cdn.cloudimage.io/spotlight/{version}/spotlight.min.js`
 
 ## Stage Workflow
 

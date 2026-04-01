@@ -97,7 +97,7 @@ This is intentional: DOM reparenting should feel seamless. For a full reset, cal
 
 ```html
 <!-- Load the plugin -->
-<script type="module" src="https://scaleflex.cloudimg.io/v7/plugins/cloudimage/spotlight/1.0.0/spotlight.min.js"></script>
+<script src="https://cdn.cloudimage.io/spotlight/1.0.6/spotlight.min.js"></script>
 
 <!-- Embed the experience — config loaded from URL -->
 <cloudimage-spotlight
@@ -1701,7 +1701,7 @@ export default defineConfig({
 ### CDN delivery URLs
 
 ```
-Versioned:  https://scaleflex.cloudimg.io/v7/plugins/cloudimage/spotlight/{version}/spotlight.min.js
+Versioned:  https://cdn.cloudimage.io/spotlight/{version}/spotlight.min.js
 ```
 
 > No `latest` alias is provided. Always pin to a specific version to avoid unexpected breaking changes.
