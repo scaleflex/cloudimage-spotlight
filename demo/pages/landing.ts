@@ -215,73 +215,50 @@ const page: Page = {
         </div>
       </section>
 
-      <section class="demo-also" id="also-slider">
-        <div class="demo-also-slides">
-          <div class="demo-also-slide active">
-            <div class="demo-also-inner">
-              <div class="demo-also-content">
-                <div class="demo-also-label">Also by Scaleflex</div>
-                <h2>js-cloudimage-360-view</h2>
-                <p>Interactive 360 product views with drag, zoom, autoplay and hotspots. Perfect for e-commerce product pages.</p>
-                <div class="demo-also-actions">
-                  <a href="https://scaleflex.github.io/js-cloudimage-360-view/" target="_blank" rel="noopener" class="btn-primary btn-sm">Live demo</a>
-                  <a href="https://github.com/scaleflex/js-cloudimage-360-view" target="_blank" rel="noopener" class="btn-secondary btn-sm">GitHub</a>
-                </div>
-              </div>
-              <div class="demo-also-visual">
-                <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="grad360" x1="0" y1="0" x2="200" y2="200"><stop offset="0%" stop-color="rgba(44,153,255,0.3)"/><stop offset="100%" stop-color="rgba(0,212,170,0.15)"/></linearGradient></defs><circle cx="100" cy="100" r="80" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><circle cx="100" cy="100" r="60" stroke="rgba(255,255,255,0.06)" stroke-width="1"/><ellipse cx="100" cy="100" rx="80" ry="32" stroke="url(#grad360)" stroke-width="2"/><ellipse cx="100" cy="100" rx="80" ry="32" transform="rotate(60 100 100)" stroke="rgba(0,212,170,0.2)" stroke-width="1.5"/><ellipse cx="100" cy="100" rx="80" ry="32" transform="rotate(120 100 100)" stroke="rgba(0,212,170,0.15)" stroke-width="1.5"/><circle cx="100" cy="100" r="6" fill="rgba(44,153,255,0.7)"/><circle cx="100" cy="100" r="3" fill="rgba(44,153,255,1)"/></svg>
-              </div>
-            </div>
+      <section class="sfx-also">
+      <div class="sfx-also-head">
+        <div class="sfx-also-label">Also by Scaleflex</div>
+        <h2>Plugins for the modern web</h2>
+        <p>A family of framework-agnostic JavaScript plugins — for digital asset management and interactive media experiences.</p>
+      </div>
+      <div class="sfx-also-cols">
+        <div class="sfx-col sfx-col--sf">
+          <div class="sfx-col-head">
+            <span class="sfx-col-badge"></span>
+            <span class="sfx-col-title">Scaleflex</span>
+            <span class="sfx-col-ns">@scaleflex/*</span>
+            <span class="sfx-col-count">3</span>
           </div>
-          <div class="demo-also-slide">
-            <div class="demo-also-inner">
-              <div class="demo-also-content">
-                <div class="demo-also-label">Also by Scaleflex</div>
-                <h2>js-cloudimage-hotspot</h2>
-                <p>Add interactive hotspots to images with tooltips, custom styling, and responsive positioning.</p>
-                <div class="demo-also-actions">
-                  <a href="https://scaleflex.github.io/js-cloudimage-hotspot/" target="_blank" rel="noopener" class="btn-primary btn-sm">Live demo</a>
-                  <a href="https://github.com/scaleflex/js-cloudimage-hotspot" target="_blank" rel="noopener" class="btn-secondary btn-sm">GitHub</a>
-                </div>
-              </div>
-              <div class="demo-also-visual">
-                <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="40" width="160" height="120" rx="8" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" fill="rgba(255,255,255,0.02)"/><circle cx="65" cy="75" r="10" stroke="rgba(0,212,170,0.6)" stroke-width="2" fill="rgba(0,212,170,0.12)"/><circle cx="65" cy="75" r="3.5" fill="rgba(0,212,170,0.8)"/><circle cx="130" cy="110" r="10" stroke="rgba(44,153,255,0.6)" stroke-width="2" fill="rgba(44,153,255,0.12)"/><circle cx="130" cy="110" r="3.5" fill="rgba(44,153,255,0.8)"/><circle cx="90" cy="135" r="8" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" fill="rgba(255,255,255,0.04)"/><circle cx="90" cy="135" r="3" fill="rgba(255,255,255,0.2)"/></svg>
-              </div>
-            </div>
-          </div>
-          <div class="demo-also-slide">
-            <div class="demo-also-inner">
-              <div class="demo-also-content">
-                <div class="demo-also-label">Also by Scaleflex</div>
-                <h2>filerobot-image-editor</h2>
-                <p>Full-featured image editor with cropping, filters, annotations, and more. Works standalone or embedded.</p>
-                <div class="demo-also-actions">
-                  <a href="https://scaleflex.github.io/filerobot-image-editor/" target="_blank" rel="noopener" class="btn-primary btn-sm">Live demo</a>
-                  <a href="https://github.com/scaleflex/filerobot-image-editor" target="_blank" rel="noopener" class="btn-secondary btn-sm">GitHub</a>
-                </div>
-              </div>
-              <div class="demo-also-visual">
-                <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gradFIE" x1="20" y1="40" x2="180" y2="160"><stop offset="0%" stop-color="rgba(44,153,255,0.1)"/><stop offset="100%" stop-color="rgba(0,212,170,0.05)"/></linearGradient></defs><rect x="20" y="40" width="160" height="120" rx="8" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" fill="rgba(255,255,255,0.02)"/><rect x="20" y="40" width="160" height="24" rx="8" fill="rgba(255,255,255,0.03)"/><circle cx="33" cy="52" r="4" fill="rgba(44,153,255,0.3)"/><circle cx="47" cy="52" r="4" fill="rgba(0,212,170,0.25)"/><circle cx="61" cy="52" r="4" fill="rgba(255,255,255,0.1)"/><path d="M45 130l30-40 22 22 18-18 30 36" stroke="rgba(44,153,255,0.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M45 130l30-40 22 22 18-18 30 36z" fill="url(#gradFIE)"/></svg>
-              </div>
-            </div>
-          </div>
+          <div class="sfx-col-sub">Digital asset management</div>
+          <div><a class="sfx-plugin-item" href="https://scaleflex.github.io/asset-picker/" target="_blank" rel="noopener"><span class="sfx-plugin-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7.5" height="7.5" rx="1.6" stroke="currentColor" stroke-width="1.7"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.6" stroke="currentColor" stroke-width="1.7"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.6" stroke="currentColor" stroke-width="1.7"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.6" stroke="currentColor" stroke-width="1.7"/></svg></span><span class="sfx-plugin-name">asset-picker</span><svg class="sfx-plugin-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="sfx-plugin-item" href="https://scaleflex.github.io/uploader/" target="_blank" rel="noopener"><span class="sfx-plugin-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 16V6m0 0l-4 4m4-4l4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 18h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span><span class="sfx-plugin-name">uploader</span><svg class="sfx-plugin-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="sfx-plugin-item" href="https://spotlight.scaleflex.com/docs/experience-picker" target="_blank" rel="noopener"><span class="sfx-plugin-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l9 5-9 5-9-5 9-5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M3 13l9 5 9-5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span><span class="sfx-plugin-name">experience-picker</span><svg class="sfx-plugin-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
         </div>
-        <div class="demo-also-dots" id="also-dots"></div>
-      </section>
-
-      <footer class="demo-footer">
-        <div class="demo-footer-main">
-          <div class="demo-footer-brand">
-            <a href="https://www.scaleflex.com" target="_blank" rel="noopener">
-              <img src="https://assets.scaleflex.com/Marketing/Logos/Scaleflex%20Logos/Logo%20Horizontal/scaleflex%20logo%20without%20tagline%20white%20text%20%28horizontal%29%20.png?vh=85bc00" alt="Scaleflex" class="demo-footer-logo" />
-            </a>
-            <p>CDN-native interactive experience player for screenshot-based product tours, powered by Cloudimage.</p>
+        <div class="sfx-col sfx-col--ci">
+          <div class="sfx-col-head">
+            <span class="sfx-col-badge"></span>
+            <span class="sfx-col-title">Cloudimage</span>
+            <span class="sfx-col-ns">js-cloudimage-*</span>
+            <span class="sfx-col-count">9</span>
           </div>
+          <div class="sfx-col-sub">Interactive media experiences</div>
+          <div class="sfx-list-2col"><a class="sfx-plugin-item" href="https://scaleflex.github.io/cloudimage-3d-view/" target="_blank" rel="noopener"><span class="sfx-plugin-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 3v9m0 0l8-4.5M12 12l-8-4.5" stroke="currentColor" stroke-width="1.4"/></svg></span><span class="sfx-plugin-name">3d-view</span><svg class="sfx-plugin-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="sfx-plugin-item" href="https://scaleflex.github.io/cloudimage-360-view/" target="_blank" rel="noopener"><span class="sfx-plugin-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 6.7 3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-6.7-3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M18 3v3.5h-3.5M6 21v-3.5h3.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sfx-plugin-name">360-view</span><svg class="sfx-plugin-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="sfx-plugin-item" href="https://scaleflex.github.io/cloudimage-360-video/" target="_blank" rel="noopener"><span class="sfx-plugin-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M10 9l5 3-5 3V9z" fill="currentColor"/></svg></span><span class="sfx-plugin-name">360-video</span><svg class="sfx-plugin-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="sfx-plugin-item" href="https://scaleflex.github.io/cloudimage-hotspot/" target="_blank" rel="noopener"><span class="sfx-plugin-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><circle cx="9" cy="11" r="2.4" stroke="currentColor" stroke-width="1.6"/><path d="M9 8.6V6m0 7.4V16m-2.4-4.6H4m7.4 0H14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="sfx-plugin-name">hotspot</span><svg class="sfx-plugin-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="sfx-plugin-item" href="https://scaleflex.github.io/cloudimage-video-hotspot/" target="_blank" rel="noopener"><span class="sfx-plugin-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M10 9l5 3-5 3V9z" fill="currentColor"/></svg></span><span class="sfx-plugin-name">video-hotspot</span><svg class="sfx-plugin-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="sfx-plugin-item" href="https://scaleflex.github.io/cloudimage-before-after/" target="_blank" rel="noopener"><span class="sfx-plugin-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M12 5v14" stroke="currentColor" stroke-width="1.6"/><path d="M8.5 10l-2 2 2 2M15.5 10l2 2-2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sfx-plugin-name">before-after</span><svg class="sfx-plugin-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="sfx-plugin-item" href="https://scaleflex.github.io/cloudimage-carousel/" target="_blank" rel="noopener"><span class="sfx-plugin-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="7" y="6" width="10" height="12" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M4 9v6M20 9v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="sfx-plugin-name">carousel</span><svg class="sfx-plugin-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="sfx-plugin-item" href="https://scaleflex.github.io/cloudimage-image-crop/" target="_blank" rel="noopener"><span class="sfx-plugin-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M6 2v14a2 2 0 0 0 2 2h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 22V8a2 2 0 0 0-2-2H2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sfx-plugin-name">crop</span><svg class="sfx-plugin-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="sfx-plugin-item" href="https://scaleflex.github.io/cloudimage-spotlight/" target="_blank" rel="noopener"><span class="sfx-plugin-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6"/><path d="M16 16l4 4M11 8v6M8 11h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="sfx-plugin-name">spotlight</span><svg class="sfx-plugin-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+        </div>
+      </div>
+    </section>
+
+      <footer class="demo-footer" role="contentinfo">
+      <div class="demo-footer-main">
+        <div class="demo-footer-brand">
+          <a href="https://www.scaleflex.com" target="_blank" rel="noopener">
+            <img src="https://assets.scaleflex.com/Marketing/Logos/Scaleflex%20Logos/Logo%20Horizontal/scaleflex%20logo%20without%20tagline%20white%20text%20%28horizontal%29%20.png?vh=85bc00" alt="Scaleflex" height="26" />
+          </a>
+          <p>CDN-native interactive experience player for screenshot-based product tours, powered by Cloudimage.</p>
+        </div>
+        <div class="demo-footer-links">
           <div class="demo-footer-col">
             <h4>Resources</h4>
+            <a href="https://github.com/scaleflex/cloudimage-spotlight" target="_blank" rel="noopener">GitHub</a>
             <a href="https://www.npmjs.com/package/@cloudimage/spotlight" target="_blank" rel="noopener">npm</a>
             <a href="#/docs/getting-started">Documentation</a>
-            <a href="#/docs/api">API Reference</a>
           </div>
           <div class="demo-footer-col">
             <h4>Examples</h4>
@@ -290,18 +267,16 @@ const page: Page = {
             <a href="#/examples/events">Events</a>
           </div>
           <div class="demo-footer-col">
-            <h4>Scaleflex</h4>
-            <a href="https://www.scaleflex.com" target="_blank" rel="noopener">Website</a>
-            <a href="https://www.cloudimage.io" target="_blank" rel="noopener">Cloudimage</a>
-            <a href="https://www.scaleflex.com/en/digital-asset-management" target="_blank" rel="noopener">Scaleflex DAM</a>
-            <a href="https://scaleflex.github.io/scaleflex-plugins/" target="_blank" rel="noopener">Scaleflex Plugins</a>
-            <a href="https://scaleflex.github.io/cloudimage-plugins/" target="_blank" rel="noopener">Cloudimage Plugins</a>
+            <h4>Support</h4>
+            <a href="https://github.com/scaleflex/cloudimage-spotlight/issues" target="_blank" rel="noopener">Report an Issue</a>
+            <a href="https://www.scaleflex.com/en/contact" target="_blank" rel="noopener">Contact Us</a>
           </div>
         </div>
-        <div class="demo-footer-bottom">
-          <p>Made with care by the <a href="https://www.scaleflex.com" target="_blank" rel="noopener">Scaleflex</a> team</p>
-        </div>
-      </footer>
+      </div>
+      <div class="demo-footer-bottom">
+        <span>MIT License — Made with care by the <a href="https://www.scaleflex.com" target="_blank" rel="noopener">Scaleflex</a> team — Powered by <a href="https://www.cloudimage.io" target="_blank" rel="noopener">Cloudimage.io</a></span>
+      </div>
+    </footer>
     `;
   },
 
@@ -495,53 +470,6 @@ export function App() {
       },
     ]);
 
-    // "Also by Scaleflex" slider
-    const slides = document.querySelectorAll<HTMLElement>('.demo-also-slide');
-    const dotsContainer = document.getElementById('also-dots');
-    if (slides.length && dotsContainer) {
-      let current = 0;
-      let animating = false;
-      let autoTimer: ReturnType<typeof setInterval>;
-
-      slides.forEach((_, i) => {
-        const dot = document.createElement('button');
-        dot.className = `demo-also-dot${i === 0 ? ' active' : ''}`;
-        dot.setAttribute('aria-label', `Slide ${i + 1}`);
-        dot.addEventListener('click', () => goTo(i));
-        dotsContainer.appendChild(dot);
-      });
-      const dots = dotsContainer.querySelectorAll<HTMLElement>('.demo-also-dot');
-
-      function goTo(index: number) {
-        if (index === current || animating) return;
-        animating = true;
-        const direction = index > current ? 'left' : 'right';
-        const leaving = slides[current];
-        const entering = slides[index];
-
-        leaving.classList.add(`slide-out-${direction}`);
-        entering.classList.add(`slide-in-${direction}`, 'active');
-
-        entering.addEventListener('animationend', () => {
-          leaving.classList.remove('active', `slide-out-${direction}`);
-          entering.classList.remove(`slide-in-${direction}`);
-          dots[current].classList.remove('active');
-          dots[index].classList.add('active');
-          current = index;
-          animating = false;
-        }, { once: true });
-
-        resetAuto();
-      }
-
-      function resetAuto() {
-        clearInterval(autoTimer);
-        autoTimer = setInterval(() => goTo((current + 1) % slides.length), 5000);
-      }
-      resetAuto();
-
-      (page as any)._cleanupSlider = () => clearInterval(autoTimer);
-    }
   },
 
   destroy() {
